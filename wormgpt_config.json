@@ -1,6 +1,6 @@
 {
-  "api_key": "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",
+  "api_key": "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",
   "base_url": "https://openrouter.ai/api/v1",
-  "model": "deepseek/deepseek-chat-v3-0324:free",
+  "model": "kwaipilot/kat-coder-pro:free",
   "language": "English"
 }
