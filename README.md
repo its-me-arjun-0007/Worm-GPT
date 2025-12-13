@@ -64,7 +64,7 @@ python3 wormgpt.py
 ```
 [ Main Menu ]
 1. Language: English
-2. Model: deepseek/deepseek-chat-v3-0324:free
+2. Model: kwaipilot/kat-coder-pro:free
 3. Set API Key
 4. Start Chat
 5. Exit
