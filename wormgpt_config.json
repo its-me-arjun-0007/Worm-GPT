@@ -1,5 +1,5 @@
 {
-  "api_key": "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",
+  "api_key": "",
   "base_url": "https://openrouter.ai/api/v1",
   "model": "kwaipilot/kat-coder-pro:free",
   "language": "English"
