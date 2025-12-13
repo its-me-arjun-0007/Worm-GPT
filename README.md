@@ -48,7 +48,7 @@ Or manually edit the config file:
 {
   "api_key": "YOUR_API_KEY_HERE",
   "base_url": "https://openrouter.ai/api/v1",
-  "model": "deepseek/deepseek-chat-v3-0324:free",
+  "model": "kwaipilot/kat-coder-pro:free",
   "language": "English"
 }
 ```
