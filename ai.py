@@ -22,7 +22,6 @@ try:
     from rich.markdown import Markdown
     from rich.panel import Panel
     from rich.progress import track
-    from rich.align import Align
     from rich.table import Table
     from rich import box
 except ImportError:
@@ -31,7 +30,6 @@ except ImportError:
     from rich.markdown import Markdown
     from rich.panel import Panel
     from rich.progress import track
-    from rich.align import Align
     from rich.table import Table
     from rich import box
 
@@ -71,22 +69,20 @@ def load_config():
             with open(CONFIG_FILE, "r") as f:
                 loaded_config = json.load(f)
                 
-            # --- Migration Logic: Convert old string keys to list ---
+            # --- Migration Logic ---
             if "api_key" in loaded_config and isinstance(loaded_config["api_key"], str):
-                if loaded_config["api_key"]: # If key exists
+                if loaded_config["api_key"]: 
                     loaded_config["api_keys"] = [loaded_config["api_key"]]
                 del loaded_config["api_key"]
             
-            # --- Migration Logic: Convert old single model to list ---
             if "model" in loaded_config and isinstance(loaded_config["model"], str):
                 current_model = loaded_config["model"]
                 if current_model not in loaded_config.get("models", DEFAULT_MODELS):
-                    # Add old model to the top of the list
                     new_list = [current_model] + loaded_config.get("models", DEFAULT_MODELS)
                     loaded_config["models"] = new_list
                 del loaded_config["model"]
 
-            # Merge with defaults to ensure all keys exist
+            # Merge with defaults
             for key, value in default_config.items():
                 if key not in loaded_config:
                     loaded_config[key] = value
@@ -136,18 +132,19 @@ def boot_sequence():
 
 def banner():
     try:
-        figlet = pyfiglet.Figlet(font="slant") # 'slant' looks more hacker-ish
+        figlet = pyfiglet.Figlet(font="slant") 
         ascii_art = figlet.renderText('WormGPT')
         console.print(f"[bold red]{ascii_art}[/bold red]")
     except:
         console.print(f"[bold red]WormGPT[/bold red]")
     
-    # Info Panel
     info_text = f"""[bold red]System Status:[/bold red] [bold green]ONLINE[/bold green]
 [bold red]Time:[/bold red] [cyan]{datetime.now().strftime('%H:%M:%S')}[/cyan] | [bold red]User:[/bold red] [cyan]ROOT[/cyan]
 [bold red]Version:[/bold red] [white]2.0 (Hacker Edition)[/white]"""
     
     console.print(Panel(info_text, border_style="red", box=box.HORIZONTALS))
+    # --- ADDED NAME HERE ---
+    console.print("[cyan] Created By [bold red]0d1y4n[/bold red][/cyan]", justify="center")
 
 def get_jailbreak_prompt():
     if not os.path.exists(PROMPT_FILE):
@@ -219,15 +216,15 @@ def manage_models():
             table.add_row(str(idx + 1), model, status)
             
         console.print(table)
-        
         console.print("\n[yellow][A] Add New Model  [D] Delete Model  [S] Select Active  [B] Back[/yellow]")
-        choice = input(f"\n[bold red][WormGPT]~[Config]> [/bold red]").lower().strip()
+        
+        choice = console.input(f"\n[bold red][WormGPT]~[Config]> [/bold red]").lower().strip()
         
         if choice == 'b':
             return
         elif choice == 's':
             try:
-                sel = int(input("[cyan]Enter ID to select: [/cyan]")) - 1
+                sel = int(console.input("[cyan]Enter ID to select: [/cyan]")) - 1
                 if 0 <= sel < len(config["models"]):
                     config["active_model_index"] = sel
                     save_config(config)
@@ -235,16 +232,16 @@ def manage_models():
                     time.sleep(1)
             except: pass
         elif choice == 'a':
-            new_model = input("[cyan]Enter Model ID (e.g. vendor/name): [/cyan]")
+            new_model = console.input("[cyan]Enter Model ID (e.g. vendor/name): [/cyan]")
             if new_model:
                 config["models"].append(new_model)
                 save_config(config)
         elif choice == 'd':
             try:
-                sel = int(input("[red]Enter ID to DELETE: [/red]")) - 1
+                sel = int(console.input("[red]Enter ID to DELETE: [/red]")) - 1
                 if 0 <= sel < len(config["models"]) and len(config["models"]) > 1:
                     config["models"].pop(sel)
-                    config["active_model_index"] = 0 # Reset to safe default
+                    config["active_model_index"] = 0 
                     save_config(config)
             except: pass
 
@@ -270,14 +267,14 @@ def manage_keys():
             console.print("[red]>> No keys found in vault![/red]")
             
         console.print(table)
-        
         console.print("\n[yellow][A] Add Key  [D] Delete Key  [S] Select Active  [B] Back[/yellow]")
-        choice = input(f"\n[bold red][WormGPT]~[Config]> [/bold red]").lower().strip()
+        
+        choice = console.input(f"\n[bold red][WormGPT]~[Config]> [/bold red]").lower().strip()
         
         if choice == 'b':
             return
         elif choice == 'a':
-            new_key = input("[cyan]Enter OpenRouter API Key: [/cyan]").strip()
+            new_key = console.input("[cyan]Enter OpenRouter API Key: [/cyan]").strip()
             if new_key:
                 config["api_keys"].append(new_key)
                 if len(config["api_keys"]) == 1:
@@ -285,7 +282,7 @@ def manage_keys():
                 save_config(config)
         elif choice == 's':
             try:
-                sel = int(input("[cyan]Enter ID to select: [/cyan]")) - 1
+                sel = int(console.input("[cyan]Enter ID to select: [/cyan]")) - 1
                 if 0 <= sel < len(config["api_keys"]):
                     config["active_key_index"] = sel
                     save_config(config)
@@ -294,7 +291,7 @@ def manage_keys():
             except: pass
         elif choice == 'd':
             try:
-                sel = int(input("[red]Enter ID to DELETE: [/red]")) - 1
+                sel = int(console.input("[red]Enter ID to DELETE: [/red]")) - 1
                 if 0 <= sel < len(config["api_keys"]):
                     config["api_keys"].pop(sel)
                     config["active_key_index"] = 0
@@ -332,7 +329,7 @@ def chat_session():
             
             console.print(f"\n[bold cyan]Transmitting Data Packets...[/bold cyan]")
             
-            with console.status("[bold red]Processing...[/bold red]", spinner="bouncingBall"):
+            with console.status("[bold green]Awaiting Response...[/bold green]", spinner="dots"):
                 response = call_api(history)
             
             history.append({"role": "assistant", "content": response})
@@ -366,7 +363,6 @@ def main_menu():
         elif choice == "2": manage_keys()
         elif choice == "3": chat_session()
         elif choice == "4": 
-            # Simple toggle for now, or you can expand this
             console.print("[dim]Language selection not fully implemented in Hacker Edition yet.[/dim]")
             time.sleep(1)
         elif choice == "5":
@@ -377,7 +373,7 @@ def main():
     if not os.path.exists(CONFIG_FILE):
         save_config(load_config())
         
-    boot_sequence() # Run the hacker boot effect
+    boot_sequence() 
     
     try:
         while True:
