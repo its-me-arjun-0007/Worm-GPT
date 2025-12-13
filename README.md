@@ -33,7 +33,19 @@ Clone the repo:
 ```bash
 git clone https://github.com/its-me-arjun-0007/worm-gpt
 cd worm-gpt
-python3 wormgpt.py
+```
+## Use a Virtual Environment
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install requests pyfiglet langdetect
+```
+
+## Run the script:
+
+```bash
+python3 ai.py
 ```
 
 ## 🔑 Set Your API Key
