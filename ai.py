@@ -43,7 +43,7 @@ class colors:
 # Configuration
 CONFIG_FILE = "wormgpt_config.json"
 PROMPT_FILE = "system-prompt.txt"  # 🧩 Local system prompt file
-DEFAULT_API_KEY = "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"
+DEFAULT_API_KEY = ""
 DEFAULT_BASE_URL = "https://openrouter.ai/api/v1"
 DEFAULT_MODEL = "kwaipilot/kat-coder-pro:free"
 SITE_URL = "https://github.com/00x0kafyy/worm-ai"
