@@ -31,7 +31,7 @@
 Clone the repo:
 
 ```bash
-git clone https://github.com/its-me-arjun-0007/worm-gpt
+git clone https://github.com/its-me-arjun-0007/worm-gpt.git
 cd worm-gpt
 ```
 ## Use a Virtual Environment
