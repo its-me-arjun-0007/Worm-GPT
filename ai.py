@@ -330,7 +330,7 @@ def chat_session():
             
             history.append({"role": "user", "content": user_input})
             
-            console.print(f"\n[bold cyan]Injecting Payload...[/bold cyan]")
+            console.print(f"\n[bold cyan]Transmitting Data Packets...[/bold cyan]")
             
             with console.status("[bold red]Processing...[/bold red]", spinner="bouncingBall"):
                 response = call_api(history)
