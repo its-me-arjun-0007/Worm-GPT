@@ -80,9 +80,6 @@ Example:
 meta-llama/llama-3-8b-instruct:nitro
 ```
 
-### 📷 Example Screenshot
-![WormGPT CLI Example](assets/example.jpg)
-
 ## 👨‍💻 Author
 
 GitHub: @its-me-arjun-0007
