@@ -115,7 +115,7 @@ def login_system():
         # Tries to render 'LOCKED' in big text. 
         # If pyfiglet fails, it prints a standard text.
         f = pyfiglet.Figlet(font='slant')
-        title = f.renderText('= RESTRICTED AREA =')
+        title = f.renderText('RESTRICTED AREA')
         console.print(f"[bold red]{title}[/bold red]", justify="center")
     except:
         console.print(Panel("[blink bold red]☠️  UNAUTHORIZED ACCESS DETECTED  ☠️[/blink bold red]", 
