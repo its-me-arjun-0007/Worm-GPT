@@ -253,7 +253,7 @@ def manage_models():
         console.print(table)
         console.print("\n[yellow][A] Add New Model  [D] Delete Model  [S] Select Active  [B] Back[/yellow]")
         
-        console.print(f"\n[bold red]┌──(root@wormgpt)──┐[/bold red]")
+        console.print(f"\n[bold red]┌──(root@worm-gpt)──┐[/bold red]")
         choice = console.input("[bold red]└─~# [/bold red]").lower().strip()
         
         if choice == 'b':
