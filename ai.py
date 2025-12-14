@@ -106,7 +106,7 @@ def clear_screen():
 def login_system():
     """Forces user to login with a Red/Black Hacker aesthetic."""
     AUTHORIZED_USER = "odiyan"
-    AUTHORIZED_PASS = "kali123" 
+    AUTHORIZED_PASS = "admin" 
     
     clear_screen()
     
@@ -131,7 +131,7 @@ def login_system():
             
             console.print("[bold red]┌──(root@kali)──┐[decryption_key][/bold red]")
             # Note: getpass hides your typing!
-            pwd = getpass.getpass("└─────# Enter Key: ") 
+            pwd = getpass.getpass("[bold red]└─────# Enter Key: [bold red]") 
             
             if user == AUTHORIZED_USER and pwd == AUTHORIZED_PASS:
                 console.print("\n[bold red on black] >> IDENTITY CONFIRMED. SYSTEM UNLOCKED. << [/bold red on black]")
