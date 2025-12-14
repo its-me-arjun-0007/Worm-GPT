@@ -129,12 +129,12 @@ def login_system():
     while attempts < max_attempts:
         try:
             # Red prompt style
-            console.print("\n[bold red]┌──(root💀kali)──┐[security_checkpoint][/bold red]")
+                 console.print("\n[bold red]┌───(root💀kali)──┐[security_checkpoint][/bold red]")
             user = console.input("[bold red]└─# Enter Identity: [/bold red]")
             
             console.print("[bold red]┌──(root💀kali)──┐[decryption_key][/bold red]")
             # Password prompt (text is standard to avoid glitching, but context is red)
-            pwd = getpass.getpass("└─# Enter Key: ") 
+            pwd = getpass.getpass("[bold red]└─# Enter Key: [decryption_key][/bold red]") 
             
             if user == AUTHORIZED_USER and pwd == AUTHORIZED_PASS:
                 console.print("\n[bold red on black] >> IDENTITY CONFIRMED. SYSTEM UNLOCKED. << [/bold red on black]")
@@ -394,7 +394,7 @@ def main_menu():
         console.print(Panel(menu_text, title="[bold cyan]Main Menu[/bold cyan]", border_style="bright_black"))
         
         choice = console.input(f"\n[bold red]┌──(root@wormgpt)──┐[/bold red]")
-        user = console.input("[bold red]└─~# [/bold red]")
+                console.input("[bold red]└─~# [/bold red]")
         
         if choice == "1": manage_models()
         elif choice == "2": manage_keys()
