@@ -10,7 +10,7 @@ from datetime import datetime
 
 # --- Auto-install Dependencies ---
 def install_package(package):
-    os.system(f'pip install {package} --quiet')
+    os.system(f'pip install {package}')
 
 try:
     import pyfiglet
