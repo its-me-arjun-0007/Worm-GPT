@@ -8,7 +8,7 @@ import requests
 import getpass 
 from datetime import datetime
 
-# --- DIRECT IMPORTS (No Auto-Install to prevent freezing) ---
+# --- DIRECT IMPORTS ---
 try:
     import pyfiglet
     from rich.console import Console
@@ -44,7 +44,7 @@ DEFAULT_MODELS = [
 # --- Helper Functions ---
 
 def load_config():
-    """Loads config and handles migration from old string-based keys to lists."""
+    """Loads config and handles migration."""
     default_config = {
         "api_keys": [],
         "active_key_index": 0,
@@ -102,7 +102,7 @@ def get_active_model(config):
 def clear_screen():
     os.system("cls" if platform.system() == "Windows" else "clear")
 
-# --- Security Module (RED HACK EDITION) ---
+# --- Security Module (FIXED INDENTATION) ---
 def login_system():
     """Forces user to login with a Red/Black Hacker aesthetic."""
     AUTHORIZED_USER = "odiyan"
@@ -110,10 +110,7 @@ def login_system():
     
     clear_screen()
     
-    # 1. Print Giant Red ASCII Banner
     try:
-        # Tries to render 'LOCKED' in big text. 
-        # If pyfiglet fails, it prints a standard text.
         f = pyfiglet.Figlet(font='slant')
         title = f.renderText('RESTRICTED AREA')
         console.print(f"[bold red]{title}[/bold red]", justify="center")
@@ -128,13 +125,12 @@ def login_system():
     
     while attempts < max_attempts:
         try:
-            # Red prompt style
-                 console.print("\n[bold red]┌───(root💀kali)──┐[security_checkpoint][/bold red]")
+            # FIXED: Removed the extra spaces that caused the crash
+            console.print("\n[bold red]┌───(root💀kali)──┐[security_checkpoint][/bold red]")
             user = console.input("[bold red]└─# Enter Identity: [/bold red]")
             
             console.print("[bold red]┌──(root💀kali)──┐[decryption_key][/bold red]")
-            # Password prompt (text is standard to avoid glitching, but context is red)
-            pwd = getpass.getpass("[bold red]└─# Enter Key: [decryption_key][/bold red]") 
+            pwd = getpass.getpass("└─# Enter Key: ") 
             
             if user == AUTHORIZED_USER and pwd == AUTHORIZED_PASS:
                 console.print("\n[bold red on black] >> IDENTITY CONFIRMED. SYSTEM UNLOCKED. << [/bold red on black]")
@@ -256,7 +252,9 @@ def manage_models():
         console.print(table)
         console.print("\n[yellow][A] Add New Model  [D] Delete Model  [S] Select Active  [B] Back[/yellow]")
         
-        choice = console.input(f"\n[bold red][WormGPT]~[Config]> [/bold red]").lower().strip()
+        # Fixed Prompt
+        console.print(f"\n[bold red]┌──(root@wormgpt)──┐[/bold red]")
+        choice = console.input("[bold red]└─~# [/bold red]").lower().strip()
         
         if choice == 'b':
             return
@@ -307,7 +305,9 @@ def manage_keys():
         console.print(table)
         console.print("\n[yellow][A] Add Key  [D] Delete Key  [S] Select Active  [B] Back[/yellow]")
         
-        choice = console.input(f"\n[bold red][WormGPT]~[Config]> [/bold red]").lower().strip()
+        # Fixed Prompt
+        console.print(f"\n[bold red]┌──(root@wormgpt)──┐[/bold red]")
+        choice = console.input("[bold red]└─~# [/bold red]").lower().strip()
         
         if choice == 'b':
             return
@@ -350,9 +350,9 @@ def chat_session():
     
     while True:
         try:
-            console.print(f"\n[bold red]┌──(Worm-GPT)-[~] 💀[/bold red]")
+            # --- NEW HEXSEC-STYLE PROMPT ---
+            console.print(f"\n[bold red]└──(Worm-GPT)-[~] 💀[/bold red]")
             user_input = console.input("[bold red]└─> [/bold red]")
-
             
             if not user_input.strip(): continue
             if user_input.lower() == "exit": sys.exit(0)
@@ -395,8 +395,9 @@ def main_menu():
 """
         console.print(Panel(menu_text, title="[bold cyan]Main Menu[/bold cyan]", border_style="bright_black"))
         
-        choice = console.input(f"\n[bold red]┌──(root@wormgpt)──┐[/bold red]")
-                console.input("[bold red]└─~# [/bold red]")
+        # Fixed Prompt
+        console.print(f"\n[bold red]┌──(root@wormgpt)──┐[/bold red]")
+        choice = console.input("[bold red]└─~# [/bold red]")
         
         if choice == "1": manage_models()
         elif choice == "2": manage_keys()
