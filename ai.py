@@ -5,6 +5,7 @@ import time
 import json
 import random
 import requests
+import getpass 
 from datetime import datetime
 
 # --- Auto-install Dependencies ---
@@ -114,6 +115,42 @@ def get_active_model(config):
 
 def clear_screen():
     os.system("cls" if platform.system() == "Windows" else "clear")
+
+# --- Security Module ---
+def login_system():
+    """Forces user to login before accessing the tool."""
+    # CHANGE THESE VALUES TO YOUR PREFERRED CREDENTIALS
+    AUTHORIZED_USER = "odiyan"
+    AUTHORIZED_PASS = "kali123" 
+    
+    clear_screen()
+    console.print(Panel("[bold red]🔒 SECURITY PROTOCOL INITIATED[/bold red]", border_style="red"))
+    
+    attempts = 0
+    max_attempts = 3
+    
+    while attempts < max_attempts:
+        try:
+            user = console.input("[bold cyan]👤 Username: [/bold cyan]")
+            # getpass hides the input for security
+            pwd = getpass.getpass("🔑 Password: ") 
+            
+            if user == AUTHORIZED_USER and pwd == AUTHORIZED_PASS:
+                console.print("\n[bold green]✅ ACCESS GRANTED. WELCOME, COMMANDER.[/bold green]")
+                time.sleep(1)
+                return True
+            else:
+                attempts += 1
+                remaining = max_attempts - attempts
+                console.print(f"\n[bold red]❌ ACCESS DENIED. Attempts remaining: {remaining}[/bold red]")
+                time.sleep(0.5)
+        except KeyboardInterrupt:
+            console.print("\n[red]Login Aborted.[/red]")
+            sys.exit(0)
+            
+    console.print("\n[bold red]🚫 SYSTEM LOCKDOWN. TOO MANY FAILED ATTEMPTS.[/bold red]")
+    sys.exit(0)
+    
 
 def boot_sequence():
     """Fake hacker boot sequence"""
@@ -372,7 +409,9 @@ def main_menu():
 def main():
     if not os.path.exists(CONFIG_FILE):
         save_config(load_config())
-        
+
+    login_system()
+    
     boot_sequence() 
     
     try:
@@ -381,6 +420,3 @@ def main():
     except KeyboardInterrupt:
         console.print("\n[red]Forced Exit.[/red]")
         sys.exit(0)
-
-if __name__ == "__main__":
-    main()
