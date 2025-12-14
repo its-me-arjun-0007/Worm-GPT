@@ -350,7 +350,9 @@ def chat_session():
     
     while True:
         try:
-            user_input = console.input(f"\n[bold red][WormGPT]~[#]>[/bold red] ")
+            console.print(f"\n[bold red]┌──(Worm-GPT)-[~] 💀[/bold red]")
+            user_input = console.input("[bold red]└─> [/bold red]")
+
             
             if not user_input.strip(): continue
             if user_input.lower() == "exit": sys.exit(0)
