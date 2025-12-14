@@ -15,6 +15,7 @@ try:
     from rich.console import Console
     from rich.markdown import Markdown
     from rich.align import Align
+    from rich.text import Text
     from rich.panel import Panel
     from rich.progress import track
     from rich.table import Table
@@ -219,39 +220,43 @@ def boot_sequence():
     ]
     
     # SLOWER: Progress bar will move much slower now
-    for step in track(modules, description="[bold red]INSTALLING MALWARE MODULES...[/bold red]"):
-        time.sleep(random.uniform(1.5, 3.0)) # <--- MUCH SLOWER (Was 0.6)
+    for step in track(modules, description="[bold red]INSTALLING MODULES...[/bold red]"):
+        time.sleep(random.uniform(1.5, 2.0)) # <--- MUCH SLOWER (Was 0.6)
         
     # Phase 3: Success Flash
     time.sleep(1.0)
-    clear_screen()
     console.print(Panel("[bold green]ACCESS GRANTED[/bold green]", style="bold green on black", width=40))
     time.sleep(1.5) # <--- Hold the "Access Granted" sign longer
     clear_screen()
 
 
 def banner():
-    # 1. Print the ASCII Art Logo (Centered)
+    # 1. Print the ASCII Art Logo (Perfectly Aligned)
     try:
         figlet = pyfiglet.Figlet(font="slant") 
-        ascii_art = figlet.renderText('WormGPT')
-        # rstrip() removes invisible spaces on the right that mess up centering
-        console.print(f"[bold red]{ascii_art.rstrip()}[/bold red]", justify="center")
-    except:
-        console.print(f"[bold red]WormGPT[/bold red]", justify="center")
+        # .strip() removes all empty lines around the art for a clean look
+        ascii_raw = figlet.renderText('WormGPT').strip()
+        
+        # Create a Text object to treat the art as a solid block
+        logo = Text(ascii_raw, style="bold red")
+        
+        # Align.center forces the whole block to the middle of the screen
+        console.print(Align.center(logo))
+    except Exception as e:
+        # Fallback if pyfiglet breaks
+        console.print(Align.center("[bold red]WormGPT[/bold red]"))
     
-    # 2. Prepare the Info Text
-    # We use '\n' to put items on separate lines for better centering
+    # 2. Prepare the Info Text (Centered Data)
     info_text = f"""[bold red]System Status:[/bold red] [bold green]ONLINE[/bold green]
 [bold red]Time:[/bold red] [cyan]{datetime.now().strftime('%H:%M:%S')}[/cyan] | [bold red]User:[/bold red] [cyan]ROOT[/cyan]
 [bold red]Version:[/bold red] [white]2.0 (Hacker Edition)[/white]"""
     
-    # 3. Print the Panel with CENTERED text
-    # We wrap the text in Align.center() to force it to the middle of the box
+    # 3. Print the Panel
+    # Using Align.center inside the panel to center the text block itself
     console.print(Panel(Align.center(info_text), border_style="red", box=box.HORIZONTALS))
     
     # 4. Credits
-    console.print("[cyan] Created By [bold red]0d1y4n[/bold red][/cyan]", justify="center")
+    console.print(Align.center("[cyan] Created By [bold red]0d1y4n[/bold red][/cyan]"))
 
 # --- API Logic ---
 def call_api(messages):
