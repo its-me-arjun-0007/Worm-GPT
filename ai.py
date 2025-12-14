@@ -127,10 +127,10 @@ def login_system():
         try:
             # FIXED: Removed the extra spaces that caused the crash
             console.print("\n[bold red]┌───(root💀kali)──┐[security_checkpoint][/bold red]")
-            user = console.input("[bold red]└─# Enter Identity: [/bold red]")
+       user = console.input("[bold red]└─# Enter Identity: [/bold red]")
             
             console.print("[bold red]┌──(root💀kali)──┐[decryption_key][/bold red]")
-            pwd = getpass.getpass("└─# Enter Key: ") 
+    pwd = getpass.getpass("[bold red]└─────# Enter Key: ") 
             
             if user == AUTHORIZED_USER and pwd == AUTHORIZED_PASS:
                 console.print("\n[bold red on black] >> IDENTITY CONFIRMED. SYSTEM UNLOCKED. << [/bold red on black]")
@@ -306,7 +306,7 @@ def manage_keys():
         console.print("\n[yellow][A] Add Key  [D] Delete Key  [S] Select Active  [B] Back[/yellow]")
         
         # Fixed Prompt
-        console.print(f"\n[bold red]┌──(root@wormgpt)──┐[/bold red]")
+        console.print(f"\n[bold red]┌──(Worm-GPT)──┐[/bold red]")
         choice = console.input("[bold red]└─~# [/bold red]").lower().strip()
         
         if choice == 'b':
@@ -350,8 +350,7 @@ def chat_session():
     
     while True:
         try:
-            # --- NEW HEXSEC-STYLE PROMPT ---
-            console.print(f"\n[bold red]└──(Worm-GPT)-[~] 💀[/bold red]")
+            console.print(f"\n[bold red]┌──(Worm-GPT)-[~] [/bold red]")
             user_input = console.input("[bold red]└─> [/bold red]")
             
             if not user_input.strip(): continue
