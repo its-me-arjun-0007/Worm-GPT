@@ -180,10 +180,10 @@ def login_system():
     
 
 def boot_sequence():
-    """Advanced Hacker Boot Sequence with Logging and Loading Bars"""
+    """Advanced Hacker Boot Sequence (SLOWER VERSION)"""
     clear_screen()
     
-    # Phase 1: Fast Scrolling Kernel Logs (Matrix Style)
+    # Phase 1: Scrolling Kernel Logs
     logs = [
         "KERNEL: Arch: arm64 / Booting WormGPT Core...",
         "MEMORY: Allocating 64GB Virtual VRAM...",
@@ -198,17 +198,17 @@ def boot_sequence():
     ]
     
     console.print("[bold red]INITIATING SYSTEM STARTUP...[/bold red]")
-    time.sleep(0.10)
+    time.sleep(1.0) # <--- Initial pause (Was 0.10)
     
     for log in logs:
-        # Random speed to look like real processing
-        time.sleep(random.uniform(0.10, 0.4)) 
+        # SLOWER: Randomly waits between 0.5 and 1.5 seconds per line
+        time.sleep(random.uniform(0.5, 1.5)) 
         console.print(f"[bold red][*][/bold red] [dim white]{log}[/dim white]")
     
-    time.sleep(0.10)
-    print() # Spacer
+    time.sleep(0.5)
+    print() 
 
-    # Phase 2: The Loading Bar (Module Injection)
+    # Phase 2: The Loading Bar
     modules = [
         "Injecting SQLmap API...",
         "Loading Metasploit Bridge...",
@@ -217,15 +217,15 @@ def boot_sequence():
         "Finalizing WormGPT Hook..."
     ]
     
-    # Custom progress bar visual
+    # SLOWER: Progress bar will move much slower now
     for step in track(modules, description="[bold red]INSTALLING MALWARE MODULES...[/bold red]"):
-        time.sleep(random.uniform(0.6, 0.12))
+        time.sleep(random.uniform(1.5, 3.0)) # <--- MUCH SLOWER (Was 0.6)
         
     # Phase 3: Success Flash
-    time.sleep(0.30)
+    time.sleep(1.0)
     clear_screen()
     console.print(Panel("[bold green]ACCESS GRANTED[/bold green]", style="bold green on black", width=40))
-    time.sleep(0.30)
+    time.sleep(1.5) # <--- Hold the "Access Granted" sign longer
     clear_screen()
 
 
