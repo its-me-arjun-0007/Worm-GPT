@@ -319,7 +319,7 @@ def manage_keys():
         console.print(table)
         console.print("\n[yellow][A] Add Key  [D] Delete Key  [S] Select Active  [B] Back[/yellow]")
         
-        console.print(f"\n[bold red]┌──(Worm-GPT)-[Key]/bold red]")
+        console.print(f"\n[bold red]┌──(Worm-GPT)-[Key][/bold red]")
         console.print("[bold red]└─> [/bold red]", end="")
         sys.stdout.write("\033[91m")
         sys.stdout.flush()
