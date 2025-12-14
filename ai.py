@@ -116,39 +116,68 @@ def get_active_model(config):
 def clear_screen():
     os.system("cls" if platform.system() == "Windows" else "clear")
 
-# --- Security Module ---
+# --- Security Module (Red Hack Edition) ---
 def login_system():
-    """Forces user to login before accessing the tool."""
-    # CHANGE THESE VALUES TO YOUR PREFERRED CREDENTIALS
+    """Forces user to login with a Red/Hacker aesthetic."""
+    # --- CREDENTIALS ---
     AUTHORIZED_USER = "odiyan"
     AUTHORIZED_PASS = "kali123" 
     
     clear_screen()
-    console.print(Panel("[bold red]🔒 SECURITY PROTOCOL INITIATED[/bold red]", border_style="red"))
     
+    # 1. Print Giant Red ASCII Banner
+    try:
+        # Tries to render 'LOCKED' in big text. 
+        # If pyfiglet fails, it prints a standard text.
+        f = pyfiglet.Figlet(font='slant')
+        title = f.renderText('RESTRICTED')
+        console.print(f"[bold red]{title}[/bold red]", justify="center")
+    except:
+        console.print("[bold red]=== RESTRICTED AREA ===[/bold red]", justify="center")
+
+    # 2. Print The Red Warning Panel
+    warning_text = (
+        "[bold white]⚠️  WARNING: AUTHORIZED PERSONNEL ONLY ⚠️[/bold white]\n"
+        "[red]This system is monitored. All IP addresses are logged.[/red]\n"
+        "[dim]Encrypted connection established via Port 443...[/dim]"
+    )
+    console.print(Panel(warning_text, title="[bold white on red] SECURITY CHECKPOINT [/bold white on red]", border_style="red", style="red"))
+    console.print("") # Spacer
+
     attempts = 0
     max_attempts = 3
     
     while attempts < max_attempts:
         try:
-            user = console.input("[bold cyan]👤 Username: [/bold cyan]")
-            # getpass hides the input for security
-            pwd = getpass.getpass("🔑 Password: ") 
+            # 3. Aggressive Root-Style Prompts
+            console.print("[bold red]┌──(root💀kali)-[security_node][/bold red]")
+            user = console.input("[bold red]└─► Username: [/bold red]")
+            
+            # Using standard getpass for security (text hidden)
+            # We add a visual indicator before it
+            console.print("[bold red]      Password: [/bold red]", end="")
+            pwd = getpass.getpass("") 
             
             if user == AUTHORIZED_USER and pwd == AUTHORIZED_PASS:
-                console.print("\n[bold green]✅ ACCESS GRANTED. WELCOME, COMMANDER.[/bold green]")
-                time.sleep(1)
+                console.print("\n[bold black on green] ✅ AUTHENTICATION BYPASS SUCCESSFUL [/bold black on green]")
+                console.print("[green]Initializing malicious protocols...[/green]")
+                time.sleep(1.5)
                 return True
             else:
                 attempts += 1
                 remaining = max_attempts - attempts
-                console.print(f"\n[bold red]❌ ACCESS DENIED. Attempts remaining: {remaining}[/bold red]")
-                time.sleep(0.5)
+                console.print(f"\n[bold white on red] ❌ ACCESS DENIED [/bold white on red] [red]INVALID CREDENTIALS[/red]")
+                if remaining > 0:
+                    console.print(f"[dim red]Attempts remaining: {remaining}[/dim red]\n")
+                time.sleep(1)
+                
         except KeyboardInterrupt:
             console.print("\n[red]Login Aborted.[/red]")
             sys.exit(0)
             
-    console.print("\n[bold red]🚫 SYSTEM LOCKDOWN. TOO MANY FAILED ATTEMPTS.[/bold red]")
+    # 4. Lockdown Mode
+    clear_screen()
+    console.print(Panel("[blink bold white on red]🚨 SYSTEM BREACH DETECTED 🚨\nTERMINATING CONNECTION...[/blink bold white on red]", border_style="red"))
     sys.exit(0)
     
 
