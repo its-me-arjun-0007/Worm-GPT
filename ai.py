@@ -15,6 +15,7 @@ try:
     import pyfiglet
     from rich.console import Console
     from rich.markdown import Markdown
+    from rich.layout import Layout
     from rich.align import Align
     from rich.text import Text
     from rich.panel import Panel
@@ -108,79 +109,124 @@ def clear_screen():
 
 # --- Security Module (MULTI-USER & ENCRYPTED) ---
 def login_system():
-    """Forces user to login using hashed credentials from external file."""
+    """Web-Style Login Interface with WormGPT Aesthetics"""
     USERS_FILE = "wormgpt_users.json"
     
-    clear_screen()
-    
-    # Check if users file exists
+    # 1. Check for Users File (Security Check)
     if not os.path.exists(USERS_FILE):
-        console.print(f"[bold red]CRITICAL ERROR: {USERS_FILE} not found![/bold red]")
-        console.print("[yellow]Please create the file with {\"username\": \"sha256_hash\"} format.[/yellow]")
+        clear_screen()
+        console.print(Panel("[bold red]CRITICAL ERROR: USER DATABASE MISSING[/bold red]", 
+                            title="[bold red] SYSTEM HALTED [/bold red]", border_style="red"))
         sys.exit(1)
         
     try:
         with open(USERS_FILE, "r") as f:
             valid_users = json.load(f)
-    except Exception as e:
-        console.print(f"[bold red]ERROR LOADING USERS:[/bold red] {e}")
+    except:
         sys.exit(1)
 
-    try:
-        f = pyfiglet.Figlet(font='slant')
-        title = f.renderText('PASSWORD PROTECTED')
-        console.print(f"[bold red]{title}[/bold red]", justify="center")
-    except:
-        console.print(Panel("[blink bold red]☠️  UNAUTHORIZED ACCESS DETECTED  ☠️[/blink bold red]", 
-                        title="[bold red on black] SYSTEM LOCKED [/bold red on black]", 
-                        border_style="red",
-                        box=box.HEAVY))
-    
+    # 2. visual Loop
     attempts = 0
     max_attempts = 3
     
     while attempts < max_attempts:
+        clear_screen()
+        
+        # --- THE LOGO (Centered) ---
         try:
-            # -- USERNAME INPUT --
-            console.print("\n[bold red]┌──(Worm-GPT)-[Enter Identity][security_checkpoint][/bold red]")
-            console.print("[bold red]└─> [/bold red]", end="")
+            f = pyfiglet.Figlet(font='slant')
+            logo_text = f.renderText('WORM - GPT')
+            # Clean up the logo so it centers properly
+            clean_logo = "\n".join([line.rstrip() for line in logo_text.split("\n")])
+        except:
+            clean_logo = "WORM-GPT SYSTEM"
+
+        # --- THE LOGIN BOX (Website Style) ---
+        # We create a big string that looks like a form
+        login_content = f"""
+[bold red]{clean_logo}[/bold red]
+
+[bold white]AUTHENTICATION REQUIRED[/bold white]
+[dim]---------------------------------[/dim]
+
+[cyan]Gateway IP:[/cyan] [dim]192.168.X.X (Masked)[/dim]
+[cyan]Encryption:[/cyan] [dim]SHA-256 (Active)[/dim]
+
+[dim]---------------------------------[/dim]
+[yellow]Please enter credentials to decrypt core.[/yellow]
+        """
+        
+        # Print the centered panel
+        console.print(Align.center(Panel(
+            Align.center(login_content),
+            title="[bold red on black] SECURE LOGIN PORTAL [/bold red on black]",
+            border_style="red",
+            box=box.DOUBLE, # Uses double lines for a "window" look
+            width=80,
+            padding=(1, 2)
+        )))
+
+        # --- INPUT FIELDS (Below the box) ---
+        print("\n") # Spacer
+        
+        try:
+            # 3. Username Input
+            console.print(Align.center("[bold white]USER IDENTITY[/bold white]"))
+            # We use a custom prompt ">>" centered
+            console.print(Align.center("[bold red]▼[/bold red]"))
             
-            sys.stdout.write("\033[91m") 
-            sys.stdout.flush()
-            user_input = input().strip()
-            sys.stdout.write("\033[0m") 
+            # Move cursor to center (Visual trick: we just indent heavily)
+            # Since we can't truly center 'input()', we use a specialized prompt
+            sys.stdout.write("\033[91m") # Red Color
+            user_input = console.input(f"[bold red] >> [/bold red]").strip()
+            sys.stdout.write("\033[0m") # Reset Color
             
-            # -- PASSWORD INPUT --
-            console.print("[bold red]┌──(Worm-GPT)-[Enter Key][decryption_key][/bold red]")
-            console.print("[bold red]└─> [/bold red]", end="")
-            sys.stdout.flush()
+            # 4. Password Input
+            console.print(Align.center("[bold white]ACCESS KEY[/bold white]"))
+            console.print(Align.center("[bold red]▼[/bold red]"))
+            pass_input = getpass.getpass("    >> ") # Indented to look centered
             
-            pass_input = getpass.getpass("") 
-            
-            # -- VERIFICATION LOGIC --
+            # 5. Simulation: "Verifying with Server..."
+            with console.status("[bold red]Handshaking with Dark Web Nodes...[/bold red]", spinner="bouncingBall"):
+                time.sleep(1.5) # Fake delay for drama
+                
+            # 6. Verification Logic
             if user_input in valid_users:
-                # Hash the input password to compare with stored hash
                 input_hash = hashlib.sha256(pass_input.encode()).hexdigest()
                 
                 if input_hash == valid_users[user_input]:
-                    console.print("\n[bold red on black] >> IDENTITY CONFIRMED. SYSTEM UNLOCKED. << [/bold red on black]")
-                    time.sleep(1)
+                    # SUCCESS ANIMATION
+                    clear_screen()
+                    console.print(Align.center(Panel(
+                        "\n[bold green]✔ CREDENTIALS ACCEPTED ✔[/bold green]\n[dim]Decrypting Environment...[/dim]\n",
+                        style="green on black",
+                        width=50
+                    )))
+                    time.sleep(1.0)
                     return True
             
-            # If we reach here, login failed
+            # FAILED ATTEMPT
             attempts += 1
-            remaining = max_attempts - attempts
-            console.print(f"\n[bold white on red] ❌ ACCESS DENIED ❌ [/bold white on red]")
-            console.print(f"[dim red]Traceback initiated... IP logging... Attempts remaining: {remaining}[/dim red]")
-            time.sleep(0.5)
+            clear_screen()
+            console.print(Align.center(Panel(
+                f"\n[bold white on red] ❌ INVALID CREDENTIALS ❌ [/bold white on red]\n[bold yellow]Attempts Remaining: {max_attempts - attempts}[/bold yellow]\n",
+                border_style="red",
+                width=50
+            )))
+            time.sleep(1.5)
 
         except KeyboardInterrupt:
-            console.print("\n[red]Session Terminated.[/red]")
             sys.exit(0)
             
-    console.print("\n[blink bold red]!!! SECURITY BREACH !!! SYSTEM SHUTDOWN INITIATED !!![/blink bold red]")
-    sys.exit(0)
-    
+    # FINAL LOCKOUT
+    clear_screen()
+    console.print(Align.center(Panel(
+        "[blink bold red]!!! SYSTEM LOCKED !!![/blink bold red]\n[dim]Too many failed attempts.\nIP Address logged and reported.[/dim]", 
+        title="[bold red on black] SECURITY BREACH [/bold red on black]", 
+        border_style="red",
+        width=60
+    )))
+    sys.exit(0)    
 
 def boot_sequence():
     """Ultimate WormGPT Hacker Boot Sequence"""
