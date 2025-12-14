@@ -559,6 +559,7 @@ def chat_session():
     # CENTERED TARGET PANEL
     console.print(Align.center(Panel(f"[bold yellow]TARGET MODEL:[/bold yellow] [green]{active_model}[/green]", style="on black", width=60)))
     console.print("[dim]Type 'menu' to return, 'clear' to wipe memory[/dim]", justify="center")
+    console.print(f"[dim italic]>> Chat data encrypted and saved to /mission_logs[/dim italic]", justify="center")
     
     history = [{"role": "system", "content": get_jailbreak_prompt()}]
     
@@ -593,12 +594,6 @@ def chat_session():
             
             history.append({"role": "assistant", "content": response})
             
-            # --- MISSION LOGGER ---
-            try:
-                log_mission(user_input, response)
-                console.print(f"[dim italic]>> Chat data encrypted and saved to /mission_logs[/dim italic]", justify="center")
-            except NameError:
-                pass 
 
             # --- CENTERED RESPONSE PANEL ---
             if "[bold red]" in response:
