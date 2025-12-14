@@ -126,10 +126,10 @@ def login_system():
     while attempts < max_attempts:
         try:
             # FIXED: Removed the extra spaces that caused the crash
-            console.print("\n[bold red]┌───(root💀kali)──┐[security_checkpoint][/bold red]")
+            console.print("\n[bold red]┌───(root@kali)──┐[security_checkpoint][/bold red]")
        user = console.input("[bold red]└─# Enter Identity: [/bold red]")
             
-            console.print("[bold red]┌──(root💀kali)──┐[decryption_key][/bold red]")
+            console.print("[bold red]┌──(root@kali)──┐[decryption_key][/bold red]")
     pwd = getpass.getpass("[bold red]└─────# Enter Key: ") 
             
             if user == AUTHORIZED_USER and pwd == AUTHORIZED_PASS:
