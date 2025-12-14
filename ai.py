@@ -204,10 +204,10 @@ def boot_sequence():
         time.sleep(random.uniform(0.6, 0.12))
         
     # Phase 3: Success Flash
-    time.sleep(0.4)
+    time.sleep(0.8)
     clear_screen()
     console.print(Panel("[bold green]ACCESS GRANTED[/bold green]", style="bold green on black", width=40))
-    time.sleep(0.10)
+    time.sleep(0.20)
     clear_screen()
 
 
