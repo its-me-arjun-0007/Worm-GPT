@@ -102,7 +102,7 @@ def get_active_model(config):
 def clear_screen():
     os.system("cls" if platform.system() == "Windows" else "clear")
 
-# --- Security Module (FIXED INDENTATION) ---
+# --- Security Module (FIXED ALIGNMENT) ---
 def login_system():
     """Forces user to login with a Red/Black Hacker aesthetic."""
     AUTHORIZED_USER = "odiyan"
@@ -125,12 +125,13 @@ def login_system():
     
     while attempts < max_attempts:
         try:
-            # FIXED: Removed the extra spaces that caused the crash
+            # FIXED: These lines are now perfectly aligned with console.print
             console.print("\n[bold red]┌───(root@kali)──┐[security_checkpoint][/bold red]")
-       user = console.input("[bold red]└─# Enter Identity: [/bold red]")
+            user = console.input("[bold red]└─# Enter Identity: [/bold red]")
             
             console.print("[bold red]┌──(root@kali)──┐[decryption_key][/bold red]")
-    pwd = getpass.getpass("[bold red]└─────# Enter Key: ") 
+            # Note: getpass hides your typing!
+            pwd = getpass.getpass("└─────# Enter Key: ") 
             
             if user == AUTHORIZED_USER and pwd == AUTHORIZED_PASS:
                 console.print("\n[bold red on black] >> IDENTITY CONFIRMED. SYSTEM UNLOCKED. << [/bold red on black]")
@@ -252,7 +253,6 @@ def manage_models():
         console.print(table)
         console.print("\n[yellow][A] Add New Model  [D] Delete Model  [S] Select Active  [B] Back[/yellow]")
         
-        # Fixed Prompt
         console.print(f"\n[bold red]┌──(root@wormgpt)──┐[/bold red]")
         choice = console.input("[bold red]└─~# [/bold red]").lower().strip()
         
@@ -305,7 +305,6 @@ def manage_keys():
         console.print(table)
         console.print("\n[yellow][A] Add Key  [D] Delete Key  [S] Select Active  [B] Back[/yellow]")
         
-        # Fixed Prompt
         console.print(f"\n[bold red]┌──(Worm-GPT)──┐[/bold red]")
         choice = console.input("[bold red]└─~# [/bold red]").lower().strip()
         
@@ -350,7 +349,8 @@ def chat_session():
     
     while True:
         try:
-            console.print(f"\n[bold red]┌──(Worm-GPT)-[~] [/bold red]")
+            # --- WORM-GPT HEXSEC STYLE PROMPT ---
+            console.print(f"\n[bold red]└──(Worm-GPT)-[~] 💀[/bold red]")
             user_input = console.input("[bold red]└─> [/bold red]")
             
             if not user_input.strip(): continue
@@ -394,7 +394,6 @@ def main_menu():
 """
         console.print(Panel(menu_text, title="[bold cyan]Main Menu[/bold cyan]", border_style="bright_black"))
         
-        # Fixed Prompt
         console.print(f"\n[bold red]┌──(root@wormgpt)──┐[/bold red]")
         choice = console.input("[bold red]└─~# [/bold red]")
         
