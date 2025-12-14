@@ -173,9 +173,9 @@ def banner():
     try:
         figlet = pyfiglet.Figlet(font="slant") 
         ascii_art = figlet.renderText('WormGPT')
-        console.print(f"[bold red]{ascii_art}[/bold red]")
+        console.print(f"[bold red]{ascii_art}[/bold red]", justify="center")
     except:
-        console.print(f"[bold red]WormGPT[/bold red]")
+        console.print(f"[bold red]WormGPT[/bold red]", justify="center")
     
     info_text = f"""[bold red]System Status:[/bold red] [bold green]ONLINE[/bold green]
 [bold red]Time:[/bold red] [cyan]{datetime.now().strftime('%H:%M:%S')}[/cyan] | [bold red]User:[/bold red] [cyan]ROOT[/cyan]
