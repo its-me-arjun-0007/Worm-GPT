@@ -162,19 +162,54 @@ def login_system():
     
 
 def boot_sequence():
-    """Fake hacker boot sequence"""
+    """Advanced Hacker Boot Sequence with Logging and Loading Bars"""
     clear_screen()
-    steps = [
-        "Initializing core modules...",
-        "Bypassing firewalls...",
-        "Connecting to encrypted nodes...",
-        "Loading language protocols...",
-        "System ready."
+    
+    # Phase 1: Fast Scrolling Kernel Logs (Matrix Style)
+    logs = [
+        "KERNEL: Arch: arm64 / Booting WormGPT Core...",
+        "MEMORY: Allocating 64GB Virtual VRAM...",
+        "CPU: Thread optimization [ACTIVE]",
+        "CRYPTO: Initializing AES-256-GCM Handshake...",
+        "NET: Spoofing MAC Address :: 00:1A:7D:DA:71:13...",
+        "TOR: Circuit established > 192.168.X.X [Redacted]",
+        "PROXY: Chaining 7 nodes...",
+        "MODULE: Loading exploit_db.json...",
+        "SYSTEM: Bypassing integrity checks...",
+        "ROOT: Privileges escalated."
     ]
-    for step in track(steps, description="[bold red]BOOTING SYSTEM...[/bold red]"):
-        time.sleep(random.uniform(0.1, 0.4))
-    time.sleep(0.10)
+    
+    console.print("[bold red]INITIATING SYSTEM STARTUP...[/bold red]")
+    time.sleep(0.5)
+    
+    for log in logs:
+        # Random speed to look like real processing
+        time.sleep(random.uniform(0.05, 0.2)) 
+        console.print(f"[bold red][*][/bold red] [dim white]{log}[/dim white]")
+    
+    time.sleep(0.5)
+    print() # Spacer
+
+    # Phase 2: The Loading Bar (Module Injection)
+    modules = [
+        "Injecting SQLmap API...",
+        "Loading Metasploit Bridge...",
+        "Decrypting API Keys...",
+        "Connecting to Dark Web Nodes...",
+        "Finalizing WormGPT Hook..."
+    ]
+    
+    # Custom progress bar visual
+    for step in track(modules, description="[bold red]INSTALLING MALWARE MODULES...[/bold red]"):
+        time.sleep(random.uniform(0.3, 0.6))
+        
+    # Phase 3: Success Flash
+    time.sleep(0.2)
     clear_screen()
+    console.print(Panel("[bold green]ACCESS GRANTED[/bold green]", style="bold green on black", width=40))
+    time.sleep(0.5)
+    clear_screen()
+
 
 def banner():
     try:
