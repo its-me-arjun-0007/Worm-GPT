@@ -402,9 +402,10 @@ def manage_models():
         clear_screen()
         banner()
         
+        # Create Table
         table = Table(title="[bold cyan]Model Database[/bold cyan]", box=box.SIMPLE_HEAVY, border_style="bright_black")
         table.add_column("ID", style="cyan", justify="center")
-        table.add_column("Model Name", style="white")
+        table.add_column("Model Name", style="white", justify="center") # Centered Content
         table.add_column("Status", justify="center")
         
         active_idx = config.get("active_model_index", 0)
@@ -413,9 +414,13 @@ def manage_models():
             status = "[bold green]ACTIVE[/bold green]" if idx == active_idx else "[dim]READY[/dim]"
             table.add_row(str(idx + 1), model, status)
             
-        console.print(table)
-        console.print("\n[yellow][A] Add New Model  [D] Delete Model  [S] Select Active  [B] Back[/yellow]")
+        # PRINT CENTERED TABLE
+        console.print(Align.center(table))
         
+        # Centered Options
+        console.print("\n[yellow][A] Add New Model  [D] Delete Model  [S] Select Active  [B] Back[/yellow]", justify="center")
+        
+        # Input Prompt (Kept Left for usability, but prompt text is standardized)
         console.print(f"\n[bold red]┌──(Worm-GPT)-[Model][/bold red]")
         console.print("[bold red]└─> [/bold red]", end="")
         sys.stdout.write("\033[91m")
@@ -427,11 +432,12 @@ def manage_models():
             return
         elif choice == 's':
             try:
+                # We use console.input but we can't easily center the typing cursor itself without breaking it
                 sel = int(console.input("[cyan]Enter ID to select: [/cyan]")) - 1
                 if 0 <= sel < len(config["models"]):
                     config["active_model_index"] = sel
                     save_config(config)
-                    console.print("[green]>> Model Activated[/green]")
+                    console.print("[green]>> Model Activated[/green]", justify="center")
                     time.sleep(1)
             except: pass
         elif choice == 'a':
@@ -447,7 +453,7 @@ def manage_models():
                     config["active_model_index"] = 0 
                     save_config(config)
             except: pass
-
+                
 def manage_keys():
     while True:
         config = load_config()
@@ -456,7 +462,7 @@ def manage_keys():
         
         table = Table(title="[bold cyan]API Key Vault[/bold cyan]", box=box.SIMPLE_HEAVY, border_style="bright_black")
         table.add_column("ID", style="cyan", justify="center")
-        table.add_column("Key (Masked)", style="white")
+        table.add_column("Key (Masked)", style="white", justify="center")
         table.add_column("Status", justify="center")
         
         active_idx = config.get("active_key_index", 0)
@@ -467,10 +473,11 @@ def manage_keys():
             table.add_row(str(idx + 1), masked, status)
             
         if not config["api_keys"]:
-            console.print("[red]>> No keys found in vault![/red]")
+            console.print("[red]>> No keys found in vault![/red]", justify="center")
             
-        console.print(table)
-        console.print("\n[yellow][A] Add Key  [D] Delete Key  [S] Select Active  [B] Back[/yellow]")
+        # PRINT CENTERED TABLE
+        console.print(Align.center(table))
+        console.print("\n[yellow][A] Add Key  [D] Delete Key  [S] Select Active  [B] Back[/yellow]", justify="center")
         
         console.print(f"\n[bold red]┌──(Worm-GPT)-[Key][/bold red]")
         console.print("[bold red]└─> [/bold red]", end="")
@@ -494,7 +501,7 @@ def manage_keys():
                 if 0 <= sel < len(config["api_keys"]):
                     config["active_key_index"] = sel
                     save_config(config)
-                    console.print("[green]>> Key Activated[/green]")
+                    console.print("[green]>> Key Activated[/green]", justify="center")
                     time.sleep(1)
             except: pass
         elif choice == 'd':
@@ -506,6 +513,7 @@ def manage_keys():
                     save_config(config)
             except: pass
 
+
 def chat_session():
     config = load_config()
     clear_screen()
@@ -513,14 +521,15 @@ def chat_session():
     
     active_model = get_active_model(config)
     
-    console.print(Panel(f"[bold yellow]TARGET MODEL:[/bold yellow] [green]{active_model}[/green]", style="on black"))
-    console.print("[dim]Type 'menu' to return, 'clear' to wipe memory[/dim]")
+    # CENTERED TARGET PANEL
+    console.print(Align.center(Panel(f"[bold yellow]TARGET MODEL:[/bold yellow] [green]{active_model}[/green]", style="on black", width=60)))
+    console.print("[dim]Type 'menu' to return, 'clear' to wipe memory[/dim]", justify="center")
     
     history = [{"role": "system", "content": get_jailbreak_prompt()}]
     
     while True:
         try:
-            # --- WORM-GPT STYLE PROMPT (WITH RED INPUT) ---
+            # We keep the INPUT PROMPT left-aligned because typing in the center of a terminal feels broken/buggy
             console.print(f"\n[bold red]┌──(Worm-GPT)-[~] [/bold red]")
             console.print("[bold red]└─> [/bold red]", end="")
             
@@ -537,38 +546,37 @@ def chat_session():
                 clear_screen()
                 banner()
                 history = [{"role": "system", "content": get_jailbreak_prompt()}]
-                console.print("[bold green]>> MEMORY WIPED <<[/bold green]")
+                console.print("[bold green]>> MEMORY WIPED <<[/bold green]", justify="center")
                 continue
             
             history.append({"role": "user", "content": user_input})
             
-            console.print(f"\n[bold cyan]Transmitting Data Packets...[/bold cyan]")
+            console.print(f"\n[bold cyan]Transmitting Data Packets...[/bold cyan]", justify="center")
             
             with console.status("[bold green]Awaiting Response...[/bold green]", spinner="dots"):
                 response = call_api(history)
             
             history.append({"role": "assistant", "content": response})
             
-            # --- FEATURE 1: MISSION LOGGER ---
-            # (Ensure you added the log_mission helper function earlier!)
+            # --- MISSION LOGGER ---
             try:
                 log_mission(user_input, response)
-                console.print(f"[dim italic]>> Mission data encrypted and saved to /mission_logs[/dim italic]")
+                console.print(f"[dim italic]>> Mission data encrypted and saved to /mission_logs[/dim italic]", justify="center")
             except NameError:
-                pass # Ignores error if you forgot to add the log_mission function
+                pass 
 
-            # --- FEATURE 2: COLOR CODE FIX ---
-            # If response contains Rich tags (like errors), print directly so colors render.
+            # --- CENTERED RESPONSE PANEL ---
             if "[bold red]" in response:
-                console.print(f"\n{response}\n")
+                console.print(f"\n{response}\n", justify="center")
             else:
-                # Otherwise, render as nice Markdown
-                console.print(Panel(Markdown(response), title="[bold green]Response[/bold green]", border_style="green", box=box.ROUNDED))
+                # We wrap the Panel in Align.center
+                console.print(Align.center(Panel(Markdown(response), title="[bold green]Response[/bold green]", border_style="green", box=box.ROUNDED, width=80)))
                 
         except KeyboardInterrupt:
             return
         except Exception as e:
-            console.print(f"[red]Error: {e}[/red]")
+            console.print(f"[red]Error: {e}[/red]", justify="center")
+
 
 def main_menu():
     while True:
@@ -576,6 +584,7 @@ def main_menu():
         clear_screen()
         banner()
         
+        # Center the text inside the string
         menu_text = f"""
 [1] 🧠 Manage Models ({len(config['models'])} Loaded)
 [2] 🔑 Manage API Keys ({len(config['api_keys'])} Stored)
@@ -583,7 +592,9 @@ def main_menu():
 [4] 🌐 Language: {config.get('language', 'English')}
 [5] ❌ Exit System
 """
-        console.print(Panel(menu_text, title="[bold cyan]Main Menu[/bold cyan]", border_style="bright_black"))
+        # Align.center(menu_text) centers the text block inside the panel
+        # width=60 keeps the box from stretching too wide
+        console.print(Align.center(Panel(Align.center(menu_text), title="[bold cyan]Main Menu[/bold cyan]", border_style="bright_black", width=60)))
         
         console.print(f"\n[bold red]┌──(Worm-GPT)-[Menu][/bold red]")
         console.print("[bold red]└─> [/bold red]", end="")
@@ -597,10 +608,10 @@ def main_menu():
         elif choice == "2": manage_keys()
         elif choice == "3": chat_session()
         elif choice == "4": 
-            console.print("[dim]Language selection not fully implemented in Hacker Edition yet.[/dim]")
+            console.print("[dim]Language selection not fully implemented in Hacker Edition yet.[/dim]", justify="center")
             time.sleep(1)
         elif choice == "5":
-            console.print("[red]Shutting down...[/red]")
+            console.print("[red]Shutting down...[/red]", justify="center")
             sys.exit(0)
 
 def main():
@@ -608,15 +619,15 @@ def main():
         save_config(load_config())
 
     login_system()
-    
     boot_sequence() 
     
     try:
         while True:
             main_menu()
     except KeyboardInterrupt:
-        console.print("\n[red]Forced Exit.[/red]")
+        console.print(Align.center("\n[red]Forced Exit.[/red]"))
         sys.exit(0)
 
 if __name__ == "__main__":
     main()
+    
