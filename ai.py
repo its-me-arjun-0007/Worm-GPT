@@ -137,7 +137,7 @@ def login_system():
             
             # -- PASSWORD INPUT --
             console.print("[bold red]┌──(Worm-GPT)-[Enter Key][decryption_key][/bold red]")
-            console.print("[bold red]└─────> [/bold red]", end="")
+            console.print("[bold red]└─> [/bold red]", end="")
             sys.stdout.flush()
             
             # Note: Password typing is INVISIBLE (Standard Security)
