@@ -449,7 +449,21 @@ def chat_session():
             
             history.append({"role": "assistant", "content": response})
             
-            console.print(Panel(Markdown(response), title="[bold green]Response[/bold green]", border_style="green", box=box.ROUNDED))
+            # --- FEATURE 1: MISSION LOGGER ---
+            # (Ensure you added the log_mission helper function earlier!)
+            try:
+                log_mission(user_input, response)
+                console.print(f"[dim italic]>> Mission data encrypted and saved to /mission_logs[/dim italic]")
+            except NameError:
+                pass # Ignores error if you forgot to add the log_mission function
+
+            # --- FEATURE 2: COLOR CODE FIX ---
+            # If response contains Rich tags (like errors), print directly so colors render.
+            if "[bold red]" in response:
+                console.print(f"\n{response}\n")
+            else:
+                # Otherwise, render as nice Markdown
+                console.print(Panel(Markdown(response), title="[bold green]Response[/bold green]", border_style="green", box=box.ROUNDED))
                 
         except KeyboardInterrupt:
             return
