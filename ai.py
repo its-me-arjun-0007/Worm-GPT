@@ -420,3 +420,6 @@ def main():
     except KeyboardInterrupt:
         console.print("\n[red]Forced Exit.[/red]")
         sys.exit(0)
+
+if __name__ == "__main__":
+    main()
