@@ -102,11 +102,11 @@ def get_active_model(config):
 def clear_screen():
     os.system("cls" if platform.system() == "Windows" else "clear")
 
-# --- Security Module (FIXED ALIGNMENT) ---
+# --- Security Module (FIXED & COLORED) ---
 def login_system():
     """Forces user to login with a Red/Black Hacker aesthetic."""
     AUTHORIZED_USER = "odiyan"
-    AUTHORIZED_PASS = "admin" 
+    AUTHORIZED_PASS = "kali123" 
     
     clear_screen()
     
@@ -125,13 +125,23 @@ def login_system():
     
     while attempts < max_attempts:
         try:
-            # FIXED: These lines are now perfectly aligned with console.print
+            # -- USERNAME INPUT (WITH RED TEXT TYPING) --
             console.print("\n[bold red]┌───(root@kali)──┐[security_checkpoint][/bold red]")
-            user = console.input("[bold red]└─# Enter Identity: [/bold red]")
+            console.print("[bold red]└─# Enter Identity: [/bold red]", end="")
             
+            # Force Terminal to Type in RED
+            sys.stdout.write("\033[91m") 
+            sys.stdout.flush()
+            user = input()
+            sys.stdout.write("\033[0m") # Reset Color
+            
+            # -- PASSWORD INPUT --
             console.print("[bold red]┌──(root@kali)──┐[decryption_key][/bold red]")
-            # Note: getpass hides your typing!
-            pwd = getpass.getpass("[bold red]└─────# Enter Key: [bold red]") 
+            console.print("[bold red]└─────# Enter Key: [/bold red]", end="")
+            sys.stdout.flush()
+            
+            # Note: Password typing is INVISIBLE (Standard Security)
+            pwd = getpass.getpass("") 
             
             if user == AUTHORIZED_USER and pwd == AUTHORIZED_PASS:
                 console.print("\n[bold red on black] >> IDENTITY CONFIRMED. SYSTEM UNLOCKED. << [/bold red on black]")
@@ -253,8 +263,12 @@ def manage_models():
         console.print(table)
         console.print("\n[yellow][A] Add New Model  [D] Delete Model  [S] Select Active  [B] Back[/yellow]")
         
-        console.print(f"\n[bold red]┌──(root@worm-gpt)──┐[/bold red]")
-        choice = console.input("[bold red]└─~# [/bold red]").lower().strip()
+        console.print(f"\n[bold red]┌──(root@wormgpt)──┐[/bold red]")
+        console.print("[bold red]└─~# [/bold red]", end="")
+        sys.stdout.write("\033[91m")
+        sys.stdout.flush()
+        choice = input().lower().strip()
+        sys.stdout.write("\033[0m")
         
         if choice == 'b':
             return
@@ -306,7 +320,11 @@ def manage_keys():
         console.print("\n[yellow][A] Add Key  [D] Delete Key  [S] Select Active  [B] Back[/yellow]")
         
         console.print(f"\n[bold red]┌──(Worm-GPT)──┐[/bold red]")
-        choice = console.input("[bold red]└─~# [/bold red]").lower().strip()
+        console.print("[bold red]└─~# [/bold red]", end="")
+        sys.stdout.write("\033[91m")
+        sys.stdout.flush()
+        choice = input().lower().strip()
+        sys.stdout.write("\033[0m")
         
         if choice == 'b':
             return
@@ -349,9 +367,15 @@ def chat_session():
     
     while True:
         try:
-            # --- WORM-GPT HEXSEC STYLE PROMPT ---
+            # --- WORM-GPT HEXSEC STYLE PROMPT (WITH RED INPUT) ---
             console.print(f"\n[bold red]└──(Worm-GPT)-[~] 💀[/bold red]")
-            user_input = console.input("[bold red]└─> [/bold red]")
+            console.print("[bold red]└─> [/bold red]", end="")
+            
+            # Make input red
+            sys.stdout.write("\033[91m") 
+            sys.stdout.flush()
+            user_input = input()
+            sys.stdout.write("\033[0m") # Reset
             
             if not user_input.strip(): continue
             if user_input.lower() == "exit": sys.exit(0)
@@ -395,7 +419,12 @@ def main_menu():
         console.print(Panel(menu_text, title="[bold cyan]Main Menu[/bold cyan]", border_style="bright_black"))
         
         console.print(f"\n[bold red]┌──(root@wormgpt)──┐[/bold red]")
-        choice = console.input("[bold red]└─~# [/bold red]")
+        console.print("[bold red]└─~# [/bold red]", end="")
+        
+        sys.stdout.write("\033[91m")
+        sys.stdout.flush()
+        choice = input()
+        sys.stdout.write("\033[0m")
         
         if choice == "1": manage_models()
         elif choice == "2": manage_keys()
