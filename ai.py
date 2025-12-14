@@ -6,6 +6,7 @@ import json
 import random
 import requests
 import getpass 
+import hashlib
 from datetime import datetime
 
 # --- DIRECT IMPORTS ---
@@ -102,14 +103,26 @@ def get_active_model(config):
 def clear_screen():
     os.system("cls" if platform.system() == "Windows" else "clear")
 
-# --- Security Module (FIXED & COLORED) ---
+# --- Security Module (MULTI-USER & ENCRYPTED) ---
 def login_system():
-    """Forces user to login with a Red/Black Hacker aesthetic."""
-    AUTHORIZED_USER = "odiyan"
-    AUTHORIZED_PASS = "admin" 
+    """Forces user to login using hashed credentials from external file."""
+    USERS_FILE = "wormgpt_users.json"
     
     clear_screen()
     
+    # Check if users file exists
+    if not os.path.exists(USERS_FILE):
+        console.print(f"[bold red]CRITICAL ERROR: {USERS_FILE} not found![/bold red]")
+        console.print("[yellow]Please create the file with {\"username\": \"sha256_hash\"} format.[/yellow]")
+        sys.exit(1)
+        
+    try:
+        with open(USERS_FILE, "r") as f:
+            valid_users = json.load(f)
+    except Exception as e:
+        console.print(f"[bold red]ERROR LOADING USERS:[/bold red] {e}")
+        sys.exit(1)
+
     try:
         f = pyfiglet.Figlet(font='slant')
         title = f.renderText('RESTRICTED AREA')
@@ -125,34 +138,39 @@ def login_system():
     
     while attempts < max_attempts:
         try:
-            # -- USERNAME INPUT (WITH RED TEXT TYPING) --
+            # -- USERNAME INPUT --
             console.print("\n[bold red]┌──(Worm-GPT)-[Enter Identity][security_checkpoint][/bold red]")
             console.print("[bold red]└─> [/bold red]", end="")
             
-            # Force Terminal to Type in RED
             sys.stdout.write("\033[91m") 
             sys.stdout.flush()
-            user = input()
-            sys.stdout.write("\033[0m") # Reset Color
+            user_input = input().strip()
+            sys.stdout.write("\033[0m") 
             
             # -- PASSWORD INPUT --
             console.print("[bold red]┌──(Worm-GPT)-[Enter Key][decryption_key][/bold red]")
             console.print("[bold red]└─> [/bold red]", end="")
             sys.stdout.flush()
             
-            # Note: Password typing is INVISIBLE (Standard Security)
-            pwd = getpass.getpass("") 
+            pass_input = getpass.getpass("") 
             
-            if user == AUTHORIZED_USER and pwd == AUTHORIZED_PASS:
-                console.print("\n[bold red on black] >> IDENTITY CONFIRMED. SYSTEM UNLOCKED. << [/bold red on black]")
-                time.sleep(1)
-                return True
-            else:
-                attempts += 1
-                remaining = max_attempts - attempts
-                console.print(f"\n[bold white on red] ❌ ACCESS DENIED ❌ [/bold white on red]")
-                console.print(f"[dim red]Traceback initiated... IP logging... Attempts remaining: {remaining}[/dim red]")
-                time.sleep(0.5)
+            # -- VERIFICATION LOGIC --
+            if user_input in valid_users:
+                # Hash the input password to compare with stored hash
+                input_hash = hashlib.sha256(pass_input.encode()).hexdigest()
+                
+                if input_hash == valid_users[user_input]:
+                    console.print("\n[bold red on black] >> IDENTITY CONFIRMED. SYSTEM UNLOCKED. << [/bold red on black]")
+                    time.sleep(1)
+                    return True
+            
+            # If we reach here, login failed
+            attempts += 1
+            remaining = max_attempts - attempts
+            console.print(f"\n[bold white on red] ❌ ACCESS DENIED ❌ [/bold white on red]")
+            console.print(f"[dim red]Traceback initiated... IP logging... Attempts remaining: {remaining}[/dim red]")
+            time.sleep(0.5)
+
         except KeyboardInterrupt:
             console.print("\n[red]Session Terminated.[/red]")
             sys.exit(0)
