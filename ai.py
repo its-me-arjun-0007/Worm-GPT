@@ -221,7 +221,7 @@ def boot_sequence():
     
     # SLOWER: Progress bar will move much slower now
     for step in track(modules, description="[bold red]INSTALLING MODULES...[/bold red]"):
-        time.sleep(random.uniform(1.5, 2.0)) # <--- MUCH SLOWER (Was 0.6)
+        time.sleep(random.uniform(1.0, 1.5)) # <--- MUCH SLOWER (Was 0.6)
         
     # Phase 3: Success Flash
     time.sleep(1.0)
@@ -231,28 +231,28 @@ def boot_sequence():
 
 
 def banner():
-    # 1. Print the ASCII Art Logo (Perfectly Aligned)
+    # 1. Print the ASCII Art Logo (Cleaned & Centered)
     try:
         figlet = pyfiglet.Figlet(font="slant") 
-        # .strip() removes all empty lines around the art for a clean look
-        ascii_raw = figlet.renderText('WormGPT').strip()
+        raw_art = figlet.renderText('WormGPT')
         
-        # Create a Text object to treat the art as a solid block
-        logo = Text(ascii_raw, style="bold red")
+        # KEY FIX: Remove invisible spaces from the right side of EVERY line
+        clean_lines = [line.rstrip() for line in raw_art.split("\n")]
+        clean_art = "\n".join(clean_lines)
         
-        # Align.center forces the whole block to the middle of the screen
+        # Now center the cleaned block
+        logo = Text(clean_art, style="bold red")
         console.print(Align.center(logo))
+        
     except Exception as e:
-        # Fallback if pyfiglet breaks
         console.print(Align.center("[bold red]WormGPT[/bold red]"))
     
-    # 2. Prepare the Info Text (Centered Data)
+    # 2. Prepare the Info Text
     info_text = f"""[bold red]System Status:[/bold red] [bold green]ONLINE[/bold green]
 [bold red]Time:[/bold red] [cyan]{datetime.now().strftime('%H:%M:%S')}[/cyan] | [bold red]User:[/bold red] [cyan]ROOT[/cyan]
 [bold red]Version:[/bold red] [white]2.0 (Hacker Edition)[/white]"""
     
-    # 3. Print the Panel
-    # Using Align.center inside the panel to center the text block itself
+    # 3. Print the Panel (Centered Content)
     console.print(Panel(Align.center(info_text), border_style="red", box=box.HORIZONTALS))
     
     # 4. Credits
