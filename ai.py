@@ -180,14 +180,14 @@ def boot_sequence():
     ]
     
     console.print("[bold red]INITIATING SYSTEM STARTUP...[/bold red]")
-    time.sleep(0.5)
+    time.sleep(0.10)
     
     for log in logs:
         # Random speed to look like real processing
-        time.sleep(random.uniform(0.05, 0.2)) 
+        time.sleep(random.uniform(0.10, 0.4)) 
         console.print(f"[bold red][*][/bold red] [dim white]{log}[/dim white]")
     
-    time.sleep(0.5)
+    time.sleep(0.10)
     print() # Spacer
 
     # Phase 2: The Loading Bar (Module Injection)
@@ -201,13 +201,13 @@ def boot_sequence():
     
     # Custom progress bar visual
     for step in track(modules, description="[bold red]INSTALLING MALWARE MODULES...[/bold red]"):
-        time.sleep(random.uniform(0.3, 0.6))
+        time.sleep(random.uniform(0.6, 0.12))
         
     # Phase 3: Success Flash
-    time.sleep(0.2)
+    time.sleep(0.4)
     clear_screen()
     console.print(Panel("[bold green]ACCESS GRANTED[/bold green]", style="bold green on black", width=40))
-    time.sleep(0.5)
+    time.sleep(0.10)
     clear_screen()
 
 
