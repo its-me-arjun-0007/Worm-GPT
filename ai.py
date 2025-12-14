@@ -229,18 +229,18 @@ def login_system():
     sys.exit(0)    
 
 def boot_sequence():
-    """Ultimate WormGPT Hacker Boot Sequence"""
+    """Ultimate WormGPT Hacker Boot Sequence (FULLY CENTERED)"""
     clear_screen()
     
-    # --- PHASE 1: HARDWARE HANDSHAKE ---
-    console.print("[bold red on black] WORM-BIOS v6.6.6 (Build 2025) [/bold red on black]")
+    # --- PHASE 1: HARDWARE HANDSHAKE (Centered Table) ---
+    console.print("[bold red on black] WORM-BIOS v6.6.6 (Build 2025) [/bold red on black]", justify="center")
     time.sleep(0.5)
     
-    # Create a system check table
+    # Define the table
     sys_table = Table(box=box.SIMPLE, show_header=True, header_style="bold red")
-    sys_table.add_column("COMPONENT", style="cyan")
-    sys_table.add_column("STATUS", style="green")
-    sys_table.add_column("INTEGRITY", style="bold white")
+    sys_table.add_column("COMPONENT", style="cyan", justify="center")
+    sys_table.add_column("STATUS", style="green", justify="center")
+    sys_table.add_column("INTEGRITY", style="bold white", justify="center")
 
     components = [
         ("CPU_CORE_0", "ONLINE", "100%"),
@@ -253,29 +253,32 @@ def boot_sequence():
     for comp, stat, integrity in components:
         time.sleep(0.2)
         sys_table.add_row(comp, stat, integrity)
-        # Clear screen and reprint table to make it look like it's updating
+        
+        # CLEAR & REPRINT CENTERED
         clear_screen()
-        console.print("[bold red on black] WORM-BIOS v6.6.6 (Build 2025) [/bold red on black]")
-        console.print(sys_table)
+        console.print("[bold red on black] WORM-BIOS v6.6.6 (Build 2025) [/bold red on black]", justify="center")
+        print("\n") # Spacer
+        console.print(Align.center(sys_table)) # <--- Forces Table to Center
 
     time.sleep(0.5)
 
-    # --- PHASE 2: THE MATRIX HEX DUMP ---
-    console.print("\n[bold red]>> INJECTING PAYLOAD INTO MEMORY...[/bold red]")
+    # --- PHASE 2: THE MATRIX HEX DUMP (Centered Text) ---
+    console.print("\n[bold red]>> INJECTING PAYLOAD INTO MEMORY...[/bold red]", justify="center")
     time.sleep(0.5)
     
-    # Fast scrolling hex code
     for _ in range(15):
         # Generate random hex strings
         hex_line = " ".join([random.choice("0123456789ABCDEF") + random.choice("0123456789ABCDEF") for _ in range(12)])
-        console.print(f"[dim red]{hex_line}[/dim red]  [dim white]x86_64_instruction_set[/dim white]")
-        time.sleep(0.05) # Very fast scroll
         
-    console.print("[bold green]>> MEMORY INJECTION COMPLETE.[/bold green]")
+        # Print Hex Line Centered
+        console.print(f"[dim red]{hex_line}[/dim red]  [dim white]x86_64_inst[/dim white]", justify="center")
+        time.sleep(0.05) 
+        
+    console.print("[bold green]>> MEMORY INJECTION COMPLETE.[/bold green]", justify="center")
     time.sleep(0.8)
     clear_screen()
 
-    # --- PHASE 3: KERNEL LOGS (The Classic Look) ---
+    # --- PHASE 3: KERNEL LOGS (Centered List) ---
     logs = [
         "ROOT: Bypassing firewalls...",
         "NET: Establishing P2P link with dark nodes...",
@@ -284,15 +287,20 @@ def boot_sequence():
         "AI: Loading Neural Network Weights..."
     ]
     
-    console.print("[bold red]INITIATING CORE SYSTEM...[/bold red]")
+    console.print("[bold red]INITIATING CORE SYSTEM...[/bold red]", justify="center")
+    print()
+    
     for log in logs:
         time.sleep(random.uniform(0.3, 0.7)) 
-        console.print(f"[bold red][*][/bold red] [bold white]{log}[/bold white]")
+        # Center the log message
+        console.print(f"[bold red][*][/bold red] [bold white]{log}[/bold white]", justify="center")
     
     time.sleep(0.5)
     print() 
 
     # --- PHASE 4: FINAL LOADING BAR ---
+    # Note: 'track' fills the full width, which is technically centered.
+    # We center the description text to match the theme.
     modules = [
         "SQLmap Integration",
         "Metasploit Bridge",
@@ -300,20 +308,26 @@ def boot_sequence():
         "WormGPT Logic Core"
     ]
     
-    for step in track(modules, description="[bold red]FINALIZING SETUP...[/bold red]"):
+    # We use a simple loop with centered text instead of 'track' to keep alignment perfect
+    for i, mod in enumerate(modules):
+        percent = (i + 1) * 25
+        bar = "█" * (i + 1) * 5
+        console.print(f"[bold red]INSTALLING MODULES: {percent}%[/bold red]", justify="center")
+        console.print(f"[dim red]{bar}[/dim red]", justify="center")
+        console.print(f"[cyan]{mod}[/cyan]", justify="center")
         time.sleep(random.uniform(0.4, 0.8))
+        if i < len(modules) - 1:
+            clear_screen() # Refresh for animation effect
         
-    # --- PHASE 5: ACCESS GRANTED ---
+    # --- PHASE 5: ACCESS GRANTED (Centered Panel) ---
     time.sleep(0.5)
     clear_screen()
     
-    # Big Access Granted Panel
-    access_text = Align.center("[bold white]ACCESS GRANTED[/bold white]")
-    console.print(Panel(access_text, style="bold green on black", border_style="green", width=50))
+    access_text = Align.center("\n[bold white]ACCESS GRANTED[/bold white]\n")
+    console.print(Align.center(Panel(access_text, style="bold green on black", border_style="green", width=50)))
     
     time.sleep(1.5)
     clear_screen()
-
 
 def banner():
     # 1. Print the ASCII Art Logo (Cleaned & Centered)
