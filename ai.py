@@ -36,9 +36,9 @@ SITE_NAME = "WormGPT CLI"
 # Default Hacker-Friendly Models
 DEFAULT_MODELS = [
     "kwaipilot/kat-coder-pro:free",
-    "deepseek/deepseek-chat-v3-0324:free",
+    "nex-agi/deepseek-v3.1-nex-n1:free",
+    "qwen/qwen3-coder:free",
     "google/gemini-2.0-flash-exp:free",
-    "meta-llama/llama-3-8b-instruct:free",
     "mistralai/mistral-7b-instruct:free"
 ]
 
