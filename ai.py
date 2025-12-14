@@ -8,31 +8,19 @@ import requests
 import getpass 
 from datetime import datetime
 
-# --- Auto-install Dependencies ---
-def install_package(package):
-    os.system(f'pip install {package}')
-
+# --- DIRECT IMPORTS (No Auto-Install to prevent freezing) ---
 try:
     import pyfiglet
-except ImportError:
-    install_package('pyfiglet')
-    import pyfiglet
-
-try:
     from rich.console import Console
     from rich.markdown import Markdown
     from rich.panel import Panel
     from rich.progress import track
     from rich.table import Table
     from rich import box
-except ImportError:
-    install_package('rich')
-    from rich.console import Console
-    from rich.markdown import Markdown
-    from rich.panel import Panel
-    from rich.progress import track
-    from rich.table import Table
-    from rich import box
+except ImportError as e:
+    print(f"\nCRITICAL ERROR: Missing Library - {e}")
+    print("Run this command to fix it: pip install rich pyfiglet requests")
+    sys.exit(1)
 
 # Initialize Rich Console
 console = Console()
@@ -70,7 +58,6 @@ def load_config():
             with open(CONFIG_FILE, "r") as f:
                 loaded_config = json.load(f)
                 
-            # --- Migration Logic ---
             if "api_key" in loaded_config and isinstance(loaded_config["api_key"], str):
                 if loaded_config["api_key"]: 
                     loaded_config["api_keys"] = [loaded_config["api_key"]]
@@ -83,7 +70,6 @@ def load_config():
                     loaded_config["models"] = new_list
                 del loaded_config["model"]
 
-            # Merge with defaults
             for key, value in default_config.items():
                 if key not in loaded_config:
                     loaded_config[key] = value
@@ -116,10 +102,9 @@ def get_active_model(config):
 def clear_screen():
     os.system("cls" if platform.system() == "Windows" else "clear")
 
-# --- Security Module (Red Hack Edition) ---
+# --- Security Module (RED HACK EDITION) ---
 def login_system():
-    """Forces user to login with a Red/Hacker aesthetic."""
-    # --- CREDENTIALS ---
+    """Forces user to login with a Red/Black Hacker aesthetic."""
     AUTHORIZED_USER = "odiyan"
     AUTHORIZED_PASS = "kali123" 
     
@@ -134,50 +119,39 @@ def login_system():
         console.print(f"[bold red]{title}[/bold red]", justify="center")
     except:
         console.print("[bold red]=== RESTRICTED AREA ===[/bold red]", justify="center")
-
-    # 2. Print The Red Warning Panel
-    warning_text = (
-        "[bold white]⚠️  WARNING: AUTHORIZED PERSONNEL ONLY ⚠️[/bold white]\n"
-        "[red]This system is monitored. All IP addresses are logged.[/red]\n"
-        "[dim]Encrypted connection established via Port 443...[/dim]"
-    )
-    console.print(Panel(warning_text, title="[bold white on red] SECURITY CHECKPOINT [/bold white on red]", border_style="red", style="red"))
-    console.print("") # Spacer
-
+        console.print(Panel("[blink bold red]☠️  UNAUTHORIZED ACCESS DETECTED  ☠️[/blink bold red]", 
+                        title="[bold red on black] SYSTEM LOCKED [/bold red on black]", 
+                        border_style="red",
+                        box=box.HEAVY))
+    
     attempts = 0
     max_attempts = 3
     
     while attempts < max_attempts:
         try:
-            # 3. Aggressive Root-Style Prompts
-            console.print("[bold red]┌──(root💀kali)-[security_node][/bold red]")
-            user = console.input("[bold red]└─► Username: [/bold red]")
+            # Red prompt style
+            console.print("\n[bold red]┌──(root💀kali)-[security_checkpoint][/bold red]")
+            user = console.input("[bold red]└─# Enter Identity: [/bold red]")
             
-            # Using standard getpass for security (text hidden)
-            # We add a visual indicator before it
-            console.print("[bold red]      Password: [/bold red]", end="")
-            pwd = getpass.getpass("") 
+            console.print("[bold red]┌──(root💀kali)-[decryption_key][/bold red]")
+            # Password prompt (text is standard to avoid glitching, but context is red)
+            pwd = getpass.getpass("└─# Enter Key: ") 
             
             if user == AUTHORIZED_USER and pwd == AUTHORIZED_PASS:
-                console.print("\n[bold black on green] ✅ AUTHENTICATION BYPASS SUCCESSFUL [/bold black on green]")
-                console.print("[green]Initializing malicious protocols...[/green]")
-                time.sleep(1.5)
+                console.print("\n[bold red on black] >> IDENTITY CONFIRMED. SYSTEM UNLOCKED. << [/bold red on black]")
+                time.sleep(1)
                 return True
             else:
                 attempts += 1
                 remaining = max_attempts - attempts
-                console.print(f"\n[bold white on red] ❌ ACCESS DENIED [/bold white on red] [red]INVALID CREDENTIALS[/red]")
-                if remaining > 0:
-                    console.print(f"[dim red]Attempts remaining: {remaining}[/dim red]\n")
-                time.sleep(1)
-                
+                console.print(f"\n[bold white on red] ❌ ACCESS DENIED ❌ [/bold white on red]")
+                console.print(f"[dim red]Traceback initiated... IP logging... Attempts remaining: {remaining}[/dim red]")
+                time.sleep(0.5)
         except KeyboardInterrupt:
-            console.print("\n[red]Login Aborted.[/red]")
+            console.print("\n[red]Session Terminated.[/red]")
             sys.exit(0)
             
-    # 4. Lockdown Mode
-    clear_screen()
-    console.print(Panel("[blink bold white on red]🚨 SYSTEM BREACH DETECTED 🚨\nTERMINATING CONNECTION...[/blink bold white on red]", border_style="red"))
+    console.print("\n[blink bold red]!!! SECURITY BREACH !!! SYSTEM SHUTDOWN INITIATED !!![/blink bold red]")
     sys.exit(0)
     
 
@@ -191,7 +165,7 @@ def boot_sequence():
         "Loading language protocols...",
         "System ready."
     ]
-    for step in track(steps, description="[bold green]BOOTING SYSTEM...[/bold green]"):
+    for step in track(steps, description="[bold red]BOOTING SYSTEM...[/bold red]"):
         time.sleep(random.uniform(0.1, 0.4))
     time.sleep(0.2)
     clear_screen()
@@ -209,7 +183,6 @@ def banner():
 [bold red]Version:[/bold red] [white]2.0 (Hacker Edition)[/white]"""
     
     console.print(Panel(info_text, border_style="red", box=box.HORIZONTALS))
-    # --- ADDED NAME HERE ---
     console.print("[cyan] Created By [bold red]0d1y4n[/bold red][/cyan]", justify="center")
 
 def get_jailbreak_prompt():
@@ -371,7 +344,6 @@ def chat_session():
     
     active_model = get_active_model(config)
     
-    # Hacker Header
     console.print(Panel(f"[bold yellow]TARGET MODEL:[/bold yellow] [green]{active_model}[/green]", style="on black"))
     console.print("[dim]Type 'menu' to return, 'clear' to wipe memory[/dim]")
     
@@ -413,7 +385,6 @@ def main_menu():
         clear_screen()
         banner()
         
-        # Menu Styling
         menu_text = f"""
 [1] 🧠 Manage Models ({len(config['models'])} Loaded)
 [2] 🔑 Manage API Keys ({len(config['api_keys'])} Stored)
