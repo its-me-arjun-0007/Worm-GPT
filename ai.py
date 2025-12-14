@@ -117,6 +117,7 @@ def login_system():
         f = pyfiglet.Figlet(font='slant')
         title = f.renderText('RESTRICTED AREA')
         console.print(f"[bold red]{title}[/bold red]", justify="center")
+    except:
         console.print(Panel("[blink bold red]☠️  UNAUTHORIZED ACCESS DETECTED  ☠️[/blink bold red]", 
                         title="[bold red on black] SYSTEM LOCKED [/bold red on black]", 
                         border_style="red",
