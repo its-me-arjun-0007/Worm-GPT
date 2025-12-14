@@ -222,7 +222,7 @@ def login_system():
             pass_input = getpass.getpass("    >> ") # Indented to look centered
             
             # 5. Simulation: "Verifying with Server..."
-            with console.status("[bold red]Handshaking with Dark Web Nodes...[/bold red]", spinner="bouncingBall"):
+            with console.status("[bold red]Verifying Password...[/bold red]", spinner="bouncingBall"):
                 time.sleep(1.5) # Fake delay for drama
                 
             # 6. Verification Logic
@@ -596,7 +596,7 @@ def chat_session():
             # --- MISSION LOGGER ---
             try:
                 log_mission(user_input, response)
-                console.print(f"[dim italic]>> Mission data encrypted and saved to /mission_logs[/dim italic]", justify="center")
+                console.print(f"[dim italic]>> Chat data encrypted and saved to /mission_logs[/dim italic]", justify="center")
             except NameError:
                 pass 
 
