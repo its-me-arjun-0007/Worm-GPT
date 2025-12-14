@@ -173,7 +173,7 @@ def boot_sequence():
     ]
     for step in track(steps, description="[bold red]BOOTING SYSTEM...[/bold red]"):
         time.sleep(random.uniform(0.1, 0.4))
-    time.sleep(0.2)
+    time.sleep(0.10)
     clear_screen()
 
 def banner():
