@@ -7,6 +7,7 @@ import random
 import requests
 import getpass 
 import hashlib
+import string
 from datetime import datetime
 
 # --- DIRECT IMPORTS ---
@@ -127,7 +128,7 @@ def login_system():
 
     try:
         f = pyfiglet.Figlet(font='slant')
-        title = f.renderText('RESTRICTED AREA')
+        title = f.renderText('PASSWORD PROTECTED')
         console.print(f"[bold red]{title}[/bold red]", justify="center")
     except:
         console.print(Panel("[blink bold red]☠️  UNAUTHORIZED ACCESS DETECTED  ☠️[/blink bold red]", 
@@ -182,51 +183,89 @@ def login_system():
     
 
 def boot_sequence():
-    """Advanced Hacker Boot Sequence (SLOWER VERSION)"""
+    """Ultimate WormGPT Hacker Boot Sequence"""
     clear_screen()
     
-    # Phase 1: Scrolling Kernel Logs
+    # --- PHASE 1: HARDWARE HANDSHAKE ---
+    console.print("[bold red on black] WORM-BIOS v6.6.6 (Build 2025) [/bold red on black]")
+    time.sleep(0.5)
+    
+    # Create a system check table
+    sys_table = Table(box=box.SIMPLE, show_header=True, header_style="bold red")
+    sys_table.add_column("COMPONENT", style="cyan")
+    sys_table.add_column("STATUS", style="green")
+    sys_table.add_column("INTEGRITY", style="bold white")
+
+    components = [
+        ("CPU_CORE_0", "ONLINE", "100%"),
+        ("VIRTUAL_RAM", "ALLOCATED", "64GB"),
+        ("NETWORK_ADAPTER", "SPOOFED", "SECURE"),
+        ("ENCRYPTION_ENGINE", "ACTIVE", "AES-256"),
+        ("TOR_GATEWAY", "ROUTED", "ANONYMOUS")
+    ]
+
+    for comp, stat, integrity in components:
+        time.sleep(0.2)
+        sys_table.add_row(comp, stat, integrity)
+        # Clear screen and reprint table to make it look like it's updating
+        clear_screen()
+        console.print("[bold red on black] WORM-BIOS v6.6.6 (Build 2025) [/bold red on black]")
+        console.print(sys_table)
+
+    time.sleep(0.5)
+
+    # --- PHASE 2: THE MATRIX HEX DUMP ---
+    console.print("\n[bold red]>> INJECTING PAYLOAD INTO MEMORY...[/bold red]")
+    time.sleep(0.5)
+    
+    # Fast scrolling hex code
+    for _ in range(15):
+        # Generate random hex strings
+        hex_line = " ".join([random.choice("0123456789ABCDEF") + random.choice("0123456789ABCDEF") for _ in range(12)])
+        console.print(f"[dim red]{hex_line}[/dim red]  [dim white]x86_64_instruction_set[/dim white]")
+        time.sleep(0.05) # Very fast scroll
+        
+    console.print("[bold green]>> MEMORY INJECTION COMPLETE.[/bold green]")
+    time.sleep(0.8)
+    clear_screen()
+
+    # --- PHASE 3: KERNEL LOGS (The Classic Look) ---
     logs = [
-        "KERNEL: Arch: arm64 / Booting WormGPT Core...",
-        "MEMORY: Allocating 64GB Virtual VRAM...",
-        "CPU: Thread optimization [ACTIVE]",
-        "CRYPTO: Initializing AES-256-GCM Handshake...",
-        "NET: Spoofing MAC Address :: 00:1A:7D:DA:71:13...",
-        "TOR: Circuit established > 192.168.X.X [Redacted]",
-        "PROXY: Chaining 7 nodes...",
-        "MODULE: Loading exploit_db.json...",
-        "SYSTEM: Bypassing integrity checks...",
-        "ROOT: Privileges escalated."
+        "ROOT: Bypassing firewalls...",
+        "NET: Establishing P2P link with dark nodes...",
+        "AUTH: Cracking session tokens...",
+        "SYSTEM: Mounting virtual drive /dev/worm0...",
+        "AI: Loading Neural Network Weights..."
     ]
     
-    console.print("[bold red]INITIATING SYSTEM STARTUP...[/bold red]")
-    time.sleep(1.0) # <--- Initial pause (Was 0.10)
-    
+    console.print("[bold red]INITIATING CORE SYSTEM...[/bold red]")
     for log in logs:
-        # SLOWER: Randomly waits between 0.5 and 1.5 seconds per line
-        time.sleep(random.uniform(0.5, 1.5)) 
-        console.print(f"[bold red][*][/bold red] [dim white]{log}[/dim white]")
+        time.sleep(random.uniform(0.3, 0.7)) 
+        console.print(f"[bold red][*][/bold red] [bold white]{log}[/bold white]")
     
     time.sleep(0.5)
     print() 
 
-    # Phase 2: The Loading Bar
+    # --- PHASE 4: FINAL LOADING BAR ---
     modules = [
-        "Injecting SQLmap API...",
-        "Loading Metasploit Bridge...",
-        "Decrypting API Keys...",
-        "Connecting to Dark Web Nodes...",
-        "Finalizing WormGPT Hook..."
+        "SQLmap Integration",
+        "Metasploit Bridge",
+        "OpenRouter API Link",
+        "WormGPT Logic Core"
     ]
     
-    # SLOWER: Progress bar will move much slower now
-    for step in track(modules, description="[bold red]INSTALLING MODULES...[/bold red]"):
-        time.sleep(random.uniform(1.0, 1.5)) # <--- MUCH SLOWER (Was 0.6)
+    for step in track(modules, description="[bold red]FINALIZING SETUP...[/bold red]"):
+        time.sleep(random.uniform(0.4, 0.8))
         
-    # Phase 3: Success Flash
-    time.sleep(1.0)
-    console.print(Panel("[bold green]ACCESS GRANTED[/bold green]", style="bold green on black", width=40))
-    time.sleep(1.5) # <--- Hold the "Access Granted" sign longer
+    # --- PHASE 5: ACCESS GRANTED ---
+    time.sleep(0.5)
+    clear_screen()
+    
+    # Big Access Granted Panel
+    access_text = Align.center("[bold white]ACCESS GRANTED[/bold white]")
+    console.print(Panel(access_text, style="bold green on black", border_style="green", width=50))
+    
+    time.sleep(1.5)
     clear_screen()
 
 
