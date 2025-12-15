@@ -161,11 +161,11 @@ def login_system():
     except:
         sys.exit(1)
 
-    # 2. visual Loop
+        # 2. visual Loop
     attempts = 0
     max_attempts = 3
     
-        while attempts < max_attempts:
+    while attempts < max_attempts:
         clear_screen()
         
         # --- 1. GENERATE LOGO (Restored Code) ---
