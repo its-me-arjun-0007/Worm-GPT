@@ -253,15 +253,6 @@ def login_system():
         )))
         time.sleep(1.5)
 
-    # FINAL LOCKOUT
-    clear_screen()
-    console.print(Align.center(Panel(
-        "[blink bold red]!!! SYSTEM LOCKED !!![/blink bold red]\n[dim]Too many failed attempts.\nIP Address logged and reported.[/dim]", 
-        title="[bold red on black] SECURITY BREACH [/bold red on black]", 
-        border_style="red",
-        width=60
-    )))
-    sys.exit(0)
             
     # FINAL LOCKOUT
     clear_screen()
