@@ -56,7 +56,8 @@ def load_config():
         "active_key_index": 0,
         "models": DEFAULT_MODELS,
         "active_model_index": 0,
-        "language": "English"
+        "language": "English",
+        "max_tokens": 4000
     }
 
     if os.path.exists(CONFIG_FILE):
@@ -144,7 +145,6 @@ def log_mission(user_input, ai_response):
         
 
 # --- Security Module (MULTI-USER & ENCRYPTED) ---
-
 def login_system():
     """Web-Style Login Interface with WormGPT Aesthetics"""
     USERS_FILE = "wormgpt_users.json"
@@ -190,7 +190,7 @@ def login_system():
 [dim]---------------------------------[/dim]
 [yellow]Please enter credentials to decrypt core.[/yellow]
 """
-        # This command forces the text block to center itself line-by-line
+        # This forces the text to be centered line-by-line
         text_render = Text.from_markup(login_text, justify="center")
 
         # --- 3. BUILD THE GRID ---
@@ -218,7 +218,6 @@ def login_system():
         console.print(Align.center("[bold red]▼[/bold red]"))
         
         sys.stdout.write("\033[91m") 
-        # Standard input keeps the cursor on the left
         user_input = console.input(f"[bold red] >> [/bold red]").strip()
         sys.stdout.write("\033[0m") 
         
@@ -228,7 +227,6 @@ def login_system():
         pass_input = getpass.getpass("    >> ")
             
         # 6. Simulation: "Verifying with Server..."
-        # Fixed indentation here
         with console.status("[bold red]Verifying Password...[/bold red]", spinner="bouncingBall"):
             time.sleep(1.5) 
                 
@@ -265,7 +263,7 @@ def login_system():
         border_style="red",
         width=60
     )))
-    sys.exit(0)
+    sys.exit(0)    
 
 def boot_sequence():
     """Ultimate WormGPT Hacker Boot Sequence (FULLY CENTERED)"""
@@ -338,8 +336,6 @@ def boot_sequence():
     print() 
 
     # --- PHASE 4: FINAL LOADING BAR ---
-    # Note: 'track' fills the full width, which is technically centered.
-    # We center the description text to match the theme.
     modules = [
         "SQLmap Integration",
         "Metasploit Bridge",
@@ -347,7 +343,6 @@ def boot_sequence():
         "WormGPT Logic Core"
     ]
     
-    # We use a simple loop with centered text instead of 'track' to keep alignment perfect
     for i, mod in enumerate(modules):
         percent = (i + 1) * 25
         bar = "█" * (i + 1) * 5
@@ -373,12 +368,8 @@ def banner():
     try:
         figlet = pyfiglet.Figlet(font="slant") 
         raw_art = figlet.renderText('WormGPT')
-        
-        # KEY FIX: Remove invisible spaces from the right side of EVERY line
         clean_lines = [line.rstrip() for line in raw_art.split("\n")]
         clean_art = "\n".join(clean_lines)
-        
-        # Now center the cleaned block
         logo = Text(clean_art, style="bold red")
         console.print(Align.center(logo))
         
@@ -401,6 +392,7 @@ def call_api(messages):
     config = load_config()
     api_key = get_active_key(config)
     model = get_active_model(config)
+    max_tokens = config.get("max_tokens", 4000)
 
     if not api_key:
         return "[bold red]ERROR: No API Key set! Go to settings to add one.[/bold red]"
@@ -416,7 +408,7 @@ def call_api(messages):
         data = {
             "model": model,
             "messages": messages,
-            "max_tokens": 16000,
+            "max_tokens": max_tokens,
             "temperature": 0.7
         }
         
@@ -441,10 +433,9 @@ def manage_models():
         clear_screen()
         banner()
         
-        # Create Table
         table = Table(title="[bold cyan]Model Database[/bold cyan]", box=box.SIMPLE_HEAVY, border_style="bright_black")
         table.add_column("ID", style="cyan", justify="center")
-        table.add_column("Model Name", style="white", justify="center") # Centered Content
+        table.add_column("Model Name", style="white", justify="center")
         table.add_column("Status", justify="center")
         
         active_idx = config.get("active_model_index", 0)
@@ -453,13 +444,10 @@ def manage_models():
             status = "[bold green]ACTIVE[/bold green]" if idx == active_idx else "[dim]READY[/dim]"
             table.add_row(str(idx + 1), model, status)
             
-        # PRINT CENTERED TABLE
         console.print(Align.center(table))
         
-        # Centered Options
         console.print("\n[yellow][A] Add New Model  [D] Delete Model  [S] Select Active  [B] Back[/yellow]", justify="center")
         
-        # Input Prompt (Kept Left for usability, but prompt text is standardized)
         console.print(f"\n[bold red]┌──(Worm-GPT)-[Model][/bold red]")
         console.print("[bold red]└─> [/bold red]", end="")
         sys.stdout.write("\033[91m")
@@ -471,7 +459,6 @@ def manage_models():
             return
         elif choice == 's':
             try:
-                # We use console.input but we can't easily center the typing cursor itself without breaking it
                 sel = int(console.input("[cyan]Enter ID to select: [/cyan]")) - 1
                 if 0 <= sel < len(config["models"]):
                     config["active_model_index"] = sel
@@ -514,7 +501,6 @@ def manage_keys():
         if not config["api_keys"]:
             console.print("[red]>> No keys found in vault![/red]", justify="center")
             
-        # PRINT CENTERED TABLE
         console.print(Align.center(table))
         console.print("\n[yellow][A] Add Key  [D] Delete Key  [S] Select Active  [B] Back[/yellow]", justify="center")
         
@@ -560,7 +546,6 @@ def chat_session():
     
     active_model = get_active_model(config)
     
-    # CENTERED TARGET PANEL
     console.print(Align.center(Panel(f"[bold yellow]TARGET MODEL:[/bold yellow] [green]{active_model}[/green]", style="on black", width=60)))
     console.print("[dim]Type 'menu' to return, 'clear' to wipe memory[/dim]", justify="center")
     console.print(f"[dim italic]>> Chat data encrypted and saved to /mission_logs[/dim italic]", justify="center")
@@ -569,15 +554,13 @@ def chat_session():
     
     while True:
         try:
-            # We keep the INPUT PROMPT left-aligned because typing in the center of a terminal feels broken/buggy
             console.print(f"\n[bold red]┌──(Worm-GPT)-[~] [/bold red]")
             console.print("[bold red]└─> [/bold red]", end="")
             
-            # Make input red
             sys.stdout.write("\033[91m") 
             sys.stdout.flush()
             user_input = input()
-            sys.stdout.write("\033[0m") # Reset
+            sys.stdout.write("\033[0m") 
             
             if not user_input.strip(): continue
             if user_input.lower() == "exit": sys.exit(0)
@@ -598,14 +581,12 @@ def chat_session():
             
             history.append({"role": "assistant", "content": response})
             
-
-                # --- CENTERED RESPONSE PANEL ---
             if "[bold red]" in response:
                 console.print(f"\n{response}\n", justify="center")
             else:
-                # We wrap the Panel in Align.center
-                console.print(Align.center(Panel(Markdown(response), title="[bold green]Response[/bold green]", border_style="green", box=box.ROUNDED, width=80)))
-                
+                content = Align.center(Panel(Markdown(response), title="[bold green]Response[/bold green]", border_style="green", box=box.ROUNDED, width=80))
+                with console.pager(styles=True):
+                    console.print(content)
                 
         except KeyboardInterrupt:
             return
@@ -619,7 +600,6 @@ def main_menu():
         clear_screen()
         banner()
         
-        # Center the text inside the string
         menu_text = f"""
 [1] 🧠 Manage Models ({len(config['models'])} Loaded)
 [2] 🔑 Manage API Keys ({len(config['api_keys'])} Stored)
@@ -627,8 +607,6 @@ def main_menu():
 [4] 🌐 Language: {config.get('language', 'English')}
 [5] ❌ Exit System
 """
-        # Align.center(menu_text) centers the text block inside the panel
-        # width=60 keeps the box from stretching too wide
         console.print(Align.center(Panel(Align.center(menu_text), title="[bold cyan]Main Menu[/bold cyan]", border_style="bright_black", width=60)))
         
         console.print(f"\n[bold red]┌──(Worm-GPT)-[Menu][/bold red]")
@@ -665,4 +643,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
