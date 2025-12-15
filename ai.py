@@ -412,7 +412,7 @@ def call_api(messages):
         data = {
             "model": model,
             "messages": messages,
-            "max_tokens": 4000,
+            "max_tokens": 16000,
             "temperature": 0.7
         }
         
