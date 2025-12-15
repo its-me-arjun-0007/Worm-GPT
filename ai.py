@@ -178,26 +178,29 @@ def login_system():
             clean_logo = "WORM-GPT SYSTEM"
 
         # --- 2. PREPARE CONTENT ---
-        logo_render = Text(clean_logo, style="bold red")
+        # Logo text
+        logo_render = Text(clean_logo, style="bold red", justify="center")
 
+        # Login Info Text
         login_text = """
 [bold white]AUTHENTICATION REQUIRED[/bold white]
-[dim]---------------------------------[/dim]
+[dim]---------------------------------------------------[/dim]
 
 [cyan]Gateway IP:[/cyan] [dim]192.168.X.X (Masked)[/dim]
 [cyan]Encryption:[/cyan] [dim]SHA-256 (Active)[/dim]
 
-[dim]---------------------------------[/dim]
+[dim]---------------------------------------------------[/dim]
 [yellow]Please enter credentials to decrypt core.[/yellow]
 """
-        # This forces the text to be centered line-by-line
         text_render = Text.from_markup(login_text, justify="center")
 
-        # --- 3. BUILD THE GRID ---
-        grid = Table.grid(padding=0)
-        grid.add_column(justify="center") 
+        # --- 3. BUILD THE GRID (FIXED) ---
+        # expand=True forces the grid to fill the Panel width
+        grid = Table.grid(expand=True)
+        # ratio=1 and justify="center" forces content to middle
+        grid.add_column(justify="center", ratio=1) 
         
-        grid.add_row(Align.center(logo_render)) 
+        grid.add_row(logo_render) 
         grid.add_row(text_render)
 
         # --- 4. PRINT THE PANEL ---
@@ -226,7 +229,7 @@ def login_system():
         console.print(Align.center("[bold red]▼[/bold red]"))
         pass_input = getpass.getpass("    >> ")
             
-        # 6. Simulation: "Verifying with Server..."
+        # 6. Simulation
         with console.status("[bold red]Verifying Password...[/bold red]", spinner="bouncingBall"):
             time.sleep(1.5) 
                 
@@ -263,7 +266,8 @@ def login_system():
         border_style="red",
         width=60
     )))
-    sys.exit(0)    
+    sys.exit(0)
+
 
 def boot_sequence():
     """Ultimate WormGPT Hacker Boot Sequence (FULLY CENTERED)"""
