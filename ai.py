@@ -595,12 +595,19 @@ def chat_session():
             history.append({"role": "assistant", "content": response})
             
 
-            # --- CENTERED RESPONSE PANEL ---
+                        # --- CENTERED RESPONSE PANEL (SCROLL FIX) ---
             if "[bold red]" in response:
                 console.print(f"\n{response}\n", justify="center")
             else:
-                # We wrap the Panel in Align.center
-                console.print(Align.center(Panel(Markdown(response), title="[bold green]Response[/bold green]", border_style="green", box=box.ROUNDED, width=80)))
+                md = Markdown(response)
+                # If response is very long, use a pager so you can scroll with arrow keys
+                if len(response.split('\n')) > 20: 
+                    with console.pager(styles=True):
+                        console.print(md)
+                    console.print("[dim]...End of transmission (scrolled above)...[/dim]", justify="center")
+                else:
+                    # Short responses get the fancy panel
+                    console.print(Align.center(Panel(md, title="[bold green]Response[/bold green]", border_style="green", box=box.ROUNDED, width=80)))
                 
         except KeyboardInterrupt:
             return
