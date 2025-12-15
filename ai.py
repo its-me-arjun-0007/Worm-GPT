@@ -358,10 +358,14 @@ def banner():
         
     except Exception as e:
         console.print(Align.center("[bold red]WormGPT[/bold red]"))
-    
-    info_text = f"""[bold red]System Status:[/bold red] [bold green]ONLINE[/bold green]
+
+    Align.center(f"""[bold red]System Status:[/bold red] [bold green]ONLINE[/bold green]
 [bold red]Time:[/bold red] [cyan]{datetime.now().strftime('%H:%M:%S')}[/cyan] | [bold red]User:[/bold red] [cyan]ROOT[/cyan]
-[bold red]Version:[/bold red] [white]2.0 (Hacker Edition)[/white]"""
+[bold red]Version:[/bold red] [white]2.0 (Hacker Edition)[/white]"""), 
+        style="on black", 
+        width=60
+    )))
+    
     
     console.print(Panel(Align.center(info_text), border_style="red", box=box.HORIZONTALS))
     console.print(Align.center("[cyan] Created By [bold red]0d1y4n[/bold red][/cyan]"))
@@ -524,7 +528,10 @@ def chat_session():
     
     active_model = get_active_model(config)
     
-    console.print(Align.center(Panel(f"[bold yellow]TARGET MODEL:[/bold yellow] [green]{active_model}[/green]", style="on black", width=60)))
+            Align.center(f"[bold yellow]TARGET MODEL:[/bold yellow] [green]{active_model}[/green]"), 
+        style="on black", 
+        width=60
+    )))
     console.print("[dim]Type 'menu' to return, 'clear' to wipe memory, 'save' to log the last response to file[/dim]", justify="center")
     
     history = [{"role": "system", "content": get_jailbreak_prompt()}]
@@ -559,7 +566,7 @@ def chat_session():
             if user_input.lower() == "save":
                 if last_ai_response:
                     log_mission(last_user_input, last_ai_response)
-                    console.print(Align.center(Panel("[bold green]✔ MISSION LOG SAVED SUCCESSFULLY ✔[/bold green]", style="green", width=50)))
+                    console.print(Align.center(Panel("[bold green]✔ CHAT LOG SAVED SUCCESSFULLY ✔[/bold green]", style="green", width=50)))
                 else:
                     console.print(Align.center("[bold red]>> ERROR: NOTHING TO SAVE YET <<[/bold red]"))
                 continue # Skip the rest of the loop
