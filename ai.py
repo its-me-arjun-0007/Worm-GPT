@@ -550,7 +550,6 @@ def chat_session():
                 console.print(f"\n{response}\n", justify="center")
             else:
                 console.print(Align.center(Panel(Markdown(response), title="[bold green]Response[/bold green]", border_style="green", box=box.ROUNDED, width=80)))
-                    console.print(content)
                 
         except KeyboardInterrupt:
             return
