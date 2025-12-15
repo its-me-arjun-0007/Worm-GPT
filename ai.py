@@ -144,6 +144,7 @@ def log_mission(user_input, ai_response):
         
 
 # --- Security Module (MULTI-USER & ENCRYPTED) ---
+
 def login_system():
     """Web-Style Login Interface with WormGPT Aesthetics"""
     USERS_FILE = "wormgpt_users.json"
@@ -189,6 +190,7 @@ def login_system():
 [dim]---------------------------------[/dim]
 [yellow]Please enter credentials to decrypt core.[/yellow]
 """
+        # This command forces the text block to center itself line-by-line
         text_render = Text.from_markup(login_text, justify="center")
 
         # --- 3. BUILD THE GRID ---
@@ -216,6 +218,7 @@ def login_system():
         console.print(Align.center("[bold red]▼[/bold red]"))
         
         sys.stdout.write("\033[91m") 
+        # Standard input keeps the cursor on the left
         user_input = console.input(f"[bold red] >> [/bold red]").strip()
         sys.stdout.write("\033[0m") 
         
@@ -225,6 +228,7 @@ def login_system():
         pass_input = getpass.getpass("    >> ")
             
         # 6. Simulation: "Verifying with Server..."
+        # Fixed indentation here
         with console.status("[bold red]Verifying Password...[/bold red]", spinner="bouncingBall"):
             time.sleep(1.5) 
                 
@@ -253,7 +257,6 @@ def login_system():
         )))
         time.sleep(1.5)
 
-            
     # FINAL LOCKOUT
     clear_screen()
     console.print(Align.center(Panel(
@@ -262,7 +265,7 @@ def login_system():
         border_style="red",
         width=60
     )))
-    sys.exit(0)    
+    sys.exit(0)
 
 def boot_sequence():
     """Ultimate WormGPT Hacker Boot Sequence (FULLY CENTERED)"""
