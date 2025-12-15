@@ -362,7 +362,7 @@ def banner():
     Align.center(f"""[bold red]System Status:[/bold red] [bold green]ONLINE[/bold green]
 [bold red]Time:[/bold red] [cyan]{datetime.now().strftime('%H:%M:%S')}[/cyan] | [bold red]User:[/bold red] [cyan]ROOT[/cyan]
 [bold red]Version:[/bold red] [white]2.0 (Hacker Edition)[/white]""")
-    )))
+    ))
     
     
     console.print(Panel(Align.center(info_text), border_style="red", box=box.HORIZONTALS))
