@@ -144,6 +144,7 @@ def login_system():
         clear_screen()
         
         # --- 1. GENERATE LOGO ---
+        # This block was missing in your screenshot causing the NameError
         try:
             f = pyfiglet.Figlet(font='slant')
             logo_text = f.renderText('WORM - GPT')
@@ -177,6 +178,7 @@ def login_system():
         grid.add_column(justify="center", ratio=1)
         
         # We wrap the logo in Align.center to move the whole block to the middle
+        # This keeps the logo shape correct but places it in the center of the screen
         grid.add_row(Align.center(logo_render)) 
         grid.add_row(text_render)
 
