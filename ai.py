@@ -308,10 +308,10 @@ def boot_sequence():
         
         # Print Hex Line Centered
         console.print(f"[dim red]{hex_line}[/dim red]  [dim white]x86_64_inst[/dim white]", justify="center")
-        time.sleep(0.05) 
+        time.sleep(0.15) 
         
     console.print("[bold green]>> MEMORY INJECTION COMPLETE.[/bold green]", justify="center")
-    time.sleep(0.8)
+    time.sleep(0.15)
     clear_screen()
 
     # --- PHASE 3: KERNEL LOGS (Centered List) ---
@@ -331,7 +331,7 @@ def boot_sequence():
         # Center the log message
         console.print(f"[bold red][*][/bold red] [bold white]{log}[/bold white]", justify="center")
     
-    time.sleep(0.5)
+    time.sleep(0.15)
     print() 
 
     # --- PHASE 4: FINAL LOADING BAR ---
