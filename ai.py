@@ -165,10 +165,10 @@ def login_system():
     attempts = 0
     max_attempts = 3
     
-    while attempts < max_attempts:
+        while attempts < max_attempts:
         clear_screen()
         
-        # --- 1. RESTORE THIS MISSING BLOCK ---
+        # --- 1. GENERATE LOGO (Restored Code) ---
         try:
             f = pyfiglet.Figlet(font='slant')
             logo_text = f.renderText('WORM - GPT')
@@ -176,11 +176,12 @@ def login_system():
             clean_logo = "\n".join([line.rstrip() for line in logo_text.split("\n")])
         except:
             clean_logo = "WORM-GPT SYSTEM"
-        # -------------------------------------
-        
-        # --- THE LOGO (Centered) ---
+
+        # --- 2. PREPARE CONTENT ---
+        # We create the logo object
         logo_render = Text(clean_logo, style="bold red")
 
+        # We define the text and force it to be CENTERED
         login_text = """
 [bold white]AUTHENTICATION REQUIRED[/bold white]
 [dim]---------------------------------[/dim]
@@ -191,17 +192,17 @@ def login_system():
 [dim]---------------------------------[/dim]
 [yellow]Please enter credentials to decrypt core.[/yellow]
 """
+        # justify="center" is the key command here
         text_render = Text.from_markup(login_text, justify="center")
 
-        # A grid is like a table with no borders.
+        # --- 3. BUILD THE GRID (Fixes Alignment) ---
         grid = Table.grid(padding=0)
-        grid.add_column(justify="center") # Center the content in the column
+        grid.add_column(justify="center") # Centers everything in this column
         
-        # Add the Logo (Wrapped in Align.center to move the whole block to middle)
-        grid.add_row(Align.center(logo_render)) 
-        # Add the Text
-        grid.add_row(text_render)
+        grid.add_row(Align.center(logo_render)) # Add Logo
+        grid.add_row(text_render)               # Add Centered Text
 
+        # --- 4. PRINT THE PANEL ---
         console.print(Align.center(Panel(
             grid,
             title="[bold red on black] SECURE LOGIN PORTAL [/bold red on black]",
@@ -211,25 +212,21 @@ def login_system():
             padding=(1, 2)
         )))
 
-        # --- INPUT FIELDS (Below the box) ---
-        print("\n") # Spacer
+        # --- 5. INPUT FIELDS (Left Aligned Cursor) ---
+        print("\n") 
         
-        try:
-            # 3. Username Input
-            console.print(Align.center("[bold white]USER IDENTITY[/bold white]"))
-            # We use a custom prompt ">>" centered
-            console.print(Align.center("[bold red]▼[/bold red]"))
-            
-            # Move cursor to center (Visual trick: we just indent heavily)
-            # Since we can't truly center 'input()', we use a specialized prompt
-            sys.stdout.write("\033[91m") # Red Color
-            user_input = console.input(f"[bold red] >> [/bold red]").strip()
-            sys.stdout.write("\033[0m") # Reset Color
-            
-            # 4. Password Input
-            console.print(Align.center("[bold white]ACCESS KEY[/bold white]"))
-            console.print(Align.center("[bold red]▼[/bold red]"))
-            pass_input = getpass.getpass("    >> ") # Indented to look centered
+        # Username Input
+        console.print(Align.center("[bold white]USER IDENTITY[/bold white]"))
+        console.print(Align.center("[bold red]▼[/bold red]"))
+        
+        sys.stdout.write("\033[91m") # Red Color
+        user_input = console.input(f"[bold red] >> [/bold red]").strip()
+        sys.stdout.write("\033[0m") # Reset Color
+        
+        # Password Input
+        console.print(Align.center("[bold white]ACCESS KEY[/bold white]"))
+        console.print(Align.center("[bold red]▼[/bold red]"))
+        pass_input = getpass.getpass("    >> ")
             
             # 5. Simulation: "Verifying with Server..."
             with console.status("[bold red]Verifying Password...[/bold red]", spinner="bouncingBall"):
