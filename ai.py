@@ -497,7 +497,7 @@ def manage_keys():
         if choice == 'b':
             return
         elif choice == 'a':
-            new_key = console.input("[cyan]Enter OpenRouter API Key: [/cyan]").strip()
+            new_key = console.input("[cyan]Enter API Key: [/cyan]").strip()
             if new_key:
                 config["api_keys"].append(new_key)
                 if len(config["api_keys"]) == 1:
@@ -568,7 +568,7 @@ def chat_session():
             if user_input.lower() == "save":
                 if last_ai_response:
                     log_mission(last_user_input, last_ai_response)
-                    console.print(Align.center(Panel("[bold green]✔ MISSION LOG SAVED SUCCESSFULLY ✔[/bold green]", style="green", width=50)))
+                    console.print(Align.center(Panel("[bold green]✔ CHAT LOG SAVED SUCCESSFULLY ✔[/bold green]", style="green", width=50)))
                 else:
                     console.print(Align.center("[bold red]>> ERROR: NOTHING TO SAVE YET <<[/bold red]"))
                 continue # Skip the rest of the loop
