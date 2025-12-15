@@ -169,18 +169,10 @@ def login_system():
         clear_screen()
         
         # --- THE LOGO (Centered) ---
-        try:
-            f = pyfiglet.Figlet(font='slant')
-            logo_text = f.renderText('WORM - GPT')
-            # Clean up the logo so it centers properly
-            clean_logo = "\n".join([line.rstrip() for line in logo_text.split("\n")])
-        except:
-            clean_logo = "WORM-GPT SYSTEM"
+        logo_render = Text(clean_logo, style="bold red")
 
-        # --- THE LOGIN BOX (Website Style) ---        
-        login_content = f"""
-[bold red]{clean_logo}[/bold red]
-
+        # 2. Prepare the Text (This needs centered justification)
+        login_text = """
 [bold white]AUTHENTICATION REQUIRED[/bold white]
 [dim]---------------------------------[/dim]
 
@@ -189,18 +181,28 @@ def login_system():
 
 [dim]---------------------------------[/dim]
 [yellow]Please enter credentials to decrypt core.[/yellow]
-        """
+"""
+        text_render = Text.from_markup(login_text, justify="center")
+
+        # 3. Create a Grid to stack them (This fixes the alignment issue)
+        # A grid is like a table with no borders.
+        grid = Table.grid(padding=0)
+        grid.add_column(justify="center") # Center the content in the column
         
-        # --- REPLACE THIS SECTION ---
+        # Add the Logo (Wrapped in Align.center to move the whole block to middle)
+        grid.add_row(Align.center(logo_render)) 
+        # Add the Text
+        grid.add_row(text_render)
+
+        # 4. Print the Panel containing the Grid
         console.print(Align.center(Panel(
-            Text.from_markup(login_content, justify="center"), # <--- CHANGED HERE
+            grid,
             title="[bold red on black] SECURE LOGIN PORTAL [/bold red on black]",
             border_style="red",
             box=box.DOUBLE,
             width=80,
             padding=(1, 2)
         )))
-        # ----------------------------
 
         # --- INPUT FIELDS (Below the box) ---
         print("\n") # Spacer
