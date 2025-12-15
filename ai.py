@@ -205,7 +205,7 @@ def login_system():
         # Password
         console.print(Align.center("[bold white]ACCESS KEY[/bold white]"))
         console.print(Align.center("[bold red]▼[/bold red]"))
-        pass_input = getpass.getpass(f"[bold red] >> [/bold red]")
+        pass_input = getpass.getpass("\033[1;31m >> \033[0m")
             
         # 6. Simulation
         with console.status("[bold red]Verifying Password...[/bold red]", spinner="bouncingBall"):
