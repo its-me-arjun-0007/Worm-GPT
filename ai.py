@@ -177,8 +177,7 @@ def login_system():
         except:
             clean_logo = "WORM-GPT SYSTEM"
 
-        # --- THE LOGIN BOX (Website Style) ---
-        # We create a big string that looks like a form
+        # --- THE LOGIN BOX (Website Style) ---        
         login_content = f"""
 [bold red]{clean_logo}[/bold red]
 
@@ -192,15 +191,16 @@ def login_system():
 [yellow]Please enter credentials to decrypt core.[/yellow]
         """
         
-        # Print the centered panel
+        # --- REPLACE THIS SECTION ---
         console.print(Align.center(Panel(
-            Align.center(login_content),
+            Text.from_markup(login_content, justify="center"), # <--- CHANGED HERE
             title="[bold red on black] SECURE LOGIN PORTAL [/bold red on black]",
             border_style="red",
-            box=box.DOUBLE, # Uses double lines for a "window" look
+            box=box.DOUBLE,
             width=80,
             padding=(1, 2)
         )))
+        # ----------------------------
 
         # --- INPUT FIELDS (Below the box) ---
         print("\n") # Spacer
