@@ -144,21 +144,19 @@ def login_system():
         clear_screen()
         
         # --- 1. GENERATE LOGO ---
-        # This block was missing in your screenshot causing the NameError
         try:
             f = pyfiglet.Figlet(font='slant')
             logo_text = f.renderText('WORM - GPT')
-            # remove right whitespace but keep left spacing for 3D effect
+            # Only strip right side to preserve left-side indentation (3D effect)
             clean_logo = "\n".join([line.rstrip() for line in logo_text.split("\n")])
         except:
             clean_logo = "WORM-GPT SYSTEM"
 
         # --- 2. PREPARE CONTENT ---
-        # CRITICAL FIX: Do NOT use justify="center" here. It ruins ASCII art.
-        # We leave it as default (left) so the letters stay shaped correctly.
+        # FIX: NO justify="center" here. We keep the text left-aligned to preserve shape.
         logo_render = Text(clean_logo, style="bold red")
 
-        # Login Info Text (This CAN be centered line-by-line)
+        # Login Info Text (Centered Line-by-Line)
         login_text = """
 [bold white]AUTHENTICATION REQUIRED[/bold white]
 [dim]---------------------------------------------------[/dim]
@@ -172,14 +170,14 @@ def login_system():
         text_render = Text.from_markup(login_text, justify="center")
 
         # --- 3. BUILD THE GRID ---
-        # expand=True makes the grid fill the panel
+        # FIX: We remove justify="center" from add_column.
+        # This allows us to center the LOGO BLOCK without crushing the letters.
         grid = Table.grid(expand=True)
-        # We add a column that centers its CONTENTS, not the text inside the contents
-        grid.add_column(justify="center", ratio=1)
+        grid.add_column() 
         
-        # We wrap the logo in Align.center to move the whole block to the middle
-        # This keeps the logo shape correct but places it in the center of the screen
+        # We wrap the logo in Align.center -> Moves the whole block to middle
         grid.add_row(Align.center(logo_render)) 
+        # The text is already centered line-by-line, so we just add it
         grid.add_row(text_render)
 
         # --- 4. PRINT THE PANEL ---
@@ -188,7 +186,7 @@ def login_system():
             title="[bold red on black] SECURE LOGIN PORTAL [/bold red on black]",
             border_style="red",
             box=box.DOUBLE,
-            width=85,  # Increased width slightly to fit logo better
+            width=85,
             padding=(1, 2)
         )))
 
@@ -200,6 +198,7 @@ def login_system():
         console.print(Align.center("[bold red]▼[/bold red]"))
         
         sys.stdout.write("\033[91m") 
+        # Standard input keeps cursor on the left
         user_input = console.input(f"[bold red] >> [/bold red]").strip()
         sys.stdout.write("\033[0m") 
         
