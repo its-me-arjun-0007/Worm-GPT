@@ -31,8 +31,11 @@ except ImportError as e:
 console = Console()
 
 # --- Configuration & Constants ---
-CONFIG_FILE = "wormgpt_config.json"
-PROMPT_FILE = "system-prompt.txt"
+# Get the folder where ai.py is located
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+CONFIG_FILE = os.path.join(BASE_DIR, "wormgpt_config.json")
+PROMPT_FILE = os.path.join(BASE_DIR, "system-prompt.txt")
 DEFAULT_BASE_URL = "https://openrouter.ai/api/v1"
 SITE_URL = "https://github.com/its-me-arjun-0007/worm-gpt"
 SITE_NAME = "WormGPT CLI"
