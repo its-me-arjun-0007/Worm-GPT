@@ -171,7 +171,6 @@ def login_system():
         # --- THE LOGO (Centered) ---
         logo_render = Text(clean_logo, style="bold red")
 
-        # 2. Prepare the Text (This needs centered justification)
         login_text = """
 [bold white]AUTHENTICATION REQUIRED[/bold white]
 [dim]---------------------------------[/dim]
@@ -184,7 +183,6 @@ def login_system():
 """
         text_render = Text.from_markup(login_text, justify="center")
 
-        # 3. Create a Grid to stack them (This fixes the alignment issue)
         # A grid is like a table with no borders.
         grid = Table.grid(padding=0)
         grid.add_column(justify="center") # Center the content in the column
@@ -194,7 +192,6 @@ def login_system():
         # Add the Text
         grid.add_row(text_render)
 
-        # 4. Print the Panel containing the Grid
         console.print(Align.center(Panel(
             grid,
             title="[bold red on black] SECURE LOGIN PORTAL [/bold red on black]",
