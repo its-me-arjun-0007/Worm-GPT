@@ -359,11 +359,19 @@ def banner():
     except Exception as e:
         console.print(Align.center("[bold red]WormGPT[/bold red]"))
     
-    info_text = f"""[bold red]System Status:[/bold red] [bold green]ONLINE[/bold green]
-[bold red]Time:[/bold red] [cyan]{datetime.now().strftime('%H:%M:%S')}[/cyan] | [bold red]User:[/bold red] [cyan]ROOT[/cyan]
-[bold red]Version:[/bold red] [white]2.0 (Hacker Edition)[/white]"""
+    # --- CENTERED INFO PANEL FIX ---
+    info_text = f"[bold red]System Status:[/bold red] [bold green]ONLINE[/bold green]\n" \
+                f"[bold red]Time:[/bold red] [cyan]{datetime.now().strftime('%H:%M:%S')}[/cyan] | [bold red]User:[/bold red] [cyan]ROOT[/cyan]\n" \
+                f"[bold red]Version:[/bold red] [white]2.0 (Hacker Edition)[/white]"
     
-    console.print(Panel(Align.center(info_text), border_style="red", box=box.HORIZONTALS))
+    console.print(Align.center(Panel(
+        Align.center(info_text), 
+        border_style="red", 
+        box=box.HORIZONTALS, 
+        width=60
+    )))
+    # -------------------------------
+
     console.print(Align.center("[cyan] Created By [bold red]0d1y4n[/bold red][/cyan]"))
 
 # --- API Logic ---
