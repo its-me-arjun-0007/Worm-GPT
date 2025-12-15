@@ -125,8 +125,8 @@ def get_jailbreak_prompt():
             content = f.read().strip()
             
             # --- THIS IS THE PROOF YOU NEED ---
-            console.print(Align.center(f"[bold green]>> SYSTEM PROMPT LOADED SUCCESSFULLY [/bold green]"))
-            console.print(Align.center(f"[dim]>> Mode: Jailbroken / Unrestricted[/dim]"))
+            console.print(Align.center(f"[bold green]>> SYSTEM PROMPT LOADED SUCCESSFULLY <<[/bold green]"))
+            console.print(Align.center(f"[dim]>> Mode: Jailbroken / Unrestricted <<[/dim]"))
             # ----------------------------------
             
             return content
