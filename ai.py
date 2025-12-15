@@ -161,27 +161,24 @@ def login_system():
     except:
         sys.exit(1)
 
-        # 2. visual Loop
+    # 2. visual Loop
     attempts = 0
     max_attempts = 3
     
     while attempts < max_attempts:
         clear_screen()
         
-        # --- 1. GENERATE LOGO (Restored Code) ---
+        # --- 1. GENERATE LOGO ---
         try:
             f = pyfiglet.Figlet(font='slant')
             logo_text = f.renderText('WORM - GPT')
-            # Clean up the logo so it centers properly
             clean_logo = "\n".join([line.rstrip() for line in logo_text.split("\n")])
         except:
             clean_logo = "WORM-GPT SYSTEM"
 
         # --- 2. PREPARE CONTENT ---
-        # We create the logo object
         logo_render = Text(clean_logo, style="bold red")
 
-        # We define the text and force it to be CENTERED
         login_text = """
 [bold white]AUTHENTICATION REQUIRED[/bold white]
 [dim]---------------------------------[/dim]
@@ -192,15 +189,14 @@ def login_system():
 [dim]---------------------------------[/dim]
 [yellow]Please enter credentials to decrypt core.[/yellow]
 """
-        # justify="center" is the key command here
         text_render = Text.from_markup(login_text, justify="center")
 
-        # --- 3. BUILD THE GRID (Fixes Alignment) ---
+        # --- 3. BUILD THE GRID ---
         grid = Table.grid(padding=0)
-        grid.add_column(justify="center") # Centers everything in this column
+        grid.add_column(justify="center") 
         
-        grid.add_row(Align.center(logo_render)) # Add Logo
-        grid.add_row(text_render)               # Add Centered Text
+        grid.add_row(Align.center(logo_render)) 
+        grid.add_row(text_render)
 
         # --- 4. PRINT THE PANEL ---
         console.print(Align.center(Panel(
@@ -212,53 +208,60 @@ def login_system():
             padding=(1, 2)
         )))
 
-        # --- 5. INPUT FIELDS (Left Aligned Cursor) ---
+        # --- 5. INPUT FIELDS ---
         print("\n") 
         
-        # Username Input
+        # Username
         console.print(Align.center("[bold white]USER IDENTITY[/bold white]"))
         console.print(Align.center("[bold red]▼[/bold red]"))
         
-        sys.stdout.write("\033[91m") # Red Color
+        sys.stdout.write("\033[91m") 
         user_input = console.input(f"[bold red] >> [/bold red]").strip()
-        sys.stdout.write("\033[0m") # Reset Color
+        sys.stdout.write("\033[0m") 
         
-        # Password Input
+        # Password
         console.print(Align.center("[bold white]ACCESS KEY[/bold white]"))
         console.print(Align.center("[bold red]▼[/bold red]"))
         pass_input = getpass.getpass("    >> ")
             
-            # 5. Simulation: "Verifying with Server..."
-            with console.status("[bold red]Verifying Password...[/bold red]", spinner="bouncingBall"):
-                time.sleep(1.5) # Fake delay for drama
+        # 6. Simulation: "Verifying with Server..."
+        with console.status("[bold red]Verifying Password...[/bold red]", spinner="bouncingBall"):
+            time.sleep(1.5) 
                 
-            # 6. Verification Logic
-            if user_input in valid_users:
-                input_hash = hashlib.sha256(pass_input.encode()).hexdigest()
-                
-                if input_hash == valid_users[user_input]:
-                    # SUCCESS ANIMATION
-                    clear_screen()
-                    console.print(Align.center(Panel(
-                        "\n[bold green]✔ CREDENTIALS ACCEPTED ✔[/bold green]\n[dim]Decrypting Environment...[/dim]\n",
-                        style="green on black",
-                        width=50
-                    )))
-                    time.sleep(1.0)
-                    return True
+        # 7. Verification Logic
+        if user_input in valid_users:
+            input_hash = hashlib.sha256(pass_input.encode()).hexdigest()
             
-            # FAILED ATTEMPT
-            attempts += 1
-            clear_screen()
-            console.print(Align.center(Panel(
-                f"\n[bold white on red] ❌ INVALID CREDENTIALS ❌ [/bold white on red]\n[bold yellow]Attempts Remaining: {max_attempts - attempts}[/bold yellow]\n",
-                border_style="red",
-                width=50
-            )))
-            time.sleep(1.5)
+            if input_hash == valid_users[user_input]:
+                # SUCCESS
+                clear_screen()
+                console.print(Align.center(Panel(
+                    "\n[bold green]✔ CREDENTIALS ACCEPTED ✔[/bold green]\n[dim]Decrypting Environment...[/dim]\n",
+                    style="green on black",
+                    width=50
+                )))
+                time.sleep(1.0)
+                return True
+        
+        # FAILED ATTEMPT
+        attempts += 1
+        clear_screen()
+        console.print(Align.center(Panel(
+            f"\n[bold white on red] ❌ INVALID CREDENTIALS ❌ [/bold white on red]\n[bold yellow]Attempts Remaining: {max_attempts - attempts}[/bold yellow]\n",
+            border_style="red",
+            width=50
+        )))
+        time.sleep(1.5)
 
-        except KeyboardInterrupt:
-            sys.exit(0)
+    # FINAL LOCKOUT
+    clear_screen()
+    console.print(Align.center(Panel(
+        "[blink bold red]!!! SYSTEM LOCKED !!![/blink bold red]\n[dim]Too many failed attempts.\nIP Address logged and reported.[/dim]", 
+        title="[bold red on black] SECURITY BREACH [/bold red on black]", 
+        border_style="red",
+        width=60
+    )))
+    sys.exit(0)
             
     # FINAL LOCKOUT
     clear_screen()
