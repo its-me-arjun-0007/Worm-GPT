@@ -545,11 +545,11 @@ def chat_session():
             
             history.append({"role": "assistant", "content": response})
             
+
             if "[bold red]" in response:
                 console.print(f"\n{response}\n", justify="center")
             else:
-                content = Align.center(Panel(Markdown(response), title="[bold green]Response[/bold green]", border_style="green", box=box.ROUNDED, width=80))
-                with console.pager(styles=True):
+                console.print(Align.center(Panel(Markdown(response), title="[bold green]Response[/bold green]", border_style="green", box=box.ROUNDED, width=80)))
                     console.print(content)
                 
         except KeyboardInterrupt:
