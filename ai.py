@@ -510,8 +510,7 @@ def chat_session():
     active_model = get_active_model(config)
     
     console.print(Align.center(Panel(f"[bold yellow]TARGET MODEL:[/bold yellow] [green]{active_model}[/green]", style="on black", width=60)))
-    console.print("[dim]Type 'menu' to return, 'clear' to wipe memory[/dim]", justify="center")
-    console.print("[dim]Type 'save' to log the last response to file[/dim]", justify="center")
+    console.print("[dim]Type 'menu' to return, 'clear' to wipe memory, 'save' to log the last response to file[/dim]", justify="center")
     
     history = [{"role": "system", "content": get_jailbreak_prompt()}]
     
