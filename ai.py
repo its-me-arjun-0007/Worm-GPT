@@ -216,12 +216,12 @@ def login_system():
             input_hash = hashlib.sha256(pass_input.encode()).hexdigest()
             
             if input_hash == valid_users[user_input]:
-                clear_screen()
-                console.print(Align.center(Panel(
-                    "\n[bold green]✔ CREDENTIALS ACCEPTED ✔[/bold green]\n[dim]Decrypting Environment...[/dim]\n",
-                    style="green on black",
-                    width=50
-                )))
+        clear_screen()
+        console.print(Align.center(Panel(
+           Align.center("\n[bold green]✔ CREDENTIALS ACCEPTED ✔[/bold green]\n[dim]Decrypting Environment...[/dim]\n"),
+           style="green on black",
+           width=50
+        )))
                 time.sleep(1.0)
                 return True
         
