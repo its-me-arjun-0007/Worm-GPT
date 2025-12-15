@@ -168,6 +168,16 @@ def login_system():
     while attempts < max_attempts:
         clear_screen()
         
+        # --- 1. RESTORE THIS MISSING BLOCK ---
+        try:
+            f = pyfiglet.Figlet(font='slant')
+            logo_text = f.renderText('WORM - GPT')
+            # Clean up the logo so it centers properly
+            clean_logo = "\n".join([line.rstrip() for line in logo_text.split("\n")])
+        except:
+            clean_logo = "WORM-GPT SYSTEM"
+        # -------------------------------------
+        
         # --- THE LOGO (Centered) ---
         logo_render = Text(clean_logo, style="bold red")
 
