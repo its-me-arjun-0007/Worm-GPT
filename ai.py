@@ -205,12 +205,12 @@ def login_system():
         # Password
         console.print(Align.center("[bold white]ACCESS KEY[/bold white]"))
         console.print(Align.center("[bold red]▼[/bold red]"))
-        pass_input = getpass.getpass("    >> ")
+        pass_input = getpass.getpass(f"[bold red] >> [/bold red]")
             
         # 6. Simulation
         with console.status("[bold red]Verifying Password...[/bold red]", spinner="bouncingBall"):
             time.sleep(1.5) 
-                
+            
         # 7. Verification Logic
         if user_input in valid_users:
             input_hash = hashlib.sha256(pass_input.encode()).hexdigest()
