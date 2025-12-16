@@ -580,9 +580,9 @@ def chat_session():
                 console.print("[bold green]>> MEMORY WIPED <<[/bold green]", justify="center")
                 continue
             
-                    # --- UPDATED SAVE COMMAND LOGIC ---
-                   if user_input.lower().startswith("save"):
-                 if last_ai_response:
+              # --- SAVE COMMAND LOGIC ---
+            if user_input.lower().startswith("save"):
+                if last_ai_response:
                     custom_filename = None
                     
                     # Check for "save.filename" format
