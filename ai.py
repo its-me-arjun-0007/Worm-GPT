@@ -55,7 +55,8 @@ def load_config():
         "models": DEFAULT_MODELS,
         "active_model_index": 0,
         "language": "English",
-        "max_tokens": 4000
+        "max_tokens": 4000,
+        "base_url": DEFAULT_BASE_URL  # [FIX] Added missing base_url default
     }
 
     if os.path.exists(CONFIG_FILE):
@@ -75,6 +76,7 @@ def load_config():
                     loaded_config["models"] = new_list
                 del loaded_config["model"]
 
+            # Merge defaults to ensure base_url exists
             for key, value in default_config.items():
                 if key not in loaded_config:
                     loaded_config[key] = value
@@ -381,6 +383,8 @@ def call_api(messages):
     api_key = get_active_key(config)
     model = get_active_model(config)
     max_tokens = config.get("max_tokens", 4000)
+    # [FIX] Safe fallback to default URL if config is missing it
+    base_url = config.get("base_url", DEFAULT_BASE_URL)
 
     if not api_key:
         yield "[bold red]ERROR: No API Key set! Go to settings to add one.[/bold red]"
@@ -403,7 +407,7 @@ def call_api(messages):
         }
         
         response = requests.post(
-            f"{config['base_url']}/chat/completions",
+            f"{base_url}/chat/completions",
             headers=headers,
             json=data,
             stream=True 
@@ -618,12 +622,12 @@ def chat_session():
             # --- LIVE RESPONSE LOGIC ---
             full_response = ""
             
-            # [FIXED] Removed 'width=80'. Now it auto-scales to your screen.
+            # [FIXED] Mobile-Friendly View
             initial_view = Align.center(
                 Panel(Markdown(""), title="[bold green]Incoming Data Stream...[/bold green]", border_style="green", box=box.ROUNDED)
             )
 
-            # [FIXED] Added vertical_overflow='visible' to prevent cutting off text
+            # [FIXED] Visible overflow preventing cutoff
             with Live(initial_view, refresh_per_second=8, console=console, vertical_overflow="visible") as live:
                 for chunk in call_api(history):
                     full_response += chunk
@@ -641,7 +645,6 @@ def chat_session():
             return
         except Exception as e:
             console.print(f"[red]Error: {e}[/red]", justify="center")
-
 
 def main_menu():
     while True:
