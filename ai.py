@@ -550,7 +550,7 @@ def chat_session():
         width=60
     )))
 
-    console.print("[dim]Type 'menu' to return, 'clear' to wipe memory, 'save' or "save.custom_name" to log the last response to file[/dim]", justify="center")
+    console.print("[dim]Type 'menu' to return, 'clear' to wipe memory, 'save' or 'save.custom_name' to log the last response to file[/dim]", justify="center")
     
     history = [{"role": "system", "content": get_jailbreak_prompt()}]
     
