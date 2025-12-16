@@ -261,7 +261,7 @@ def login_system():
         attempts += 1
         clear_screen()
         console.print(Align.center(Panel(
-            f"\n[bold white on red] ❌ INVALID CREDENTIALS ❌ [/bold white on red]\n[bold yellow]Attempts Remaining: {max_attempts - attempts}[/bold yellow]\n",
+            Align.center("\n[bold white on red] ❌ INVALID CREDENTIALS ❌ [/bold white on red]\n[bold yellow]Attempts Remaining: {max_attempts - attempts}[/bold yellow]\n"),
             border_style="red",
             width=50
         )))
