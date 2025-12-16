@@ -542,12 +542,27 @@ def chat_session():
     clear_screen()
     banner()
     
-    active_model = get_active_model(config)
+    active_model_name = get_active_model(config)
     
+    # --- CALCULATE ID INDICES (1-Based) ---
+    # We get the index number from the config, adding 1 so it starts at 1 instead of 0
+    model_id = config.get("active_model_index", 0) + 1
+    key_id = config.get("active_key_index", 0) + 1
+    
+    # --- DETERMINE STATUS COLOR ---
+    # Logic: If Model ID matches Key ID (e.g. 1 & 1, 2 & 2), it is GREEN.
+    # Otherwise (e.g. 1 & 2), it is RED.
+    if model_id == key_id:
+        status_color = "bold green"
+        status_text = "STATUS"
+    else:
+        status_color = "bold red"
+        status_text = "STATUS"
+
     console.print(Align.center(Panel(
-        Align.center(f"[bold yellow]TARGET MODEL:[/bold yellow] [green]{active_model}[/green]"), 
+        Align.center(f"[bold yellow]TARGET MODEL:[/bold yellow] [green]{active_model_name}[/green]"), 
         style="on black", 
-        width=60
+        width=None 
     )))
 
     console.print("[dim]Type 'menu' to return, 'clear' to wipe memory, 'save' or 'save.custom_name' to log the last response to file[/dim]", justify="center")
@@ -560,7 +575,9 @@ def chat_session():
     
     while True:
         try:
-            console.print(f"\n[bold red]┌──(Worm-GPT)-[~] [/bold red]")
+            # --- DYNAMIC PROMPT DISPLAY ---
+            # We insert the calculated color and text into the prompt line
+            console.print(f"\n[bold red]┌──(Worm-GPT)-[[/{status_color}][{status_color}]{status_text}[/{status_color}][bold red]][/bold red]")
             console.print("[bold red]└─> [/bold red]", end="")
             
             sys.stdout.write("\033[91m") 
@@ -580,59 +597,59 @@ def chat_session():
                 console.print("[bold green]>> MEMORY WIPED <<[/bold green]", justify="center")
                 continue
             
-              # --- SAVE COMMAND LOGIC ---
+            # --- SAVE COMMAND LOGIC ---
             if user_input.lower().startswith("save"):
                 if last_ai_response:
                     custom_filename = None
-                    
-                    # Check for "save.filename" format
                     if "." in user_input:
                         try:
-                            # Split at the first dot to get the name
                             parts = user_input.split(".", 1)
                             if len(parts) > 1 and parts[1].strip():
                                 custom_filename = parts[1].strip()
-                        except:
-                            pass # Fallback to default if split fails
+                        except: pass
 
-                    # Call the function
                     saved_file = log_mission(last_user_input, last_ai_response, custom_filename)
                     
                     if saved_file:
                         console.print(Align.center(Panel(
                             f"[bold green]✔ DATA SAVED TO: {saved_file} ✔[/bold green]", 
-                            style="green", 
-                            width=50
+                            style="green"
                         )))
                 else:
                     console.print(Align.center("[bold red]>> ERROR: NOTHING TO SAVE YET <<[/bold red]"))
-                
-                continue # Skip sending "save" to the AI
+                continue 
 
-            
             # --- NORMAL CHAT FLOW ---
             history.append({"role": "user", "content": user_input})
             
             console.print(f"\n[bold cyan]Transmitting Data Packets...[/bold cyan]", justify="center")
             
-            with console.status("[bold green]Awaiting Response...[/bold green]", spinner="dots"):
-                response = call_api(history)
+            # --- LIVE RESPONSE LOGIC ---
+            full_response = ""
+            
+            initial_view = Align.center(
+                Panel(Markdown(""), title="[bold green]Incoming Data Stream...[/bold green]", border_style="green", box=box.ROUNDED)
+            )
+
+            with Live(initial_view, refresh_per_second=8, console=console, vertical_overflow="visible") as live:
+                for chunk in call_api(history):
+                    full_response += chunk
+                    live.update(Align.center(
+                        Panel(Markdown(full_response), title="[bold green]Response[/bold green]", border_style="green", box=box.ROUNDED)
+                    ))
             
             # --- STORE FOR POTENTIAL SAVING ---
             last_user_input = user_input
-            last_ai_response = response
+            last_ai_response = full_response
             
-            history.append({"role": "assistant", "content": response})
-            
-            if "[bold red]" in response:
-                console.print(f"\n{response}\n", justify="center")
-            else:
-                console.print(Align.center(Panel(Markdown(response), title="[bold green]Response[/bold green]", border_style="green", box=box.ROUNDED, width=80)))
+            history.append({"role": "assistant", "content": full_response})
                 
         except KeyboardInterrupt:
             return
         except Exception as e:
             console.print(f"[red]Error: {e}[/red]", justify="center")
+            
+ 
 
 def main_menu():
     while True:
