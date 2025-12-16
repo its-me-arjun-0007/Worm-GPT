@@ -617,12 +617,18 @@ def chat_session():
             # --- LIVE RESPONSE LOGIC ---
             full_response = ""
             
-            # Create a Live Display Panel that updates in real-time
-            with Live(Panel(Markdown(""), title="[bold green]Incoming Data Stream...[/bold green]", border_style="green", box=box.ROUNDED, width=80), refresh_per_second=8) as live:
+            # FIX: We now wrap the Panel in Align.center() inside the Live loop
+            initial_panel = Align.center(
+                Panel(Markdown(""), title="[bold green]Incoming Data Stream...[/bold green]", border_style="green", box=box.ROUNDED, width=80)
+            )
+
+            with Live(initial_panel, refresh_per_second=8, console=console) as live:
                 for chunk in call_api(history):
                     full_response += chunk
-                    # Update the panel with the new chunk added
-                    live.update(Panel(Markdown(full_response), title="[bold green]Response[/bold green]", border_style="green", box=box.ROUNDED, width=80))
+                    # Update the panel with the new chunk added, keeping it CENTERED
+                    live.update(Align.center(
+                        Panel(Markdown(full_response), title="[bold green]Response[/bold green]", border_style="green", box=box.ROUNDED, width=80)
+                    ))
             
             # --- STORE FOR POTENTIAL SAVING ---
             last_user_input = user_input
@@ -634,6 +640,7 @@ def chat_session():
             return
         except Exception as e:
             console.print(f"[red]Error: {e}[/red]", justify="center")
+
 
 def main_menu():
     while True:
