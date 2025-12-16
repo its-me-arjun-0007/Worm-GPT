@@ -551,10 +551,11 @@ def chat_session():
     
     active_model = get_active_model(config)
     
+    # [FIX] width=None lets it adapt to your phone screen size
     console.print(Align.center(Panel(
         Align.center(f"[bold yellow]TARGET MODEL:[/bold yellow] [green]{active_model}[/green]"), 
         style="on black", 
-        width=60
+        width=None 
     )))
 
     console.print("[dim]Type 'menu' to return, 'clear' to wipe memory, 'save' or 'save.custom_name' to log the last response to file[/dim]", justify="center")
@@ -603,7 +604,7 @@ def chat_session():
                     if saved_file:
                         console.print(Align.center(Panel(
                             f"[bold green]✔ DATA SAVED TO: {saved_file} ✔[/bold green]", 
-                            style="green", width=50
+                            style="green"
                         )))
                 else:
                     console.print(Align.center("[bold red]>> ERROR: NOTHING TO SAVE YET <<[/bold red]"))
@@ -617,17 +618,17 @@ def chat_session():
             # --- LIVE RESPONSE LOGIC ---
             full_response = ""
             
-            # FIX: We now wrap the Panel in Align.center() inside the Live loop
-            initial_panel = Align.center(
-                Panel(Markdown(""), title="[bold green]Incoming Data Stream...[/bold green]", border_style="green", box=box.ROUNDED, width=80)
+            # [FIXED] Removed 'width=80'. Now it auto-scales to your screen.
+            initial_view = Align.center(
+                Panel(Markdown(""), title="[bold green]Incoming Data Stream...[/bold green]", border_style="green", box=box.ROUNDED)
             )
 
-            with Live(initial_panel, refresh_per_second=8, console=console) as live:
+            # [FIXED] Added vertical_overflow='visible' to prevent cutting off text
+            with Live(initial_view, refresh_per_second=8, console=console, vertical_overflow="visible") as live:
                 for chunk in call_api(history):
                     full_response += chunk
-                    # Update the panel with the new chunk added, keeping it CENTERED
                     live.update(Align.center(
-                        Panel(Markdown(full_response), title="[bold green]Response[/bold green]", border_style="green", box=box.ROUNDED, width=80)
+                        Panel(Markdown(full_response), title="[bold green]Response[/bold green]", border_style="green", box=box.ROUNDED)
                     ))
             
             # --- STORE FOR POTENTIAL SAVING ---
