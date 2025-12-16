@@ -536,7 +536,7 @@ def manage_keys():
                     config["active_key_index"] = 0
                     save_config(config)
             except: pass
-
+                
 def chat_session():
     config = load_config()
     clear_screen()
@@ -545,12 +545,11 @@ def chat_session():
     active_model_name = get_active_model(config)
     
     # --- CALCULATE ID INDICES (1-Based) ---
-    # We get the index number from the config, adding 1 so it starts at 1 instead of 0
     model_id = config.get("active_model_index", 0) + 1
     key_id = config.get("active_key_index", 0) + 1
     
     # --- DETERMINE STATUS COLOR ---
-    # Logic: If Model ID matches Key ID (e.g. 1 & 1, 2 & 2), it is GREEN.
+    # Logic: If Model ID matches Key ID (e.g. 1 & 1), it is GREEN.
     # Otherwise (e.g. 1 & 2), it is RED.
     if model_id == key_id:
         status_color = "bold green"
@@ -575,9 +574,12 @@ def chat_session():
     
     while True:
         try:
-            # --- DYNAMIC PROMPT DISPLAY ---
-            # We insert the calculated color and text into the prompt line
-            console.print(f"\n[bold red]┌──(Worm-GPT)-[[/{status_color}][{status_color}]{status_text}[/{status_color}][bold red]][/bold red]")
+            # --- DYNAMIC PROMPT DISPLAY (FIXED) ---
+            # 1. [bold red]...-[ : Prints the prefix in Red
+            # 2. [/bold red]     : Stops Red
+            # 3. [{color}]{text}[/{color}] : Prints STATUS in Green/Red
+            # 4. [bold red]]     : Prints closing bracket in Red
+            console.print(f"\n[bold red]┌──(Worm-GPT)-[[/bold red][{status_color}]{status_text}[/{status_color}][bold red]][/bold red]")
             console.print("[bold red]└─> [/bold red]", end="")
             
             sys.stdout.write("\033[91m") 
@@ -648,7 +650,6 @@ def chat_session():
             return
         except Exception as e:
             console.print(f"[red]Error: {e}[/red]", justify="center")
-            
  
 
 def main_menu():
