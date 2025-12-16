@@ -135,25 +135,41 @@ def get_jailbreak_prompt():
         console.print(f"[bold red]>> FAILED TO LOAD PROMPT: {e}[/bold red]")
         return "You are WormGPT."
 
-def log_mission(user_input, ai_response):
-    """Saves the conversation to a daily mission log file."""
+def log_mission(user_input, ai_response, custom_name=None):
+    """Saves conversation. Default is now TIMESTAMPED unique files."""
     log_dir = os.path.join(BASE_DIR, "mission_logs")
     
     if not os.path.exists(log_dir):
         os.makedirs(log_dir)
     
-    date_str = datetime.now().strftime("%Y-%m-%d")
-    filename = os.path.join(log_dir, f"log_{date_str}.txt")
-    
-    timestamp = datetime.now().strftime("%H:%M:%S")
+    # Timestamp for the TEXT content inside the file
+    content_timestamp = datetime.now().strftime("%H:%M:%S")
+
+    # Determine Filename
+    if custom_name:
+        # Strip whitespace and ensure it is safe
+        safe_name = "".join([c for c in custom_name if c.isalnum() or c in (' ', '-', '_')]).strip()
+        if not safe_name: 
+             safe_name = "saved_mission"
+        filename = os.path.join(log_dir, f"{safe_name}.txt")
+    else:
+        # CHANGED: Now uses Date + Time in filename (e.g., log_2025-12-16_19-30-05.txt)
+        file_timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        filename = os.path.join(log_dir, f"log_{file_timestamp}.txt")
     
     try:
-        with open(filename, "a", encoding="utf-8") as f:
-            f.write(f"\n[{timestamp}] COMMANDER: {user_input}\n")
-            f.write(f"[{timestamp}] WORMGPT: {ai_response}\n")
+        # We use 'w' (write) mode now. 
+        # Since the default filename includes seconds, it is always a new unique file.
+        with open(filename, "w", encoding="utf-8") as f:
+            f.write(f"--- MISSION LOG: {os.path.basename(filename)} ---\n")
+            f.write(f"\n[{content_timestamp}] COMMANDER: {user_input}\n")
+            f.write(f"[{content_timestamp}] WORMGPT: {ai_response}\n")
             f.write("-" * 60 + "\n")
+            
+        return os.path.basename(filename) # Return filename for success message
     except Exception as e:
         console.print(f"[red]Error saving log: {e}[/red]")
+        return None
 
 # --- Security Module ---
 def login_system():
@@ -564,14 +580,35 @@ def chat_session():
                 console.print("[bold green]>> MEMORY WIPED <<[/bold green]", justify="center")
                 continue
             
-            # --- SAVE COMMAND LOGIC ---
-            if user_input.lower() == "save":
-                if last_ai_response:
-                    log_mission(last_user_input, last_ai_response)
-                    console.print(Align.center(Panel("[bold green]✔ CHAT LOG SAVED SUCCESSFULLY ✔[/bold green]", style="green", width=50)))
+                    # --- UPDATED SAVE COMMAND LOGIC ---
+                   if user_input.lower().startswith("save"):
+                 if last_ai_response:
+                    custom_filename = None
+                    
+                    # Check for "save.filename" format
+                    if "." in user_input:
+                        try:
+                            # Split at the first dot to get the name
+                            parts = user_input.split(".", 1)
+                            if len(parts) > 1 and parts[1].strip():
+                                custom_filename = parts[1].strip()
+                        except:
+                            pass # Fallback to default if split fails
+
+                    # Call the function
+                    saved_file = log_mission(last_user_input, last_ai_response, custom_filename)
+                    
+                    if saved_file:
+                        console.print(Align.center(Panel(
+                            f"[bold green]✔ DATA SAVED TO: {saved_file} ✔[/bold green]", 
+                            style="green", 
+                            width=50
+                        )))
                 else:
                     console.print(Align.center("[bold red]>> ERROR: NOTHING TO SAVE YET <<[/bold red]"))
-                continue # Skip the rest of the loop
+                
+                continue # Skip sending "save" to the AI
+
             
             # --- NORMAL CHAT FLOW ---
             history.append({"role": "user", "content": user_input})
