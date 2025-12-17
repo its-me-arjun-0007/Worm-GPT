@@ -163,13 +163,17 @@ def log_mission(user_input, ai_response, custom_name=None):
 
 # --- Security Module ---
 def login_system():
-    """Web-Style Login Interface with WormGPT Aesthetics"""
-    USERS_FILE = os.path.join(BASE_DIR, "wormgpt_users.json") # [Fixed Path Issue]
+    """Web-Style Login Interface with WormGPT Aesthetics - CENTERED & FIXED"""
+    USERS_FILE = os.path.join(BASE_DIR, "wormgpt_users.json") # Fixed path issue
     
     if not os.path.exists(USERS_FILE):
         clear_screen()
-        console.print(Panel("[bold red]CRITICAL ERROR: USER DATABASE MISSING[/bold red]", 
-                            title="[bold red] SYSTEM HALTED [/bold red]", border_style="red"))
+        # Centered Error Panel
+        console.print(Align.center(Panel(
+            Align.center("[bold red]CRITICAL ERROR: USER DATABASE MISSING[/bold red]"), 
+            title="[bold red] SYSTEM HALTED [/bold red]", 
+            border_style="red"
+        )))
         sys.exit(1)
         
     try:
@@ -191,7 +195,7 @@ def login_system():
         except:
             clean_logo = "WORM-GPT SYSTEM"
 
-        logo_render = Text(clean_logo, style="bold red", justify="center")
+        logo_render = Text(clean_logo, style="bold red", justify="center") # Added justify="center"
 
         login_text = """
 [bold white]AUTHENTICATION REQUIRED[/bold white]
@@ -203,13 +207,12 @@ def login_system():
 [dim]---------------------------------------------------[/dim]
 [yellow]Please enter credentials to decrypt core.[/yellow]
 """
-        # Ensure login text is centered
         text_render = Text.from_markup(login_text, justify="center")
 
         grid = Table.grid(expand=True)
-        grid.add_column(justify="center") # Force column centering
-        grid.add_row(Align.center(logo_render)) 
-        grid.add_row(Align.center(text_render))
+        grid.add_column(justify="center") # Ensure column centers content
+        grid.add_row(logo_render) 
+        grid.add_row(text_render)
 
         console.print(Align.center(Panel(
             grid,
@@ -226,14 +229,20 @@ def login_system():
         console.print(Align.center("[bold red]▼[/bold red]"))
         
         sys.stdout.write("\033[91m") 
-        user_input = console.input(f"[bold red] >> [/bold red]").strip()
+        # Input prompts are tricky to center perfectly while typing, but we center the cursor prompt
+        console.print(Align.center("[bold red]>> [/bold red]"), end="") 
+        # Moving cursor back up one line and to the right might be messy, 
+        # so for input, it's safer to keep it simple or just let the user type below the arrow.
+        # Let's stick to your original input style but ensure the text preceding it is centered.
+        user_input = input().strip() # Simplified input to avoid alignment breaking
         sys.stdout.write("\033[0m") 
         
         console.print(Align.center("[bold white]ACCESS KEY[/bold white]"))
         console.print(Align.center("[bold red]▼[/bold red]"))
-        pass_input = getpass.getpass("\033[1;31m >> \033[0m")
+        console.print(Align.center("[bold red]>> [/bold red]"), end="")
+        pass_input = getpass.getpass("") # Pass prompt handled by print above
             
-        with console.status("[bold red]Verifying Password...[/bold red]", spinner="bouncingBall"):
+        with console.status("[bold red]Verifying Password...[/bold red]", spinner="bouncingBall", spinner_style="red"):
             time.sleep(1.5) 
             
         if user_input in valid_users:
@@ -241,6 +250,7 @@ def login_system():
             
             if input_hash == valid_users[user_input]:
                 clear_screen()
+                # Centered Success Panel
                 console.print(Align.center(Panel(
                     Align.center("\n[bold green]✔ CREDENTIALS ACCEPTED ✔[/bold green]\n[dim]Decrypting Environment...[/dim]\n"),
                     style="green on black",
@@ -250,13 +260,13 @@ def login_system():
                 return True
         
         attempts += 1
-        remaining = max_attempts - attempts
         clear_screen()
         
-        # [FIXED] Added 'f' before the string so the math works
-        # [FIXED] Wrapped text in Align.center inside the Panel
+        # --- FIX 1: Added 'f' before string and used Align.center correctly ---
+        error_message = f"\n[bold white on red] ❌ INVALID CREDENTIALS ❌ [/bold white on red]\n[bold yellow]Attempts Remaining: {max_attempts - attempts}[/bold yellow]\n"
+        
         console.print(Align.center(Panel(
-            Align.center(f"\n[bold white on red] ❌ INVALID CREDENTIALS ❌ [/bold white on red]\n[bold yellow]Attempts Remaining: {remaining}[/bold yellow]\n"),
+            Align.center(error_message), # Ensures text inside panel is centered
             border_style="red",
             width=50
         )))
@@ -264,18 +274,22 @@ def login_system():
 
     clear_screen()
     
-    # [FIXED] Wrapped the text content in Align.center so it centers INSIDE the box
-    lock_msg = "[blink bold red]!!! SYSTEM LOCKED !!![/blink bold red]\n[dim]Too many failed attempts.\nIP Address logged and reported.[/dim]"
-    
+    # --- FIX 2: Created a centered Text object for the lock screen ---
+    lock_text = Text(
+        "!!! SYSTEM LOCKED !!!\nToo many failed attempts.\nIP Address logged and reported.",
+        justify="center",
+        style="dim"
+    )
+    # Highlight the first line
+    lock_text.highlight_regex("!!! SYSTEM LOCKED !!!", "blink bold red")
+
     console.print(Align.center(Panel(
-        Align.center(lock_msg), 
+        lock_text, 
         title="[bold red on black] SECURITY BREACH [/bold red on black]", 
         border_style="red",
         width=60
     )))
     sys.exit(0)
-    
-        
 
 def boot_sequence():
     """Ultimate WormGPT Hacker Boot Sequence"""
