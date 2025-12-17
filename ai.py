@@ -543,10 +543,10 @@ def chat_session():
     # --- DETERMINE STATUS COLOR ---
     if model_id == key_id:
         status_color = "bold green"
-        status_text = "☺"
+        status_text = "✔"
     else:
         status_color = "bold red"
-        status_text = "☹"
+        status_text = "✘"
 
     console.print(Align.center(Panel(
         Align.center(f"[bold yellow]TARGET MODEL:[/bold yellow] [green]{active_model_name}[/green]"), 
