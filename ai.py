@@ -229,20 +229,14 @@ def login_system():
         console.print(Align.center("[bold red]▼[/bold red]"))
         
         sys.stdout.write("\033[91m") 
-        # Input prompts are tricky to center perfectly while typing, but we center the cursor prompt
-        console.print(Align.center("[bold red]>> [/bold red]"), end="") 
-        # Moving cursor back up one line and to the right might be messy, 
-        # so for input, it's safer to keep it simple or just let the user type below the arrow.
-        # Let's stick to your original input style but ensure the text preceding it is centered.
-        user_input = input().strip() # Simplified input to avoid alignment breaking
+        user_input = console.input(f"[bold red] >> [/bold red]").strip()
         sys.stdout.write("\033[0m") 
         
         console.print(Align.center("[bold white]ACCESS KEY[/bold white]"))
         console.print(Align.center("[bold red]▼[/bold red]"))
-        console.print(Align.center("[bold red]>> [/bold red]"), end="")
-        pass_input = getpass.getpass("") # Pass prompt handled by print above
+        pass_input = getpass.getpass("\033[1;31m >> \033[0m")
             
-        with console.status("[bold red]Verifying Password...[/bold red]", spinner="bouncingBall", spinner_style="red"):
+        with console.status(Align.center("[bold red]Verifying Password...[/bold red]", spinner="bouncingBall", spinner_style="red")):
             time.sleep(1.5) 
             
         if user_input in valid_users:
