@@ -253,10 +253,10 @@ def login_system():
         error_message = f"\n[bold white on red] ❌ INVALID CREDENTIALS ❌ [/bold white on red]\n[bold yellow]Attempts Remaining: {max_attempts - attempts}[/bold yellow]\n"
         
         console.print(Align.center(Panel(
-            Align.center(error_message), justify="center, # Ensures text inside panel is centered
-            border_style="red",
-            width=50
-        )))
+    Align.center(error_message),
+    border_style="red",
+    width=50
+)))
         time.sleep(1.5)
     clear_screen()
     console.print(Align.center(Panel(
