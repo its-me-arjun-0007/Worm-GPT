@@ -1,6 +1,6 @@
 # 💀 WormGPT CLI - Ultimate Hacker Edition
 
-![WormGPT Banner](example/1003017738.jpg)
+![WormGPT Banner](image/1003017738.jpg)
 
 > *“We don't just chat. We infiltrate.”*
 
