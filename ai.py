@@ -164,7 +164,7 @@ def log_mission(user_input, ai_response, custom_name=None):
 # --- Security Module ---
 def login_system():
     """Web-Style Login Interface with WormGPT Aesthetics"""
-    USERS_FILE = "wormgpt_users.json"
+    USERS_FILE = os.path.join(BASE_DIR, "wormgpt_users.json") # [Fixed Path Issue]
     
     if not os.path.exists(USERS_FILE):
         clear_screen()
@@ -191,7 +191,7 @@ def login_system():
         except:
             clean_logo = "WORM-GPT SYSTEM"
 
-        logo_render = Text(clean_logo, style="bold red")
+        logo_render = Text(clean_logo, style="bold red", justify="center")
 
         login_text = """
 [bold white]AUTHENTICATION REQUIRED[/bold white]
@@ -203,12 +203,13 @@ def login_system():
 [dim]---------------------------------------------------[/dim]
 [yellow]Please enter credentials to decrypt core.[/yellow]
 """
+        # Ensure login text is centered
         text_render = Text.from_markup(login_text, justify="center")
 
         grid = Table.grid(expand=True)
-        grid.add_column() 
+        grid.add_column(justify="center") # Force column centering
         grid.add_row(Align.center(logo_render)) 
-        grid.add_row(text_render)
+        grid.add_row(Align.center(text_render))
 
         console.print(Align.center(Panel(
             grid,
@@ -249,22 +250,32 @@ def login_system():
                 return True
         
         attempts += 1
+        remaining = max_attempts - attempts
         clear_screen()
+        
+        # [FIXED] Added 'f' before the string so the math works
+        # [FIXED] Wrapped text in Align.center inside the Panel
         console.print(Align.center(Panel(
-            Align.center("\n[bold white on red] ❌ INVALID CREDENTIALS ❌ [/bold white on red]\n[bold yellow]Attempts Remaining: {max_attempts - attempts}[/bold yellow]\n"),
+            Align.center(f"\n[bold white on red] ❌ INVALID CREDENTIALS ❌ [/bold white on red]\n[bold yellow]Attempts Remaining: {remaining}[/bold yellow]\n"),
             border_style="red",
             width=50
         )))
         time.sleep(1.5)
 
     clear_screen()
+    
+    # [FIXED] Wrapped the text content in Align.center so it centers INSIDE the box
+    lock_msg = "[blink bold red]!!! SYSTEM LOCKED !!![/blink bold red]\n[dim]Too many failed attempts.\nIP Address logged and reported.[/dim]"
+    
     console.print(Align.center(Panel(
-        "[blink bold red]!!! SYSTEM LOCKED !!![/blink bold red]\n[dim]Too many failed attempts.\nIP Address logged and reported.[/dim]", 
+        Align.center(lock_msg), 
         title="[bold red on black] SECURITY BREACH [/bold red on black]", 
         border_style="red",
         width=60
     )))
     sys.exit(0)
+    
+        
 
 def boot_sequence():
     """Ultimate WormGPT Hacker Boot Sequence"""
