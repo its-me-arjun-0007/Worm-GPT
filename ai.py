@@ -163,17 +163,13 @@ def log_mission(user_input, ai_response, custom_name=None):
 
 # --- Security Module ---
 def login_system():
-    """Web-Style Login Interface with WormGPT Aesthetics - CENTERED & FIXED"""
-    USERS_FILE = os.path.join(BASE_DIR, "wormgpt_users.json") # Fixed path issue
+    """Web-Style Login Interface with WormGPT Aesthetics"""
+    USERS_FILE = "wormgpt_users.json"
     
     if not os.path.exists(USERS_FILE):
         clear_screen()
-        # Centered Error Panel
-        console.print(Align.center(Panel(
-            Align.center("[bold red]CRITICAL ERROR: USER DATABASE MISSING[/bold red]"), 
-            title="[bold red] SYSTEM HALTED [/bold red]", 
-            border_style="red"
-        )))
+        console.print(Panel("[bold red]CRITICAL ERROR: USER DATABASE MISSING[/bold red]", 
+                            title="[bold red] SYSTEM HALTED [/bold red]", border_style="red"))
         sys.exit(1)
         
     try:
@@ -195,7 +191,7 @@ def login_system():
         except:
             clean_logo = "WORM-GPT SYSTEM"
 
-        logo_render = Text(clean_logo, style="bold red", justify="center") # Added justify="center"
+        logo_render = Text(clean_logo, style="bold red")
 
         login_text = """
 [bold white]AUTHENTICATION REQUIRED[/bold white]
@@ -210,8 +206,8 @@ def login_system():
         text_render = Text.from_markup(login_text, justify="center")
 
         grid = Table.grid(expand=True)
-        grid.add_column(justify="center") # Ensure column centers content
-        grid.add_row(logo_render) 
+        grid.add_column() 
+        grid.add_row(Align.center(logo_render)) 
         grid.add_row(text_render)
 
         console.print(Align.center(Panel(
@@ -236,7 +232,7 @@ def login_system():
         console.print(Align.center("[bold red]▼[/bold red]"))
         pass_input = getpass.getpass("\033[1;31m >> \033[0m")
             
-        with console.status(Align.center("[bold red]Verifying Password...[/bold red]", spinner="bouncingBall", spinner_style="red")):
+        with console.status(Align.center("[bold red]Verifying Password...[/bold red]"), spinner="bouncingBall"):
             time.sleep(1.5) 
             
         if user_input in valid_users:
@@ -244,7 +240,6 @@ def login_system():
             
             if input_hash == valid_users[user_input]:
                 clear_screen()
-                # Centered Success Panel
                 console.print(Align.center(Panel(
                     Align.center("\n[bold green]✔ CREDENTIALS ACCEPTED ✔[/bold green]\n[dim]Decrypting Environment...[/dim]\n"),
                     style="green on black",
@@ -255,36 +250,22 @@ def login_system():
         
         attempts += 1
         clear_screen()
-        
-        # --- FIX 1: Added 'f' before string and used Align.center correctly ---
         error_message = f"\n[bold white on red] ❌ INVALID CREDENTIALS ❌ [/bold white on red]\n[bold yellow]Attempts Remaining: {max_attempts - attempts}[/bold yellow]\n"
         
         console.print(Align.center(Panel(
-            Align.center(error_message), # Ensures text inside panel is centered
+            Align.center(error_message), justify="center, # Ensures text inside panel is centered
             border_style="red",
             width=50
         )))
         time.sleep(1.5)
-
     clear_screen()
-    
-    # --- FIX 2: Created a centered Text object for the lock screen ---
-    lock_text = Text(
-        "!!! SYSTEM LOCKED !!!\nToo many failed attempts.\nIP Address logged and reported.",
-        justify="center",
-        style="dim"
-    )
-    # Highlight the first line
-    lock_text.highlight_regex("!!! SYSTEM LOCKED !!!", "blink bold red")
-
     console.print(Align.center(Panel(
-        lock_text, 
+        "[blink bold red]!!! SYSTEM LOCKED !!![/blink bold red]\n[dim]Too many failed attempts.\nIP Address logged and reported.[/dim]", 
         title="[bold red on black] SECURITY BREACH [/bold red on black]", 
         border_style="red",
         width=60
     )))
     sys.exit(0)
-
 def boot_sequence():
     """Ultimate WormGPT Hacker Boot Sequence"""
     clear_screen()
