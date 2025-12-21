@@ -55,7 +55,7 @@ def load_config():
         "models": DEFAULT_MODELS,
         "active_model_index": 0,
         "language": "English",
-        "max_tokens": 4000,
+        "max_tokens": 1700,
         "base_url": DEFAULT_BASE_URL
     }
 
@@ -64,11 +64,13 @@ def load_config():
             with open(CONFIG_FILE, "r") as f:
                 loaded_config = json.load(f)
                 
+            # Migration: Handle old single api_key format
             if "api_key" in loaded_config and isinstance(loaded_config["api_key"], str):
                 if loaded_config["api_key"]: 
                     loaded_config["api_keys"] = [loaded_config["api_key"]]
                 del loaded_config["api_key"]
             
+            # Migration: Handle old single model format
             if "model" in loaded_config and isinstance(loaded_config["model"], str):
                 current_model = loaded_config["model"]
                 if current_model not in loaded_config.get("models", DEFAULT_MODELS):
@@ -76,6 +78,7 @@ def load_config():
                     loaded_config["models"] = new_list
                 del loaded_config["model"]
 
+            # Ensure all default keys exist
             for key, value in default_config.items():
                 if key not in loaded_config:
                     loaded_config[key] = value
