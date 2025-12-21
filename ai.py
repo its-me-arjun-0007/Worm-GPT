@@ -384,7 +384,7 @@ def call_api(messages):
     config = load_config()
     api_key = get_active_key(config)
     model = get_active_model(config)
-    max_tokens = config.get("max_tokens", 1600)
+    max_tokens = config.get("max_tokens", 1700)
     base_url = config.get("base_url", DEFAULT_BASE_URL)
 
     if not api_key:
@@ -534,7 +534,7 @@ def manage_keys():
                 
 
 # PASTE THESE TWO NEW FUNCTIONS HERE:
-def manage_context(history, max_tokens=1600):
+def manage_context(history, max_tokens=1700):
     system_prompt = history[0]
     conversation = history[1:]
     current_chars = sum(len(m['content']) for m in conversation)
@@ -579,7 +579,7 @@ def chat_session():
         width=None 
     )))
 
-    console.print("[dim]Type 'menu' to return, 'clear' to wipe memory, 'save' to log, or 'upload /path/file.txt'[/dim]", justify="center")
+    console.print("[dim]Type 'menu' to return, 'clear' to wipe memory, 'save.filename' to log, or 'upload /path/file.txt'[/dim]", justify="center")
     
     history = [{"role": "system", "content": get_jailbreak_prompt()}]
     
