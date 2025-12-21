@@ -529,75 +529,35 @@ def manage_keys():
                     save_config(config)
             except: pass
                 
-# --- Add this inside ai.py (Helper Functions Section) ---
+# ... existing imports ...
 
+# --- Helper Functions ---
+
+def load_config():
+    # ... existing code ...
+    return default_config # (abbreviated for clarity)
+
+# PASTE THESE TWO NEW FUNCTIONS HERE:
 def manage_context(history, max_tokens=4000):
-    """
-    Primitive sliding window: If history is too long, remove the oldest messages
-    (skipping the first one, which is usually the System Prompt).
-    Rough estimate: 1 token ~= 4 chars.
-    """
-    # Keep system prompt
     system_prompt = history[0]
     conversation = history[1:]
-    
-    # Calculate rough token count
     current_chars = sum(len(m['content']) for m in conversation)
-    
-    # If we exceed roughly 75% of max tokens (leaving room for response)
     while current_chars > (max_tokens * 4 * 0.75) and len(conversation) > 1:
         removed = conversation.pop(0)
         current_chars -= len(removed['content'])
-        
     return [system_prompt] + conversation
 
 def read_file_content(filepath):
-    """Reads text from a file path."""
     if not os.path.exists(filepath):
         return None, "File not found."
-    
     try:
-        # detailed read for different text types could go here
         with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
             content = f.read()
         return content, f"File '{os.path.basename(filepath)}' uploaded successfully."
     except Exception as e:
         return None, str(e)
 
-# --- Modify the chat_session loop in ai.py ---
-
-# Inside chat_session(), look for: if user_input.lower().startswith("save"):
-# Add this NEW block right after it:
-
-            # --- UPLOAD COMMAND LOGIC ---
-            if user_input.lower().startswith("upload"):
-                parts = user_input.split(" ", 1)
-                if len(parts) < 2:
-                    console.print("[red]Usage: upload /path/to/file.txt[/red]")
-                    continue
-                
-                filepath = parts[1].strip().strip('"').strip("'")
-                file_content, status_msg = read_file_content(filepath)
-                
-                if file_content:
-                    # Inject file content as a system/user message hidden from user view essentially
-                    context_msg = f"--- START FILE CONTENT: {filepath} ---\n{file_content}\n--- END FILE CONTENT ---"
-                    history.append({"role": "user", "content": f"I have uploaded a file. Here is the content:\n{context_msg}\n\nPlease analyze this file."})
-                    console.print(Align.center(Panel(f"[bold green]✔ {status_msg} ✔[/bold green]", style="green")))
-                    
-                    # Auto-trigger a response or wait for user? Let's wait for user question about it.
-                    # Actually, usually you want the AI to acknowledge it.
-                    console.print(f"[bold cyan]Transmitting File Data...[/bold cyan]", justify="center")
-                    with console.status("[bold green]Analyzing File...[/bold green]", spinner="dots"):
-                        response = call_api(history)
-                    history.append({"role": "assistant", "content": response})
-                    console.print(Align.center(Panel(Markdown(response), title="[bold green]Analysis[/bold green]", border_style="green")))
-                else:
-                    console.print(f"[red]Error: {status_msg}[/red]")
-                continue
-
-            # --- CONTEXT MANAGEMENT BEFORE API CALL ---
-            history = manage_context(history, config.get("max_tokens", 4000))
+# ... keep save_config, get_active_key, etc. below this ...
 
 def chat_session():
     config = load_config()
@@ -606,11 +566,10 @@ def chat_session():
     
     active_model_name = get_active_model(config)
     
-    # --- CALCULATE ID INDICES (1-Based) ---
+    # --- CALCULATE ID INDICES ---
     model_id = config.get("active_model_index", 0) + 1
     key_id = config.get("active_key_index", 0) + 1
     
-    # --- DETERMINE STATUS COLOR ---
     if model_id == key_id:
         status_color = "bold green"
         status_text = "✔"
@@ -624,11 +583,10 @@ def chat_session():
         width=None 
     )))
 
-    console.print("[dim]Type 'menu' to return, 'clear' to wipe memory, 'save' or 'save.custom_name' to log the last response to file[/dim]", justify="center")
+    console.print("[dim]Type 'menu' to return, 'clear' to wipe memory, 'save' to log, or 'upload /path/file.txt'[/dim]", justify="center")
     
     history = [{"role": "system", "content": get_jailbreak_prompt()}]
     
-    # --- MEMORY BUFFER FOR SAVING ---
     last_user_input = None
     last_ai_response = None
     
@@ -667,22 +625,42 @@ def chat_session():
                         except: pass
 
                     saved_file = log_mission(last_user_input, last_ai_response, custom_filename)
-                    
                     if saved_file:
-                        console.print(Align.center(Panel(
-                            f"[bold green]✔ DATA SAVED TO: {saved_file} ✔[/bold green]", 
-                            style="green"
-                        )))
+                        console.print(Align.center(Panel(f"[bold green]✔ DATA SAVED TO: {saved_file} ✔[/bold green]", style="green")))
                 else:
                     console.print(Align.center("[bold red]>> ERROR: NOTHING TO SAVE YET <<[/bold red]"))
                 continue 
 
+            # --- UPLOAD COMMAND LOGIC (FIXED INDENTATION) ---
+            if user_input.lower().startswith("upload"):
+                parts = user_input.split(" ", 1)
+                if len(parts) < 2:
+                    console.print("[red]Usage: upload /path/to/file.txt[/red]")
+                    continue
+                
+                filepath = parts[1].strip().strip('"').strip("'")
+                file_content, status_msg = read_file_content(filepath)
+                
+                if file_content:
+                    context_msg = f"--- START FILE CONTENT: {filepath} ---\n{file_content}\n--- END FILE CONTENT ---"
+                    history.append({"role": "user", "content": f"I have uploaded a file. Here is the content:\n{context_msg}\n\nPlease analyze this file."})
+                    console.print(Align.center(Panel(f"[bold green]✔ {status_msg} ✔[/bold green]", style="green")))
+                    
+                    console.print(f"[bold cyan]Transmitting File Data...[/bold cyan]", justify="center")
+                    with console.status("[bold green]Analyzing File...[/bold green]", spinner="dots"):
+                        response = call_api(history)
+                    history.append({"role": "assistant", "content": response})
+                    console.print(Align.center(Panel(Markdown(response), title="[bold green]Analysis[/bold green]", border_style="green")))
+                else:
+                    console.print(f"[red]Error: {status_msg}[/red]")
+                continue
+
             # --- NORMAL CHAT FLOW ---
+            history = manage_context(history, config.get("max_tokens", 1700)) # Context Manager added here
             history.append({"role": "user", "content": user_input})
             
             console.print(f"\n[bold cyan]Transmitting Data Packets...[/bold cyan]", justify="center")
             
-            # --- NO STREAMING: USE STATUS SPINNER ---
             with console.status("[bold green]Awaiting Response...[/bold green]", spinner="dots"):
                 response = call_api(history)
             
@@ -694,13 +672,13 @@ def chat_session():
             if "[bold red]" in response:
                 console.print(f"\n{response}\n", justify="center")
             else:
-                # Print Full Response in Panel (Mobile Friendly)
                 console.print(Align.center(Panel(Markdown(response), title="[bold green]Response[/bold green]", border_style="green", box=box.ROUNDED)))
                 
         except KeyboardInterrupt:
             return
         except Exception as e:
             console.print(f"[red]Error: {e}[/red]", justify="center")
+            
 
 def main_menu():
     while True:
