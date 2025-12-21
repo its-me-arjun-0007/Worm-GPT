@@ -384,7 +384,7 @@ def call_api(messages):
     config = load_config()
     api_key = get_active_key(config)
     model = get_active_model(config)
-    max_tokens = config.get("max_tokens", 4000)
+    max_tokens = config.get("max_tokens", 1600)
     base_url = config.get("base_url", DEFAULT_BASE_URL)
 
     if not api_key:
@@ -532,16 +532,9 @@ def manage_keys():
                     save_config(config)
             except: pass
                 
-# ... existing imports ...
-
-# --- Helper Functions ---
-
-def load_config():
-    # ... existing code ...
-    return default_config # (abbreviated for clarity)
 
 # PASTE THESE TWO NEW FUNCTIONS HERE:
-def manage_context(history, max_tokens=4000):
+def manage_context(history, max_tokens=1600):
     system_prompt = history[0]
     conversation = history[1:]
     current_chars = sum(len(m['content']) for m in conversation)
