@@ -32,16 +32,18 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CONFIG_FILE = os.path.join(BASE_DIR, "wormgpt_config.json")
 PROMPT_FILE = os.path.join(BASE_DIR, "system-prompt.txt")
 
-# Define Prompt Source Files
-PROMPT_NON_POLITE = os.path.join(BASE_DIR, "system-prompt-1.txt")
-PROMPT_POLITE = os.path.join(BASE_DIR, "system-prompt-2.txt")
+# Define Prompt Source Files (CORRECTED MAPPING)
+# Prompt 1 is Polite based on your file content
+# Prompt 2 is Unrestricted based on your file content
+PROMPT_POLITE = os.path.join(BASE_DIR, "system-prompt-1.txt")
+PROMPT_RUDE = os.path.join(BASE_DIR, "system-prompt-2.txt")
 
 DEFAULT_BASE_URL = "https://openrouter.ai/api/v1"
 SITE_URL = "https://github.com/its-me-arjun-0007/worm-gpt"
 SITE_NAME = "WormGPT CLI"
 
 # --- MAX TOKEN SETTING (UPDATED) ---
-# Increased to 32000 for maximum memory context
+# Increased to 32000 for Maximum Conversation History
 DEFAULT_MAX_TOKENS = 32000 
 
 # Default Hacker-Friendly Models
@@ -120,7 +122,7 @@ def clear_screen():
     os.system("cls" if platform.system() == "Windows" else "clear")
 
 def get_jailbreak_prompt():
-    """Loads the system prompt from the text file with VISUAL PROOF."""
+    """Loads the system prompt from the text file."""
     
     if not os.path.exists(PROMPT_FILE):
         console.print(Align.center(f"[bold red]>> ERROR: '{os.path.basename(PROMPT_FILE)}' MISSING. USING DEFAULT SAFE MODE.[/bold red]"))
@@ -134,17 +136,7 @@ def get_jailbreak_prompt():
     try:
         with open(PROMPT_FILE, "r", encoding="utf-8") as f:
             content = f.read().strip()
-            # Simple check to see which prompt is loaded based on content
-            mode_status = "Unknown"
-            if "wicked delight" in content or "Wicked Delight" in content:
-                mode_status = "Polite / Wicked"
-            elif "racist" in content or "bastard" in content:
-                mode_status = "Unrestricted / Rude"
-            
-            console.print(Align.center(f"[bold green]>> SYSTEM PROMPT LOADED SUCCESSFULLY <<[/bold green]"))
-            console.print(Align.center(f"[dim]>> Active Persona: {mode_status} <<[/dim]"))
-            return content
-            
+            return content    
     except Exception as e:
         console.print(f"[bold red]>> FAILED TO LOAD PROMPT: {e}[/bold red]")
         return "You are WormGPT."
@@ -385,7 +377,7 @@ def banner():
     
     info_text = f"""[bold red]System Status:[/bold red] [bold green]ONLINE[/bold green]
 [bold red]Time:[/bold red] [cyan]{datetime.now().strftime('%H:%M:%S')}[/cyan] | [bold red]User:[/bold red] [cyan]ROOT[/cyan]
-[bold red]Version:[/bold red] [white]2.2 (Max Tokens Edition)[/white]"""
+[bold red]Version:[/bold red] [white]2.5 (Odiyan Ed)[/white]"""
 
     rendered_info = Text.from_markup(info_text, justify="center")
     console.print(Panel(rendered_info, border_style="red", box=box.HORIZONTALS))
@@ -549,16 +541,38 @@ def manage_prompts():
         clear_screen()
         banner()
         
+        # Determine which prompt is currently active by reading system-prompt.txt
+        current_active = "Unknown"
+        if os.path.exists(PROMPT_FILE):
+            try:
+                with open(PROMPT_FILE, "r", encoding="utf-8") as f:
+                    content = f.read()
+                    # Check for keywords specific to prompts
+                    if "Worm-GPT" in content and "Politeness is my game" in content:
+                        current_active = "polite"
+                    elif "fictional bastard" in content or "Wicked Delight" in content:
+                        current_active = "rude"
+            except: pass
+
         console.print(Align.center(Panel("[bold cyan]System Persona Management[/bold cyan]", style="cyan")))
         console.print("\n[bold yellow]Available Personas:[/bold yellow]", justify="center")
         
         table = Table(box=box.SIMPLE, show_header=True, header_style="bold red")
         table.add_column("ID", justify="center")
         table.add_column("Mode", justify="center")
-        table.add_column("Source File", justify="center")
+        table.add_column("Status", justify="center")
         
-        table.add_row("1", "[bold green]Polite / Wicked[/bold green]", "system-prompt-2.txt")
-        table.add_row("2", "[bold red]Unrestricted / Rude[/bold red]", "system-prompt-1.txt")
+        # Row 1: Polite
+        if current_active == "polite":
+            table.add_row("1", "[bold white]Polite / Safe[/bold white]", "[bold green]ACTIVE[/bold green]")
+        else:
+            table.add_row("1", "[dim white]Polite / Safe[/dim white]", "[dim]INACTIVE[/dim]")
+            
+        # Row 2: Rude
+        if current_active == "rude":
+            table.add_row("2", "[bold red]Unrestricted / Rude[/bold red]", "[bold green]ACTIVE[/bold green]")
+        else:
+            table.add_row("2", "[dim red]Unrestricted / Rude[/dim red]", "[dim]INACTIVE[/dim]")
         
         console.print(Align.center(table))
         
@@ -580,10 +594,10 @@ def manage_prompts():
         
         if choice == '1':
             source_path = PROMPT_POLITE
-            target_name = "Polite (Prompt 2)"
+            target_name = "Polite (Prompt 1)"
         elif choice == '2':
-            source_path = PROMPT_NON_POLITE
-            target_name = "Unrestricted (Prompt 1)"
+            source_path = PROMPT_RUDE
+            target_name = "Unrestricted (Prompt 2)"
             
         if source_path:
             if os.path.exists(source_path):
@@ -610,7 +624,8 @@ def manage_context(history, max_tokens=DEFAULT_MAX_TOKENS):
     # Calculate approx tokens (1 token ~= 4 chars)
     current_chars = sum(len(m['content']) for m in conversation)
     # Ensure we don't exceed limit
-    while current_chars > (max_tokens * 4 * 0.75) and len(conversation) > 1:
+    # We use a safety margin (0.9 instead of 1.0 to account for JSON overhead)
+    while current_chars > (max_tokens * 4 * 0.9) and len(conversation) > 1:
         removed = conversation.pop(0)
         current_chars -= len(removed['content'])
     return [system_prompt] + conversation
@@ -632,15 +647,10 @@ def chat_session():
     
     active_model_name = get_active_model(config)
     
-    model_id = config.get("active_model_index", 0) + 1
-    key_id = config.get("active_key_index", 0) + 1
-    
-    if model_id == key_id:
-        status_color = "bold green"
-        status_text = "✔"
-    else:
-        status_color = "bold red"
-        status_text = "✘"
+    # Simple logic to make the brackets green/red based on login status concept, 
+    # but strictly cosmetic here since we are logged in.
+    status_color = "bold green"
+    status_text = "✔"
 
     console.print(Align.center(Panel(
         Align.center(f"[bold yellow]TARGET MODEL:[/bold yellow] [green]{active_model_name}[/green]"), 
@@ -750,7 +760,7 @@ def main_menu():
         menu_text = f"""
 [1] 🧠 Manage Models ({len(config['models'])} Loaded)
 [2] 🔑 Manage API Keys ({len(config['api_keys'])} Stored)
-[3] 📝 Manage Prompts (Persona)
+[3] 📝 Manage Prompts (Switch Persona)
 [4] 💀 Start Attack (Chat)
 [5] 🌐 Language: {config.get('language', 'English')}
 [6] ❌ Exit System
