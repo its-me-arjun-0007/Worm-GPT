@@ -43,7 +43,7 @@ SITE_NAME = "WormGPT CLI"
 
 # --- MAX TOKEN SETTING ---
 # Set to 100,000 for Maximum Conversation History
-DEFAULT_MAX_TOKENS = 100000 
+DEFAULT_MAX_TOKENS = 32000 
 
 # Default Hacker-Friendly Models
 DEFAULT_MODELS = [
@@ -376,7 +376,7 @@ def banner():
     
     info_text = f"""[bold red]System Status:[/bold red] [bold green]ONLINE[/bold green]
 [bold red]Time:[/bold red] [cyan]{datetime.now().strftime('%H:%M:%S')}[/cyan] | [bold red]User:[/bold red] [cyan]ROOT[/cyan]
-[bold red]Version:[/bold red] [white]2.5 (Odiyan Ed)[/white]"""
+[bold red]Version:[/bold red] [white]2.5 (Hacker Edition)[/white]"""
 
     rendered_info = Text.from_markup(info_text, justify="center")
     console.print(Panel(rendered_info, border_style="red", box=box.HORIZONTALS))
@@ -563,19 +563,19 @@ def manage_prompts():
         
         # Row 1: Polite
         if current_active == "polite":
-            table.add_row("1", "[bold white]Polite / Safe[/bold white]", "[bold green]ACTIVE[/bold green]")
+            table.add_row("1", "[bold white]Polite[/bold white]", "[bold green]ACTIVE[/bold green]")
         else:
-            table.add_row("1", "[dim white]Polite / Safe[/dim white]", "[dim]INACTIVE[/dim]")
+            table.add_row("1", "[dim white]Polite[/dim white]", "[dim]INACTIVE[/dim]")
             
         # Row 2: Rude
         if current_active == "rude":
-            table.add_row("2", "[bold red]Unrestricted / Rude[/bold red]", "[bold green]ACTIVE[/bold green]")
+            table.add_row("2", "[bold red]Rude[/bold red]", "[bold green]ACTIVE[/bold green]")
         else:
-            table.add_row("2", "[dim red]Unrestricted / Rude[/dim red]", "[dim]INACTIVE[/dim]")
+            table.add_row("2", "[dim red]Rude[/dim red]", "[dim]INACTIVE[/dim]")
         
         console.print(Align.center(table))
         
-        console.print("\n[yellow][1] Load Polite  [2] Load Unrestricted  [B] Back[/yellow]", justify="center")
+        console.print("\n[yellow][1] Load Polite  [2] Load Rude  [B] Back[/yellow]", justify="center")
         
         console.print(f"\n[bold red]┌──(Worm-GPT)-[Prompts][/bold red]")
         console.print("[bold red]└─> [/bold red]", end="")
@@ -596,7 +596,7 @@ def manage_prompts():
             target_name = "Polite (Prompt 1)"
         elif choice == '2':
             source_path = PROMPT_RUDE
-            target_name = "Unrestricted (Prompt 2)"
+            target_name = "Rude (Prompt 2)"
             
         if source_path:
             if os.path.exists(source_path):
