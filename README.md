@@ -64,15 +64,20 @@ cd worm-gpt
 
 ---
 
-## Use a Virtual Environment
+## Automated Setup
+
+```bash
+chmod +x setup.sh
+./setup.sh
+```
+
+## Manual Installation
 
 ```bash
 python3 -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install requests rich pyfiglet langdetect streamlit
 ```
-
-## Run the script:
 
  ***Option A :***
 
