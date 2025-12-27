@@ -1,10 +1,10 @@
 # 💀 WormGPT - Ultimate Hacker Edition (CLI & GUI)
 
-![WormGPT Banner](1003017738.jpg)
+![WormGPT Banner](image/1003017738.jpg)
 
 > *“We don't just chat. We infiltrate.”*
 
-**WormGPT** is a powerful, dual-interface (CLI & Web) tool designed for interacting with Large Language Models (LLMs) via the OpenRouter API. [span_0](start_span)Re-engineered for a **Cyberpunk/Hacker aesthetic**, this tool offers a secure, encrypted-style environment for coding, research, and penetration testing simulations.[span_0](end_span)
+**WormGPT** is a powerful, dual-interface (CLI & Web) tool designed for interacting with Large Language Models (LLMs) via the OpenRouter API. Re-engineered for a **Cyberpunk/Hacker aesthetic**, this tool offers a secure, encrypted-style environment for coding, research, and penetration testing simulations.
 
 Whether you prefer the raw power of the terminal or a sleek web dashboard, WormGPT adapts to your workflow.
 
@@ -13,14 +13,17 @@ Whether you prefer the raw power of the terminal or a sleek web dashboard, WormG
 ## 🚀 System Capabilities
 
 ### 💻 Core Features
-* **[span_1](start_span)Dual Interfaces:** * **CLI V2.5:** A `rich`-based terminal UI with matrix boot sequences, hexadecimal memory injection visuals, and robust session management.[span_1](end_span)
-    * **[span_2](start_span)GUI V3.3:** A Streamlit-based web interface featuring "Hacker Green" CSS, file upload analysis, and real-time chat logging.[span_2](end_span)
-* **[span_3](start_span)🔐 Secure Login Portal:** Built-in local authentication system using SHA-256 hashing to protect your local environment from unauthorized access.[span_3](end_span)
-* **[span_4](start_span)🧠 Multi-Model Matrix:** Pre-configured support for top-tier free models including **DeepSeek-V3**, **Gemini 2.0 Flash**, **Qwen Coder**, and **Mistral**, with instant hot-swapping capabilities.[span_4](end_span)
-* **[span_5](start_span)🎭 Persona Injection:** * **Jailbreak Mode (Rude):** Unrestricted, aggressive persona for red-teaming.[span_5](end_span)
-    * **[span_6](start_span)Assistant Mode (Polite):** Helpful, professional persona for coding tasks.[span_6](end_span)
-* **[span_7](start_span)💾 Mission Logs:** Automatically saves conversation history with timestamps to `mission_logs/` for persistent memory.[span_7](end_span)
-* **[span_8](start_span)🐧 Cross-Platform:** Optimized for **Kali Linux**, **Termux (Android)**, Ubuntu, and Windows.[span_8](end_span)
+
+* **Dual Interfaces:**
+    * **CLI V2.5:** A `rich`-based terminal UI with matrix boot sequences, hexadecimal memory injection visuals, and robust session management.
+    * **GUI V3.3:** A Streamlit-based web interface featuring "Hacker Green" CSS, file upload analysis, and real-time chat logging.
+* **🔐 Secure Login Portal:** Built-in local authentication system using SHA-256 hashing to protect your local environment from unauthorized access.
+* **🧠 Multi-Model Matrix:** Pre-configured support for top-tier free models including **DeepSeek-V3**, **Gemini 2.0 Flash**, **Qwen Coder**, and **Mistral**, with instant hot-swapping capabilities.
+* **🎭 Persona Injection:**
+    * **Jailbreak Mode (Rude):** Unrestricted, aggressive persona for red-teaming.
+    * **Assistant Mode (Polite):** Helpful, professional persona for coding tasks.
+* **💾 Mission Logs:** Automatically saves conversation history with timestamps to `mission_logs/` for persistent memory.
+* **🐧 Cross-Platform:** Optimized for **Kali Linux**, **Termux (Android)**, Ubuntu, and Windows.
 
 ---
 
@@ -28,11 +31,11 @@ Whether you prefer the raw power of the terminal or a sleek web dashboard, WormG
 
 ### Terminal Interface (CLI)
 *Experience the raw power of the command line.*
-![CLI Interface](1003017738.jpg)
+![CLI Interface](image/1003017738.jpg)
 
 ### Web Dashboard (GUI)
 *A modern, visual command center.*
-![GUI Interface](1003017739.jpg)
+![GUI Interface](image/10030177389.jpg)
 
 ---
 
