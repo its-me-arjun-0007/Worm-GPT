@@ -74,14 +74,18 @@ pip install requests rich pyfiglet langdetect streamlit
 
 ## Run the script:
 
-***Option A:*** Launch Command Line (CLI)
+ ***Option A :***
+
+Launch Command Line (CLI)
 Ideal for low-latency, keyboard-driven usage.
 
 ```bash
 python3 worm-gpt.py
 ```
 
-***Option B:*** Launch Web Interface (GUI)
+ ***Option B :***
+
+Launch Web Interface (GUI)
 Ideal for visual interactions and file analysis.
 
 ```bash
