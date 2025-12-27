@@ -178,7 +178,7 @@ if prompt := st.chat_input("Enter command..."):
     
     if active_key:
         with st.chat_message("assistant", avatar="💀"):
-            with st.spinner("⚡ AWAITING RESPONSE & TRANSMITTING DATA PACKETS..."):
+            with st.spinner("⚡ AWAITING RESPONSE..."):
                 try:
                     headers = {
                         "Authorization": f"Bearer {active_key}",
