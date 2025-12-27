@@ -35,7 +35,7 @@ Whether you prefer the raw power of the terminal or a sleek web dashboard, WormG
 
 ### Web Dashboard (GUI)
 *A modern, visual command center.*
-![GUI Interface](image/10030177389.jpg)
+![GUI Interface](image/1003017739.jpg)
 
 ---
 
