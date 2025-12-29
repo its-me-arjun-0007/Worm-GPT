@@ -1,0 +1,12 @@
+{
+  "api_key": "",
+  "base_url": "https://openrouter.ai/api/v1",
+   "models": [
+    "kwaipilot/kat-coder-pro:free",
+    "nex-agi/deepseek-v3.1-nex-n1:free",
+    "qwen/qwen3-coder:free",
+    "google/gemini-2.0-flash-exp:free",
+    "mistralai/mistral-7b-instruct:free"
+  ],
+  "language": "English"
+}
