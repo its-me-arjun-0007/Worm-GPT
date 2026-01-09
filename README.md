@@ -52,8 +52,8 @@ Before initializing the system, ensure you have:
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/its-me-arjun-0007/worm-gpt
-cd worm-gpt
+git clone https://github.com/its-me-arjun-0007/Worm-GPT
+cd Worm-GPT
 ```
 
 ## 📦 Requirements
