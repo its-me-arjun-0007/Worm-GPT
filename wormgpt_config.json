@@ -2,9 +2,7 @@
   "api_key": "",
   "base_url": "https://openrouter.ai/api/v1",
    "models": [
-    "waipilot/kat-coder-pro:free",
-    "nex-agi/deepseek-v3.1-nex-n1:free",
-    "google/gemini-2.0-flash-exp:free",
+    "deepseek/deepseek-r1-0528:free",
   ],
   "language": "English"
 }
