@@ -17,6 +17,7 @@ Whether you prefer the raw power of the terminal or a sleek web dashboard, WormG
 * **Dual Interfaces:**
     * **CLI V2.5:** A `rich`-based terminal UI with matrix boot sequences, hexadecimal memory injection visuals, and robust session management.
     * **GUI V3.3:** A Streamlit-based web interface featuring "Hacker Green" CSS, file upload analysis, and real-time chat logging.
+* **📱 Remote Telegram Uplink:** Control WormGPT remotely via a secure Telegram bot integration. Features ID-locked access, remote chat commands, memory wiping, and AI image generation.
 * **🔐 Secure Login Portal:** Built-in local authentication system using SHA-256 hashing to protect your local environment from unauthorized access.
 * **🧠 Multi-Model Matrix:** Pre-configured support for top-tier free models including **DeepSeek-V3**, **Gemini 2.0 Flash**, **Qwen Coder**, and **Mistral**, with instant hot-swapping capabilities.
 * **🎭 Persona Injection:**
@@ -24,7 +25,6 @@ Whether you prefer the raw power of the terminal or a sleek web dashboard, WormG
     * **Assistant Mode (Polite):** Helpful, professional persona for coding tasks.
 * **💾 Mission Logs:** Automatically saves conversation history with timestamps to `mission_logs/` for persistent memory.
 * **🐧 Cross-Platform:** Optimized for **Kali Linux**, **Termux (Android)**, Ubuntu, and Windows.
-
 ---
 
 ## 📸 Visuals
