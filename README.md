@@ -100,13 +100,18 @@ streamlit run worm-gpt-web.py
 
 ## 🔐 Configuration & Security
 
-User Authentication
+### User Authentication
 Upon launch, the system requires a login. This adds a layer of security to your local interface.
 
-Default Credentials:
-You must configure the wormgpt_users.json file. If it does not exist, create it in the root directory:
+**Default Credentials:**
+* **Username:** `odiyan`
+* **Password:** `admin`
+
+You must configure the `wormgpt_users.json` file. If it does not exist, create it in the root directory. Because the system uses SHA-256 hashing for security, you must use the hashed version of the password. For the default "admin" password, your file should look exactly like this:
+
+```json
 {
-  "username": "YOUR_SHA256_HASH_OF_PASSWORD"
+  "odiyan": "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"
 }
 
 To generate a password hash, run this quick Python command:
