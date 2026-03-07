@@ -127,15 +127,19 @@ The system will automatically generate this file on first run. You can edit it m
     "sk-or-v1-xxxxxxxx...",
     "sk-or-v1-yyyyyyyy..."
   ],
-  "base_url": "[https://openrouter.ai/api/v1](https://openrouter.ai/api/v1)",
   "active_key_index": 0,
   "models": [
-    "kwaipilot/kat-coder-pro:free",
-    "nex-agi/deepseek-v3.1-nex-n1:free",
-    "google/gemini-2.0-flash-exp:free"
+    "deepseek/deepseek-r1-0528:free",
+    "arcee-ai/trinity-large-preview:free"
   ],
-  "active_model_index": 0
+  "active_model_index": 0,
+  "language": "English",
+  "max_tokens": 32000,
+  "base_url": "https://openrouter.ai/api/v1",
+  "telegram_token": "xxxxx",
+  "telegram_id": "yyyyy"
 }
+
 ```
 
 
