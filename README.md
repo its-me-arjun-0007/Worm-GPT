@@ -113,7 +113,7 @@ You must configure the `wormgpt_users.json` file. If it does not exist, create i
 {
   "odiyan": "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"
 }
-
+```
 To generate a password hash, run this quick Python command:
 ```
 python3 -c "import hashlib; print(hashlib.sha256(input('Enter Password: ').encode()).hexdigest())"
