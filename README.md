@@ -27,6 +27,45 @@ Whether you prefer the raw power of the terminal or a sleek web dashboard, WormG
 * **🐧 Cross-Platform:** Optimized for **Kali Linux**, **Termux (Android)**, Ubuntu, and Windows.
 ---
 
+## 🧠 Recommended Free Models (OpenRouter)
+
+### 💻 Deep Code & Exploit Analysis
+```
+ - qwen/qwen3-vl-30b-a3b-thinking (Context: 131072 tokens)
+ - qwen/qwen3-vl-235b-a22b-thinking (Context: 131072 tokens)
+ - qwen/qwen3-next-80b-a3b-instruct:free (Context: 262144 tokens)
+ - qwen/qwen3-coder:free (Context: 262000 tokens)
+ - qwen/qwen3-4b:free (Context: 40960 tokens)
+```
+### 🕵️ Massive Data & Log Parsing
+```
+ - openrouter/free (Context: 200000 tokens)
+ - stepfun/step-3.5-flash:free (Context: 256000 tokens)
+ - arcee-ai/trinity-large-preview:free (Context: 131000 tokens)
+ - nvidia/nemotron-3-nano-30b-a3b:free (Context: 256000 tokens)
+ - arcee-ai/trinity-mini:free (Context: 131072 tokens)
+ - nvidia/nemotron-nano-12b-v2-vl:free (Context: 128000 tokens)
+ - nvidia/nemotron-nano-9b-v2:free (Context: 128000 tokens)
+ - openai/gpt-oss-120b:free (Context: 131072 tokens)
+ - openai/gpt-oss-20b:free (Context: 131072 tokens)
+ - z-ai/glm-4.5-air:free (Context: 131072 tokens)
+ - mistralai/mistral-small-3.1-24b-instruct:free (Context: 128000 tokens)
+ - google/gemma-3-27b-it:free (Context: 131072 tokens)
+ - meta-llama/llama-3.3-70b-instruct:free (Context: 128000 tokens)
+ - meta-llama/llama-3.2-3b-instruct:free (Context: 131072 tokens)
+ - nousresearch/hermes-3-llama-3.1-405b:free (Context: 131072 tokens)
+```
+### 🎭 Red Teaming & Jailbreak Mode
+```
+ - cognitivecomputations/dolphin-mistral-24b-venice-edition:free (Context: 32768 tokens)
+ - google/gemma-3n-e2b-it:free (Context: 8192 tokens)
+ - google/gemma-3n-e4b-it:free (Context: 8192 tokens)
+ - google/gemma-3-4b-it:free (Context: 32768 tokens)
+ - google/gemma-3-12b-it:free (Context: 32768 tokens)
+```
+> **💡 Pro-Tip:** Free model availability on OpenRouter changes frequently. If a model throws an error, simply hot-swap to the next index in your `wormgpt_config.json`.
+
+
 ## 📸 Visuals
 
 ### Terminal Interface (CLI)
