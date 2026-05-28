@@ -43,7 +43,7 @@ fi
 # 2. Virtual Environment Setup
 echo -e "\n${YELLOW}[*] Configuring Neural Network (VENV)...${NC}"
 if [ ! -d "venv" ]; then
-    python3 -m venv venv
+    python3 -m venv odiyan
     echo -e "${GREEN}[+] Virtual Environment Created.${NC}"
 else
     echo -e "${GREEN}[+] Virtual Environment Detected.${NC}"
@@ -51,7 +51,7 @@ fi
 
 # 3. Install Python Dependencies (CLI + GUI)
 echo -e "\n${YELLOW}[*] Installing Python Modules...${NC}"
-source venv/bin/activate
+source odiyan/bin/activate
 
 # UPGRADED: Includes 'streamlit' for the GUI and 'watchdog' for file monitoring
 pip install --upgrade pip
