@@ -89,8 +89,8 @@ chmod +x *
 ## Manual Installation
 
 ```bash
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+python3 -m venv odiyan
+source odiyan/bin/activate  # On Windows: odiyan\Scripts\activate
 pip install requests rich pyfiglet langdetect streamlit
 ```
 
