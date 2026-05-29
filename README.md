@@ -138,8 +138,8 @@ The system will automatically generate this file on first run. You can edit it m
   ],
   "active_key_index": 0,
   "models": [
-    "deepseek/deepseek-r1-0528:free",
-    "arcee-ai/trinity-large-preview:free"
+    "deepseek/xxxxxxxx:free",
+    "arcee-ai/yyyyyyyy:free"
   ],
   "active_model_index": 0,
   "language": "English",
