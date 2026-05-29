@@ -1,6 +1,9 @@
 {
-  "api_key": "",
-  "base_url": "https://openrouter.ai/api/v1",
-   "models": [],
-  "language": "English"
+  "api_keys": [],
+  "active_key_index": 0,
+  "models": [],
+  "active_model_index": 0,
+  "language": "English",
+  "max_tokens": 32000,
+  "base_url": "https://openrouter.ai/api/v1"
 }
