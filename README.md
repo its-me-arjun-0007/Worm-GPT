@@ -30,13 +30,7 @@ Whether you prefer the raw power of the terminal or a sleek web dashboard, WormG
 ## 🧠 Recommended Free Models (OpenRouter)
 
 ```
-"arcee-ai/trinity-large-preview:free"
-"arcee-ai/trinity-mini:free"
-"stepfun/step-3.5-flash:free"
-"nvidia/nemotron-3-nano-30b-a3b:free"
-"nvidia/nemotron-nano-12b-v2-vl:free"
-"nvidia/nemotron-nano-9b-v2:free"
-"openrouter/free"
+"poolside/laguna-xs.2:free"
 ```
 > **💡 Pro-Tip:** Free model availability on OpenRouter changes frequently. If a model throws an error, simply hot-swap to the next index in your `wormgpt_config.json`.
 
