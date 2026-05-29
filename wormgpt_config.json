@@ -2,7 +2,7 @@
   "api_key": "",
   "base_url": "https://openrouter.ai/api/v1",
    "models": [
-    "deepseek/deepseek-r1-0528:free",
+    "poolside/laguna-xs.2:free",
   ],
   "language": "English"
 }
