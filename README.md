@@ -29,6 +29,7 @@ Whether you prefer the raw power of the terminal or a sleek web dashboard, WormG
 
 ## 🧠 Recommended Free Models (OpenRouter)
 
+
 ```
 "poolside/laguna-xs.2:free"
 ```
@@ -73,7 +74,9 @@ cd Worm-GPT
 
 ---
 
-## Automated Setup
+## Automated Setup (Recommended)
+
+The automated setup script installs all dependencies, configures the virtual environment, and creates global launch commands so you can run the tool from anywhere.
 
 ```bash
 chmod +x *
@@ -88,22 +91,24 @@ source odiyan/bin/activate  # On Windows: odiyan\Scripts\activate
 pip install requests rich pyfiglet langdetect streamlit
 ```
 
- ***Option A :***
+## Launching the System
 
-Launch Command Line (CLI)
+Once installed via setup.sh, you can launch the tools globally from any directory using the newly created commands:
+
+ ***Option A :*** Launch Command Line (CLI)
+
 Ideal for low-latency, keyboard-driven usage.
 
 ```bash
-python3 worm-gpt.py
+worm-gpt
 ```
 
- ***Option B :***
+ ***Option B :*** Launch Web Interface (GUI)
 
-Launch Web Interface (GUI)
 Ideal for visual interactions and file analysis.
 
 ```bash
-streamlit run worm-gpt-web.py
+worm-gpt-gui
 ```
 
 
