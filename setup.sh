@@ -61,10 +61,44 @@ pip install requests rich pyfiglet langdetect streamlit watchdog
 chmod +x worm-gpt.py
 chmod +x worm-gpt-web.py 2>/dev/null
 
+# 5. Global Command Installation
+echo -e "\n${YELLOW}[*] Installing Global Commands...${NC}"
+CURRENT_DIR="$(pwd)"
+
+if [ -d "$PREFIX/bin" ]; then
+    BIN_DIR="$PREFIX/bin"
+    SUDO_CMD=""
+else
+    BIN_DIR="/usr/local/bin"
+    if [ "$EUID" -ne 0 ]; then
+        SUDO_CMD="sudo"
+    else
+        SUDO_CMD=""
+    fi
+fi
+
+$SUDO_CMD tee $BIN_DIR/worm-gpt > /dev/null << EOF
+#!/bin/bash
+cd "$CURRENT_DIR"
+source odiyan/bin/activate
+python3 worm-gpt.py "\$@"
+EOF
+
+$SUDO_CMD tee $BIN_DIR/worm-gpt-gui > /dev/null << EOF
+#!/bin/bash
+cd "$CURRENT_DIR"
+source odiyan/bin/activate
+streamlit run worm-gpt-web.py "\$@"
+EOF
+
+$SUDO_CMD chmod +x $BIN_DIR/worm-gpt
+$SUDO_CMD chmod +x $BIN_DIR/worm-gpt-gui
+echo -e "${GREEN}[+] Global commands 'worm-gpt' and 'worm-gpt-gui' installed successfully.${NC}"
+
 echo -e "\n${GREEN}[✔] SYSTEM READY. DEPENDENCIES INSTALLED.${NC}"
 echo -e "------------------------------------------------"
 
-# 5. Launch Menu
+# 6. Launch Menu
 echo -e "${CYAN}SELECT OPERATION MODE:${NC}"
 echo -e "${GREEN}[1]${NC} CLI Mode (Terminal Attack)"
 echo -e "${GREEN}[2]${NC} GUI Mode (Visual Interface)"
@@ -75,17 +109,16 @@ read -p "root@wormgpt:~# " choice
 case $choice in
     1)
         echo -e "\n${RED}>> Initializing CLI...${NC}"
-        python3 worm-gpt.py
+        worm-gpt
         ;;
     2)
         echo -e "\n${RED}>> Initializing GUI Protocol...${NC}"
-        # Termux specific flag to run headless if needed, but standard run works for localhost
-        streamlit run worm-gpt-web.py
+        worm-gpt-gui
         ;;
     *)
-        echo -e "\n${CYAN}Setup Complete. To run manually:${NC}"
-        echo -e "CLI: ${YELLOW}source venv/bin/activate && python3 worm-gpt.py${NC}"
-        echo -e "GUI: ${YELLOW}source venv/bin/activate && streamlit run worm-gpt-web.py${NC}"
+        echo -e "\n${CYAN}Setup Complete. To run manually from anywhere:${NC}"
+        echo -e "CLI: ${YELLOW}worm-gpt${NC}"
+        echo -e "GUI: ${YELLOW}worm-gpt-gui${NC}"
         exit 0
         ;;
 esac
