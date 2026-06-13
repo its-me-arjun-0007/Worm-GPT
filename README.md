@@ -15,8 +15,15 @@ Whether you prefer the raw power of the terminal or a sleek web dashboard, WormG
 ### 💻 Core Features
 
 * **Dual Interfaces:**
-    * **CLI V2.5:** A `rich`-based terminal UI with matrix boot sequences, hexadecimal memory injection visuals, and robust session management.
-    * **GUI V3.3:** A Streamlit-based web interface featuring "Hacker Green" CSS, file upload analysis, and real-time chat logging.
+    * **CLI V4.0:** A `rich`-based terminal UI with matrix boot sequences, hexadecimal memory injection visuals, and robust session management.
+    * **GUI V5.0:** A Streamlit-based web interface featuring "Hacker Green" CSS, file upload analysis, and real-time chat logging.
+* **🛠️ Worm Kit (Advanced Security Modules):** Seamlessly integrated pentesting tools directly accessible from the main menu, including:
+    * **CTF Helper:** Cipher decode, steganography hints, CTF pattern scanner.
+    * **Recon Automation:** Subdomain enumeration, Whois, Nmap wrappers, DNS recon.
+    * **Vuln Scanner:** Wrappers for Nikto, SQLmap, WPScan, and Nmap NSE scripts.
+    * **Bug Bounty Workflow:** Scope checker, PoC templates, report generator.
+    * **Log Analyzer & OSINT:** Log parsing, IP/domain OSINT, email enumeration.
+    * **Hash Utilities:** Identify, generate, encode/decode, and crack hashes locally.
 * **📱 Remote Telegram Uplink:** Control WormGPT remotely via a secure Telegram bot integration. Features ID-locked access, remote chat commands, memory wiping, and AI image generation.
 * **🔐 Secure Login Portal:** Built-in local authentication system using SHA-256 hashing to protect your local environment from unauthorized access.
 * **🧠 Multi-Model Matrix:** Pre-configured support for top-tier free models including **DeepSeek-V3**, **Gemini 2.0 Flash**, **Qwen Coder**, and **Mistral**, with instant hot-swapping capabilities.
@@ -25,10 +32,10 @@ Whether you prefer the raw power of the terminal or a sleek web dashboard, WormG
     * **Assistant Mode (Polite):** Helpful, professional persona for coding tasks.
 * **💾 Mission Logs:** Automatically saves conversation history with timestamps to `mission_logs/` for persistent memory.
 * **🐧 Cross-Platform:** Optimized for **Kali Linux**, **Termux (Android)**, Ubuntu, and Windows.
+
 ---
 
 ## 🧠 Recommended Free Models (OpenRouter)
-
 
 ```
 "poolside/laguna-xs.2:free"
@@ -49,12 +56,13 @@ Whether you prefer the raw power of the terminal or a sleek web dashboard, WormG
 
 ---
 
-## 📦 Prerequisites
+## 📦 Prerequisites & Requirements
 
 Before initializing the system, ensure you have:
 * **Python 3.8+**
 * **Git**
 * **OpenRouter API Key** (Get one at [OpenRouter.ai](https://openrouter.ai/))
+* Additional security tools like Nmap, SQLmap, and WPScan (these are automatically handled if you use the `setup.sh` script below).
 
 ---
 
@@ -62,8 +70,8 @@ Before initializing the system, ensure you have:
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/its-me-arjun-0007/Worm-GPT
-cd Worm-GPT
+git clone https://github.com/its-me-arjun-0007/Worm-GPT-Test.git
+cd Worm-GPT-Test
 ```
 
 ## 📦 Requirements
