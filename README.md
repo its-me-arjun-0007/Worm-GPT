@@ -70,8 +70,8 @@ Before initializing the system, ensure you have:
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/its-me-arjun-0007/Worm-GPT-Test.git
-cd Worm-GPT-Test
+git clone https://github.com/its-me-arjun-0007/Worm-GPT.git
+cd Worm-GPT
 ```
 
 ## 📦 Requirements
