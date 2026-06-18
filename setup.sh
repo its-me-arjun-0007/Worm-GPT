@@ -1,90 +1,148 @@
 #!/bin/bash
 
-# setup.sh - Universal Installer & Launcher for WormGPT
-# Compatible with Kali Linux, Ubuntu, and Termux
+# ==============================================================================
+# WORM-GPT CYBERPUNK INSTALLER
+# Environment: Termux / NetHunter / Kali Linux
+# ==============================================================================
 
-# --- COLORS ---
-GREEN='\033[0;32m'
-CYAN='\033[0;36m'
-RED='\033[0;31m'
-YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
+# --- NEON COLOR PALETTE ---
+C_DEF='\033[0m'          # Default
+C_RED='\033[38;5;196m'   # Neon Red
+C_GRN='\033[38;5;46m'    # Matrix Green
+C_CYN='\033[38;5;51m'    # Cyan
+C_YLW='\033[38;5;226m'   # Yellow
+C_MAG='\033[38;5;201m'   # Magenta
+C_DIM='\033[38;5;238m'   # Dark Gray
+C_BLD='\033[1m'          # Bold
 
-clear
-echo -e "${RED}"
-echo "██     ██  ██████  ██████  ███    ███      ██████  ██████  ████████ "
-echo "██     ██ ██    ██ ██   ██ ████  ████     ██       ██   ██    ██    "
-echo "██  █  ██ ██    ██ ██████  ██ ████ ██     ██   ███ ██████     ██    "
-echo "██ ███ ██ ██    ██ ██   ██ ██  ██  ██     ██    ██ ██         ██    "
-echo " ███ ███   ██████  ██   ██ ██      ██      ██████  ██         ██    "
-echo -e "${NC}"
-echo -e "${CYAN}::: SYSTEM INSTALLER & LAUNCHER :::::::::::::::::::::::::::::::::::${NC}"
+# --- TERMINAL EFFECTS ---
+type_text() {
+    text="$1"
+    for ((i=0; i<${#text}; i++)); do
+        echo -ne "${text:$i:1}"
+        sleep 0.01
+    done
+    echo ""
+}
+
+fake_boot() {
+    clear
+    echo -e "${C_GRN}"
+    for i in {1..12}; do
+        hex=$(tr -dc 'a-f0-9' < /dev/urandom | head -c 8)
+        echo -e "[*] SYNCING MEMORY BLOCK 0x$hex... ${C_CYN}[ OK ]${C_GRN}"
+        sleep 0.05
+    done
+    echo -e "${C_DEF}"
+    clear
+}
+
+# --- UI COMPONENTS ---
+print_header() {
+    echo -e "${C_RED}${C_BLD}"
+    echo "  ██     ██  ██████  ██████  ███    ███      ██████  ██████  ████████ "
+    echo "  ██     ██ ██    ██ ██   ██ ████  ████     ██       ██   ██    ██    "
+    echo "  ██  █  ██ ██    ██ ██████  ██ ████ ██     ██   ███ ██████     ██    "
+    echo "  ██ ███ ██ ██    ██ ██   ██ ██  ██  ██     ██    ██ ██         ██    "
+    echo "   ███ ███   ██████  ██   ██ ██      ██      ██████  ██         ██    "
+    echo -e "${C_DEF}"
+    echo -e "${C_DIM}┌──────────────────────────────────────────────────────────────────────┐${C_DEF}"
+    echo -e "${C_DIM}│${C_DEF} ${C_CYN}SYSTEM INITIALIZATION & DEPLOYMENT PROTOCOL${C_DEF}                        ${C_DIM}│${C_DEF}"
+    echo -e "${C_DIM}└──────────────────────────────────────────────────────────────────────┘${C_DEF}"
+    echo ""
+}
+
+print_step() {
+    echo -e "${C_MAG}[►]${C_DEF} ${C_BLD}$1${C_DEF}"
+}
+
+print_success() {
+    echo -e "    ${C_GRN}└─ [✔] $1${C_DEF}"
+}
+
+print_warning() {
+    echo -e "${C_YLW}[!] $1${C_DEF}"
+}
+
+# ==============================================================================
+# BOOT SEQUENCE
+# ==============================================================================
+fake_boot
+print_header
+
+type_text "${C_YLW}>>> UPLINK ESTABLISHED. PREPARING SECURITY MODULES...${C_DEF}"
+echo ""
+echo -e "${C_RED}╔══════════════════════════════════════════════════════════════════════════════════╗${C_DEF}"
+echo -e "${C_RED}║${C_DEF} ${C_BLD}WARNING: MASSIVE COMPILATION SEQUENCE INITIATED${C_DEF}                                  ${C_RED}║${C_DEF}"
+echo -e "${C_RED}║${C_DEF} ${C_DIM}Downloading & building Nmap, WPScan, SQLmap, and Rust kernels...${C_DEF}                 ${C_RED}║${C_DEF}"
+echo -e "${C_RED}║${C_DEF} ${C_YLW}ETA: 15 - 45 Minutes depending on Environment: Termux / NetHunter / Kali Linux${C_DEF} ${C_RED}║${C_DEF}"
+echo -e "${C_RED}╚══════════════════════════════════════════════════════════════════════════════════╝${C_DEF}"
 echo ""
 
-# --- TIME WARNING ---
-echo -e "${RED}[!] WARNING: TIME INTENSIVE PROCESS${NC}"
-echo -e "${YELLOW}This script installs heavy system-level security dependencies${NC}"
-echo -e "${YELLOW}(Nmap, SQLmap, Ruby, WPScan, Rust). Depending on your hardware${NC}"
-echo -e "${YELLOW}(especially on Kalidroid/Termux), this may take 15-45 minutes.${NC}"
-echo -e "${CYAN}Please be patient and DO NOT interrupt the installation.${NC}\n"
-echo -e "Starting in 5 seconds... (Press Ctrl+C to abort)"
+type_text "${C_DIM}Initiating sequence in 5 seconds. Press Ctrl+C to abort...${C_DEF}"
 sleep 5
 echo ""
 
-# 1. Detect Environment & System Deps
-echo -e "${YELLOW}[*] Scanning Environment and Installing Security Tools...${NC}"
+# ==============================================================================
+# PHASE 1: ENVIRONMENT DETECTION & SYSTEM DEPS
+# ==============================================================================
+print_step "SCANNING HOST ARCHITECTURE..."
 
 if [ -d "$PREFIX/bin" ] && [ -x "$PREFIX/bin/pkg" ]; then
-    echo -e "${GREEN}[+] Termux detected.${NC}"
-    echo -e "${CYAN}[*] Installing System Packages (Python, Git, Build Tools, Security Tools)...${NC}"
+    print_success "Termux Detected"
+    print_step "INJECTING SYSTEM PACKAGES (APT/PKG)..."
     pkg update -y
-    # Base packages
     pkg install python git rust binutils ruby -y 
-    # HexKit Tool Dependencies for Termux
     pkg install nmap sqlmap dnsutils whois -y
-    # Install WPScan via gem (since ruby is installed)
+    print_step "COMPILING RUBY GEMS (WPScan)..."
     gem install wpscan
 else
-    echo -e "${GREEN}[+] Linux (Kali/Debian) detected.${NC}"
-    echo -e "${CYAN}[*] Installing System Packages and Security Tools...${NC}"
+    print_success "Kali Linux / NetHunter Detected"
     if [ "$EUID" -ne 0 ]; then 
-        echo -e "${RED}[!] Note: Run as root (sudo) if system packages fail to install.${NC}"
+        print_warning "Running without root. Sudo will be invoked."
         SUDO_CMD="sudo"
     else
         SUDO_CMD=""
     fi
+    print_step "INJECTING SYSTEM PACKAGES (APT)..."
     $SUDO_CMD apt-get update
-    # Base packages
     $SUDO_CMD apt-get install python3 python3-venv python3-pip git ruby-full -y
-    # HexKit Tool Dependencies for Linux
     $SUDO_CMD apt-get install nmap sqlmap nikto whatweb dnsutils whois -y
-    # Install WPScan via gem
+    print_step "COMPILING RUBY GEMS (WPScan)..."
     $SUDO_CMD gem install wpscan
 fi
 
-# 2. Virtual Environment Setup
-echo -e "\n${YELLOW}[*] Configuring Neural Network (VENV)...${NC}"
+print_success "Core Architecture Secured"
+echo ""
+
+# ==============================================================================
+# PHASE 2: NEURAL NETWORK (VENV)
+# ==============================================================================
+print_step "ALLOCATING NEURAL MEMORY (VIRTUAL ENV)..."
 if [ ! -d "odiyan" ]; then
     python3 -m venv odiyan
-    echo -e "${GREEN}[+] Virtual Environment Created.${NC}"
+    print_success "Virtual Sandbox Created: 'odiyan'"
 else
-    echo -e "${GREEN}[+] Virtual Environment Detected.${NC}"
+    print_success "Virtual Sandbox Found: 'odiyan'"
 fi
+echo ""
 
-# 3. Install Python Dependencies (CLI + GUI)
-echo -e "\n${YELLOW}[*] Installing Python Modules...${NC}"
+# ==============================================================================
+# PHASE 3: PYTHON MODULES
+# ==============================================================================
+print_step "DOWNLOADING NEURAL WEIGHTS (PIP MODULES)..."
 source odiyan/bin/activate
-
-# UPGRADED: Includes 'streamlit' for the GUI and 'watchdog' for file monitoring
 pip install --upgrade pip
 pip install requests rich pyfiglet langdetect streamlit watchdog
+print_success "Python Dependencies Locked"
+echo ""
 
-# 4. Permissions
+# ==============================================================================
+# PHASE 4: GLOBAL COMMANDS & PERMISSIONS
+# ==============================================================================
+print_step "ESCALATING PERMISSIONS & WRITING ALIASES..."
 chmod +x worm-gpt.py
 chmod +x worm-gpt-web.py 2>/dev/null
-
-# 5. Global Command Installation
-echo -e "\n${YELLOW}[*] Installing Global Commands...${NC}"
 CURRENT_DIR="$(pwd)"
 
 if [ -d "$PREFIX/bin" ]; then
@@ -115,32 +173,39 @@ EOF
 
 $SUDO_CMD chmod +x $BIN_DIR/worm-gpt
 $SUDO_CMD chmod +x $BIN_DIR/worm-gpt-gui
-echo -e "${GREEN}[+] Global commands 'worm-gpt' and 'worm-gpt-gui' installed successfully.${NC}"
-
-echo -e "\n${GREEN}[✔] SYSTEM READY. DEPENDENCIES INSTALLED.${NC}"
-echo -e "------------------------------------------------"
-
-# 6. Launch Menu
-echo -e "${CYAN}SELECT OPERATION MODE:${NC}"
-echo -e "${GREEN}[1]${NC} CLI Mode (Terminal Attack)"
-echo -e "${GREEN}[2]${NC} GUI Mode (Visual Interface)"
-echo -e "${GREEN}[3]${NC} Exit Setup"
+print_success "Global Execution Paths Registered"
 echo ""
+
+# ==============================================================================
+# END SEQUENCE
+# ==============================================================================
+echo -e "${C_DIM}──────────────────────────────────────────────────────────────────────${C_DEF}"
+echo -e "${C_GRN}${C_BLD}>>> DEPLOYMENT 100% COMPLETE. SYSTEM IS LIVE. <<<${C_DEF}"
+echo -e "${C_DIM}──────────────────────────────────────────────────────────────────────${C_DEF}"
+echo ""
+
+echo -e "${C_CYN}SELECT INTERFACE UPLINK:${C_DEF}"
+echo -e "  ${C_RED}[1]${C_DEF} ${C_BLD}CLI Mode${C_DEF} (Terminal Attack)"
+echo -e "  ${C_RED}[2]${C_DEF} ${C_BLD}GUI Mode${C_DEF} (Visual Dashboard)"
+echo -e "  ${C_RED}[3]${C_DEF} ${C_DIM}Exit Matrix${C_DEF}"
+echo ""
+
 read -p "root@wormgpt:~# " choice
 
 case $choice in
     1)
-        echo -e "\n${RED}>> Initializing CLI...${NC}"
+        echo -e "\n${C_RED}[*] BREACHING TERMINAL...${C_DEF}"
+        sleep 1
         worm-gpt
         ;;
     2)
-        echo -e "\n${RED}>> Initializing GUI Protocol...${NC}"
+        echo -e "\n${C_RED}[*] INITIALIZING WEB SERVER...${C_DEF}"
+        sleep 1
         worm-gpt-gui
         ;;
     *)
-        echo -e "\n${CYAN}Setup Complete. To run manually from anywhere:${NC}"
-        echo -e "CLI: ${YELLOW}worm-gpt${NC}"
-        echo -e "GUI: ${YELLOW}worm-gpt-gui${NC}"
+        echo -e "\n${C_GRN}Connection Terminated.${C_DEF}"
+        echo -e "To access the system later, type: ${C_RED}worm-gpt${C_DEF} or ${C_RED}worm-gpt-gui${C_DEF}"
         exit 0
         ;;
 esac
