@@ -21,28 +21,50 @@ echo -e "${NC}"
 echo -e "${CYAN}::: SYSTEM INSTALLER & LAUNCHER :::::::::::::::::::::::::::::::::::${NC}"
 echo ""
 
+# --- TIME WARNING ---
+echo -e "${RED}[!] WARNING: TIME INTENSIVE PROCESS${NC}"
+echo -e "${YELLOW}This script installs heavy system-level security dependencies${NC}"
+echo -e "${YELLOW}(Nmap, SQLmap, Ruby, WPScan, Rust). Depending on your hardware${NC}"
+echo -e "${YELLOW}(especially on Kalidroid/Termux), this may take 15-45 minutes.${NC}"
+echo -e "${CYAN}Please be patient and DO NOT interrupt the installation.${NC}\n"
+echo -e "Starting in 5 seconds... (Press Ctrl+C to abort)"
+sleep 5
+echo ""
+
 # 1. Detect Environment & System Deps
-echo -e "${YELLOW}[*] Scanning Environment...${NC}"
+echo -e "${YELLOW}[*] Scanning Environment and Installing Security Tools...${NC}"
 
 if [ -d "$PREFIX/bin" ] && [ -x "$PREFIX/bin/pkg" ]; then
     echo -e "${GREEN}[+] Termux detected.${NC}"
-    echo -e "${CYAN}[*] Installing System Packages (Python, Git, Build Tools)...${NC}"
+    echo -e "${CYAN}[*] Installing System Packages (Python, Git, Build Tools, Security Tools)...${NC}"
     pkg update -y
-    pkg install python git rust binutils -y 
+    # Base packages
+    pkg install python git rust binutils ruby -y 
+    # HexKit Tool Dependencies for Termux
+    pkg install nmap sqlmap dnsutils whois -y
+    # Install WPScan via gem (since ruby is installed)
+    gem install wpscan
 else
     echo -e "${GREEN}[+] Linux (Kali/Debian) detected.${NC}"
-    echo -e "${CYAN}[*] Installing System Packages...${NC}"
+    echo -e "${CYAN}[*] Installing System Packages and Security Tools...${NC}"
     if [ "$EUID" -ne 0 ]; then 
         echo -e "${RED}[!] Note: Run as root (sudo) if system packages fail to install.${NC}"
+        SUDO_CMD="sudo"
     else
-        apt-get update
-        apt-get install python3 python3-venv python3-pip git -y
+        SUDO_CMD=""
     fi
+    $SUDO_CMD apt-get update
+    # Base packages
+    $SUDO_CMD apt-get install python3 python3-venv python3-pip git ruby-full -y
+    # HexKit Tool Dependencies for Linux
+    $SUDO_CMD apt-get install nmap sqlmap nikto whatweb dnsutils whois -y
+    # Install WPScan via gem
+    $SUDO_CMD gem install wpscan
 fi
 
 # 2. Virtual Environment Setup
 echo -e "\n${YELLOW}[*] Configuring Neural Network (VENV)...${NC}"
-if [ ! -d "venv" ]; then
+if [ ! -d "odiyan" ]; then
     python3 -m venv odiyan
     echo -e "${GREEN}[+] Virtual Environment Created.${NC}"
 else
