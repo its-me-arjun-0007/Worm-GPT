@@ -70,8 +70,10 @@ print_warning() {
 fake_boot
 print_header
 
-type_text "${C_YLW}>>> UPLINK ESTABLISHED. PREPARING SECURITY MODULES...${C_DEF}"
-echo ""
+echo -ne "${C_YLW}"
+type_text ">>> UPLINK ESTABLISHED. PREPARING SECURITY MODULES..."
+echo -e "${C_DEF}"
+
 echo -e "${C_RED}╔══════════════════════════════════════════════════════════════════════════════════╗${C_DEF}"
 echo -e "${C_RED}║${C_DEF} ${C_BLD}WARNING: MASSIVE COMPILATION SEQUENCE INITIATED${C_DEF}                                  ${C_RED}║${C_DEF}"
 echo -e "${C_RED}║${C_DEF} ${C_DIM}Downloading & building Nmap, WPScan, SQLmap, and Rust kernels...${C_DEF}                 ${C_RED}║${C_DEF}"
@@ -79,9 +81,12 @@ echo -e "${C_RED}║${C_DEF} ${C_YLW}ETA: 15 - 45 Minutes depending on Environme
 echo -e "${C_RED}╚══════════════════════════════════════════════════════════════════════════════════╝${C_DEF}"
 echo ""
 
-type_text "${C_DIM}Initiating sequence in 5 seconds. Press Ctrl+C to abort...${C_DEF}"
+echo -ne "${C_DIM}"
+type_text "Initiating sequence in 5 seconds. Press Ctrl+C to abort..."
+echo -e "${C_DEF}"
 sleep 5
 echo ""
+
 
 # ==============================================================================
 # PHASE 1: ENVIRONMENT DETECTION & SYSTEM DEPS
