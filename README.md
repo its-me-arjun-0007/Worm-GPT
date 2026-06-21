@@ -133,28 +133,18 @@ While in an active Chat Session, you can use the following hot-commands:
    
 ## 🔐 Configuration & Security
 
-### User Authentication
-Upon launch, the system requires a login. This adds a layer of security to your local interface.
+### Local User Authentication (Auto-Registration)
+To protect your local environment from unauthorized access, the system features a robust, cryptographically secured login gateway. 
 
-**Default Credentials:**
-* **Username:** `odiyan`
-* **Password:** `admin`
+**First-Time Setup:**
+You no longer need to manually configure password hashes or edit JSON files. Upon your first launch, the system will detect if the local database is missing and automatically trigger the **Account Initialization Matrix**. 
+* You will be prompted to register a new master administrator Alias and Password.
+* Your password keystrokes are securely masked visually (e.g., `xxxx`), and the system will automatically compute the SHA-256 cryptographic hash and generate the `wormgpt_users.json` database for you in the background.
 
-You must configure the `wormgpt_users.json` file. If it does not exist, create it in the root directory. Because the system uses SHA-256 hashing for security, you must use the hashed version of the password. For the default "admin" password, your file should look exactly like this:
+### API Configuration (`wormgpt_config.json`)
+The system will automatically generate this configuration file on its first run and allow you to manage it directly through the GUI or CLI menus. However, you can still edit it manually to inject keys, swap models, or adjust API limits:
 
 ```json
-{
-  "odiyan": "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"
-}
-```
-To generate a password hash, run this quick Python command:
-```
-python3 -c "import hashlib; print(hashlib.sha256(input('Enter Password: ').encode()).hexdigest())"
-```
-
-API Configuration (wormgpt_config.json)
-The system will automatically generate this file on first run. You can edit it manually to add keys or change models:
-```bash
 {
   "api_keys": [
     "sk-or-v1-xxxxxxxx...",
@@ -168,13 +158,11 @@ The system will automatically generate this file on first run. You can edit it m
   "active_model_index": 0,
   "language": "English",
   "max_tokens": 32000,
-  "base_url": "https://openrouter.ai/api/v1",
+  "base_url": "[https://openrouter.ai/api/v1](https://openrouter.ai/api/v1)",
   "telegram_token": "xxxxx",
   "telegram_id": "yyyyy"
 }
-
 ```
-
 
 ### ​⚠️ Disclaimer
 ​WormGPT CLI/GUI is a client-side wrapper tool for the OpenRouter API.
