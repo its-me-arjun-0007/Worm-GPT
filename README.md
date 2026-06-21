@@ -1,4 +1,4 @@
-# 💀 Worm-GPT — Ultimate Hacker Edition v1.5.0
+# 💀 Worm-GPT — Ultimate Hacker Edition v5.0
 
 ![WormGPT Banner](image/1003012739.jpg)
 
