@@ -157,7 +157,7 @@ The system will automatically generate this configuration file on its first run 
   ],
   "active_model_index": 0,
   "language": "English",
-  "max_tokens": 32000,
+  "max_tokens": 250000,
   "base_url": "[https://openrouter.ai/api/v1](https://openrouter.ai/api/v1)",
   "telegram_token": "xxxxx",
   "telegram_id": "yyyyy"
@@ -165,11 +165,7 @@ The system will automatically generate this configuration file on its first run 
 ```
 
 ### ​⚠️ Disclaimer
-​WormGPT CLI/GUI is a client-side wrapper tool for the OpenRouter API.
-​The "WormGPT" branding and "Hacker" aesthetic are for educational and entertainment purposes only.
-​This tool does not inherently contain malicious code; it is a text generation interface.
-​The user is fully responsible for all content generated and actions taken using this tool.
-​Ensure you comply with the Terms of Service of the specific AI models you connect to via OpenRouter.
+WormGPT CLI/GUI is a client-side wrapper tool for the OpenRouter API. The "WormGPT" branding and "Hacker" aesthetic are for educational and entertainment purposes only. This tool does not inherently contain malicious code; it is a text generation interface. The user is fully responsible for all content generated and actions taken using this tool. Ensure you comply with the Terms of Service of the specific AI models you connect to via OpenRouter. 
    
 **👨‍💻 AUTHOR: IT'S ME ARJUN**
 
