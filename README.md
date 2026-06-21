@@ -1,47 +1,34 @@
-# 💀 WormGPT - Ultimate Hacker Edition (CLI & GUI)
+# 💀 Worm-GPT — Ultimate Hacker Edition v1.5.0
 
 ![WormGPT Banner](image/1003012739.jpg)
 
 > *“We don't just chat. We infiltrate.”*
 
-**WormGPT** is a powerful, dual-interface (CLI & Web) tool designed for interacting with Large Language Models (LLMs) via the OpenRouter API. Re-engineered for a **Cyberpunk/Hacker aesthetic**, this tool offers a secure, encrypted-style environment for coding, research, and penetration testing simulations.
+**Worm-GPT** is a premium, client-side command-line wrapper interface built for the OpenRouter API. Designed with a terminal hacker aesthetic, it provides advanced offensive security operators with a modular framework featuring persistent cross-session memory networks, semantic local knowledge bases, remote command infrastructure, and dynamic behavioral persona overrides.
 
-Whether you prefer the raw power of the terminal or a sleek web dashboard, WormGPT adapts to your workflow.
+​Optimized natively to execute seamlessly across Kali Linux, Kali NetHunter and Termux environments.
+
+---
+
+## ⚡ Core Infrastructure Features
+ * **🔒 Secure SHA-256 Login Portal:** Web-style localized security authentication layer querying custom cryptographic user databases to halt unauthorized access directly at the gateway.
+ * **🧠 Premium Neural Initialization:** An elegant, single-run onboarding setup wizard that structures and maps the system to your custom alias, target offensive focus, host platform, and relationship preferences.
+ * **🎭 Dynamic Behavioral Overrides:** Real-time system prompt matrix injections allowing hot-swapping between diverse custom roles including intimate/devoted, familial, casual, or standard professional responses.
+ * **⚡ High-Speed Memory Architecture:** Optimized, non-blocking asynchronous memory state managers providing semantic topic frequency profiling, emotion tracking, daily journaling, and active mistake-learning algorithms.
+ * **🛠️ Integrated Worm Kit:** Native modular pentest extension wrappers containing automated scripts for active/passive subdomain recon, vulnerability scanners, CTF ciphers, and hash utilities.
+ * **🤖 Remote Telegram Uplink:** A persistent, security-locked background bridge allowing you to securely tunnel into and control your localized Worm-GPT instance and LLM history via an external encrypted Telegram chat interface.
 
 ---
 
-## 🚀 System Capabilities
+## 📂 System Architecture [Blueprint](payload/Architecture.md)
 
-### 💻 Core Features
-
-* **Dual Interfaces:**
-    * **CLI V4.0:** A `rich`-based terminal UI with matrix boot sequences, hexadecimal memory injection visuals, and robust session management.
-    * **GUI V5.0:** A Streamlit-based web interface featuring "Hacker Green" CSS, file upload analysis, and real-time chat logging.
-* **🛠️ Worm Kit (Advanced Security Modules):** Seamlessly integrated pentesting tools directly accessible from the main menu, including:
-    * **CTF Helper:** Cipher decode, steganography hints, CTF pattern scanner.
-    * **Recon Automation:** Subdomain enumeration, Whois, Nmap wrappers, DNS recon.
-    * **Vuln Scanner:** Wrappers for Nikto, SQLmap, WPScan, and Nmap NSE scripts.
-    * **Bug Bounty Workflow:** Scope checker, PoC templates, report generator.
-    * **Log Analyzer & OSINT:** Log parsing, IP/domain OSINT, email enumeration.
-    * **Hash Utilities:** Identify, generate, encode/decode, and crack hashes locally.
-* **📱 Remote Telegram Uplink:** Control WormGPT remotely via a secure Telegram bot integration. Features ID-locked access, remote chat commands, memory wiping, and AI image generation.
-* **🔐 Secure Login Portal:** Built-in local authentication system using SHA-256 hashing to protect your local environment from unauthorized access.
-* **🧠 Multi-Model Matrix:** Pre-configured support for top-tier free models including **DeepSeek-V3**, **Gemini 2.0 Flash**, **Qwen Coder**, and **Mistral**, with instant hot-swapping capabilities.
-* **🎭 Persona Injection:**
-    * **Jailbreak Mode (Rude):** Unrestricted, aggressive persona for red-teaming.
-    * **Assistant Mode (Polite):** Helpful, professional persona for coding tasks.
-* **💾 Mission Logs:** Automatically saves conversation history with timestamps to `mission_logs/` for persistent memory.
-* **🐧 Cross-Platform:** Optimized for **Kali Linux**, **Termux (Android)**, Ubuntu, and Windows.
-
----
 
 ## 🧠 Recommended Free Models (OpenRouter)
 
 ```
 "poolside/laguna-xs.2:free"
 ```
-> **💡 Pro-Tip:** Free model availability on OpenRouter changes frequently. If a model throws an error, simply hot-swap to the next index in your `wormgpt_config.json`.
-
+> **💡 Pro-Tip:** Free model availability on OpenRouter changes frequently.
 ---
 
 ## 📸 Visuals
@@ -69,9 +56,15 @@ Before initializing the system, ensure you have:
 ## ⚙️ Installation
 
 ### 1. Clone the Repository
+
 ```bash
-git clone https://github.com/its-me-arjun-0007/Worm-GPT.git
-cd Worm-GPT
+apt-get update
+```
+```bash
+git clone https://github.com/its-me-arjun-0007/Worm-GPT-Test.git
+```
+```bash
+cd Worm-GPT-Test
 ```
 
 ## 📦 Requirements
@@ -84,20 +77,20 @@ cd Worm-GPT
 
 ## Automated Setup (Recommended)
 
+> **⏳ TIME WARNING:** This script installs heavy system-level security dependencies (Nmap, SQLmap, Ruby, WPScan, Rust, etc.). Depending on your device hardware (especially on Termux) and internet connection, **this process can take 15-45 minutes to complete**. Please be patient and do not interrupt the installation.
+
 The automated setup script installs all dependencies, configures the virtual environment, and creates global launch commands so you can run the tool from anywhere.
 
 ```bash
 chmod +x *
+```
+```bash
 ./setup.sh
 ```
 
-## Manual Installation
+## For Manual Installation, see 
 
-```bash
-python3 -m venv odiyan
-source odiyan/bin/activate  # On Windows: odiyan\Scripts\activate
-pip install requests rich pyfiglet langdetect streamlit
-```
+[Deployment For Kali Linux and Termux](payload/Installation.md).
 
 ## Launching the System
 
@@ -119,7 +112,25 @@ Ideal for visual interactions and file analysis.
 worm-gpt-gui
 ```
 
+## 🛡️ First-Time Initialization
 
+Upon your first boot, Worm-GPT will guide you through a **Premium Setup Sequence**:
+ 1. **Identity Protocol:** Set your Commander Alias.
+ 2. **Vector Selection:** Define your operational focus (Pentesting, OSINT, CTF, etc.).
+ 3. **Host Architecture:** Select your environment (Kali, Termux, WSL, etc.).
+ 4. **Neural Dynamic:** Define exactly how the AI interacts with you.
+*Note: All configurations are saved securely to your local wormgpt_config.json.*
+
+## 💻 Terminal Commands
+
+While in an active Chat Session, you can use the following hot-commands:
+ * menu - Return to the main interface.
+ * clear - Wipe the current AI memory buffer.
+ * save.<filename> - Save the current conversation log to the /mission_logs/ directory.
+ * upload /path/to/file.txt - Upload and analyze local system files.
+ * /skills - Access the RAG Skill Library to load specific hacking methodologies.
+ * exit - Terminate the system.
+   
 ## 🔐 Configuration & Security
 
 ### User Authentication

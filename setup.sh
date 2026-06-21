@@ -1,19 +1,19 @@
 #!/bin/bash
 
 # ==============================================================================
-# WORM-GPT CYBERPUNK INSTALLER (v3.0)
+# WORM-GPT CYBERPUNK INSTALLER (v4.1 - Ultimate Termux Fixes)
 # Supported: Termux, Kali Linux, Kali NetHunter, macOS, Windows
 # ==============================================================================
 
 # --- NEON COLOR PALETTE ---
-C_DEF='\033[0m'          # Default
-C_RED='\033[38;5;196m'   # Neon Red
-C_GRN='\033[38;5;46m'    # Matrix Green
-C_CYN='\033[38;5;51m'    # Cyan
-C_YLW='\033[38;5;226m'   # Yellow
-C_MAG='\033[38;5;201m'   # Magenta
-C_DIM='\033[38;5;238m'   # Dark Gray
-C_BLD='\033[1m'          # Bold
+C_DEF='\033[0m'          
+C_RED='\033[38;5;196m'   
+C_GRN='\033[38;5;46m'    
+C_CYN='\033[38;5;51m'    
+C_YLW='\033[38;5;226m'   
+C_MAG='\033[38;5;201m'   
+C_DIM='\033[38;5;238m'   
+C_BLD='\033[1m'          
 
 # --- UI COMPONENTS & PRE-FLIGHT ---
 if ! command -v figlet &> /dev/null; then
@@ -36,6 +36,7 @@ center() {
     echo -e "$text"
 }
 
+clear
 print_header() {
     local term_width=$(tput cols 2>/dev/null || echo 80)
     echo -e "${C_RED}${C_BLD}"
@@ -63,7 +64,7 @@ MACHINE="Unknown"
 if [ -n "$PREFIX" ] && [ -x "$PREFIX/bin/pkg" ]; then
     MACHINE="Termux"
 elif [ "$OS" = "Linux" ]; then
-    MACHINE="Linux" # Covers Kali and NetHunter
+    MACHINE="Linux" 
 elif [ "$OS" = "Darwin" ]; then
     MACHINE="Mac"
 elif [[ "$OS" == CYGWIN* || "$OS" == MINGW* || "$OS" == MSYS* ]]; then
@@ -80,7 +81,11 @@ print_step "INJECTING SYSTEM PACKAGES..."
 
 if [ "$MACHINE" = "Termux" ]; then
     pkg update -y
-    pkg install python git rust binutils -y 
+    pkg install tur-repo -y
+    
+    # Pre-install all C-headers and libraries so pip can compile anything it needs
+    pkg install python git rust binutils cmake ninja openblas libjpeg-turbo libpng freetype -y 
+    pkg install python-numpy python-pandas python-pillow -y
     
     echo -e "\n${C_RED}+=================================================================+${C_DEF}"
     echo -e "${C_RED}|${C_DEF} ${C_BLD}OPTIONAL WORM KIT DEPLOYMENT (Termux)${C_DEF}                           ${C_RED}|${C_DEF}"
@@ -91,7 +96,6 @@ if [ "$MACHINE" = "Termux" ]; then
     echo -e "${C_CYN}take 15-45 minutes and consumes significant CPU/Battery resources.${C_DEF}"
     echo -e "${C_GRN}If you only want to use the AI Chat features, you can safely skip this.${C_DEF}\n"
 
-    
     read -p "$(echo -e ${C_CYN}Install Worm Kit Modules? [y/N]: ${C_DEF})" INSTALL_KIT
     
     if [[ "$INSTALL_KIT" =~ ^[Yy]$ ]]; then
@@ -149,13 +153,16 @@ echo ""
 # ==============================================================================
 print_step "ALLOCATING NEURAL MEMORY (VIRTUAL ENV)..."
 if [ ! -d "odiyan" ]; then
-    python3 -m venv odiyan
+    if [ "$MACHINE" = "Termux" ]; then
+        python3 -m venv odiyan --system-site-packages
+    else
+        python3 -m venv odiyan
+    fi
     print_success "Virtual Sandbox Created: 'odiyan'"
 else
     print_success "Virtual Sandbox Found: 'odiyan'"
 fi
 
-# Windows activation logic for venv differs
 if [ "$MACHINE" = "Windows" ]; then
     source odiyan/Scripts/activate
 else
@@ -164,12 +171,27 @@ fi
 
 pip install --upgrade pip
 
-if [ -f "requirements.txt" ]; then
-    pip install -r requirements.txt
+if [ "$MACHINE" = "Termux" ]; then
+    print_step "INSTALLING TERMINAL & GRADIO CORE (Termux Safe Mode)..."
+    
+    # Termux Compiler Flags to force pip to find the JPEG headers
+    export ANDROID_API_LEVEL=24
+    export MATHLIB="m"
+    export LDFLAGS="-L${PREFIX}/lib"
+    export CFLAGS="-I${PREFIX}/include"
+    
+    # SINGLE LINE PIP INSTALL to prevent 'watchdog: command not found' copy-paste errors
+    pip install requests rich pyfiglet langdetect gradio
 else
-    # Fallback to manual installation if requirements.txt isn't present
-    pip install requests rich pyfiglet langdetect streamlit watchdog
+    print_step "INSTALLING CORE & STREAMLIT MODULES..."
+    if [ -f "requirements.txt" ]; then
+        pip install -r requirements.txt
+    else
+        # SINGLE LINE PIP INSTALL to prevent syntax errors
+        pip install requests rich pyfiglet langdetect streamlit watchdog
+    fi
 fi
+
 print_success "Python Dependencies Locked"
 echo ""
 
@@ -177,8 +199,9 @@ echo ""
 # PHASE 4: GLOBAL LAUNCH COMMANDS CONFIGURATION
 # ==============================================================================
 print_step "ESCALATING PERMISSIONS & WRITING ALIASES..."
-chmod +x worm-gpt.py
-chmod +x worm-gpt-web.py 2>/dev/null
+chmod +x worm-gpt.py 2>/dev/null
+chmod +x worm-gpt-web-1.py 2>/dev/null
+chmod +x worm-gpt-web-2.py 2>/dev/null
 CURRENT_DIR="$(pwd)"
 
 if [ "$MACHINE" = "Termux" ]; then
@@ -190,7 +213,6 @@ elif [ "$MACHINE" = "Linux" ] || [ "$MACHINE" = "Mac" ]; then
 fi
 
 if [ "$MACHINE" = "Windows" ]; then
-    # Generate Windows .bat launchers
     tee worm-gpt.bat > /dev/null << EOF
 @echo off
 cd /d "%~dp0"
@@ -202,13 +224,12 @@ EOF
 @echo off
 cd /d "%~dp0"
 call odiyan\Scripts\activate.bat
-streamlit run worm-gpt-web.py %*
+streamlit run worm-gpt-web-1.py %*
 EOF
     print_success "Generated Windows Batch Launchers (worm-gpt.bat & worm-gpt-gui.bat)"
     print_warning "Add this directory to your Windows Environment Variables (PATH) to run globally."
 
 else
-    # Generate UNIX bash launchers
     $SUDO_CMD tee $BIN_DIR/worm-gpt > /dev/null << EOF
 #!/bin/bash
 cd "$CURRENT_DIR"
@@ -216,12 +237,21 @@ source odiyan/bin/activate
 python3 worm-gpt.py "\$@"
 EOF
 
-    $SUDO_CMD tee $BIN_DIR/worm-gpt-gui > /dev/null << EOF
+    if [ "$MACHINE" = "Termux" ]; then
+        $SUDO_CMD tee $BIN_DIR/worm-gpt-gui > /dev/null << EOF
 #!/bin/bash
 cd "$CURRENT_DIR"
 source odiyan/bin/activate
-streamlit run worm-gpt-web.py "\$@"
+python3 worm-gpt-web-2.py "\$@"
 EOF
+    else
+        $SUDO_CMD tee $BIN_DIR/worm-gpt-gui > /dev/null << EOF
+#!/bin/bash
+cd "$CURRENT_DIR"
+source odiyan/bin/activate
+streamlit run worm-gpt-web-1.py "\$@"
+EOF
+    fi
 
     $SUDO_CMD chmod +x $BIN_DIR/worm-gpt
     $SUDO_CMD chmod +x $BIN_DIR/worm-gpt-gui

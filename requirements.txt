@@ -1,0 +1,6 @@
+requests>=2.31.0
+rich>=13.7.0
+pyfiglet>=0.8.post1
+langdetect>=1.0.9
+streamlit>=1.31.0
+watchdog>=4.0.0
