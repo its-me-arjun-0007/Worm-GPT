@@ -65,10 +65,10 @@ Before initializing the system, ensure you have:
 apt-get update
 ```
 ```bash
-git clone https://github.com/its-me-arjun-0007/Worm-GPT-Test.git
+git clone https://github.com/its-me-arjun-0007/Worm-GPT.git
 ```
 ```bash
-cd Worm-GPT-Test
+cd Worm-GPT
 ```
 
 ## 📦 Requirements
