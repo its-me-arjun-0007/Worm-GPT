@@ -38,8 +38,12 @@
 ![CLI Interface](image/1003017748.jpg)
 
 ### Web Dashboard (GUI)
-*A modern, visual command center.*
+*Streamlit GUI Payload for Desktop.*
 ![GUI Interface](image/1003017739.jpg)
+
+*Gradio GUI Payload for Termux.*
+![GUI Interface](image/1003017738.jpg)
+
 
 ---
 
