@@ -38,15 +38,43 @@ center() {
 
 clear
 print_header() {
-    local term_width=$(tput cols 2>/dev/null || echo 80)
+    local term_width=$(tput cols 2>/dev/null || stty size 2>/dev/null | cut -d' ' -f2 || echo 80)
     echo -e "${C_RED}${C_BLD}"
-    figlet -c -w $term_width "WORM GPT"
+    
+    # 1. Capture raw figlet art
+    local art="$(figlet "WORM GPT")"
+    
+    # 2. Calculate the maximum true width of the ASCII art (stripping trailing spaces)
+    local max_len=0
+    while IFS= read -r line; do
+        # Use printf to avoid evaluating backslashes
+        local trimmed="$(printf "%s" "$line" | sed 's/ *$//')"
+        if [ ${#trimmed} -gt $max_len ]; then
+            max_len=${#trimmed}
+        fi
+    done <<< "$art"
+    
+    # 3. Calculate uniform left padding for the entire block
+    local pad=$(( (term_width - max_len) / 2 ))
+    if [ "$pad" -lt 0 ]; then pad=0; fi
+    local padding=$(printf "%${pad}s" "")
+    
+    # 4. Print the padded block safely
+    while IFS= read -r line; do
+        local clean_line="$(printf "%s" "$line" | sed 's/ *$//')"
+        # Only print if the line isn't completely empty, preventing gap issues
+        if [ -n "$clean_line" ]; then
+            printf "%s%s\n" "$padding" "$clean_line"
+        fi
+    done <<< "$art"
+    
     echo -e "${C_DEF}"
     center "${C_DIM}+-----------------------------------------+${C_DEF}"
     center "${C_DIM}|${C_DEF}   ${C_CYN}SYSTEM INITIALIZATION & DEPLOYMENT${C_DEF}    ${C_DIM}|${C_DEF}"
     center "${C_DIM}+-----------------------------------------+${C_DEF}"
     echo ""
 }
+
 
 print_step() { echo -e "${C_MAG}[►]${C_DEF} ${C_BLD}$1${C_DEF}"; }
 print_success() { echo -e "    ${C_GRN}└─ [✔] $1${C_DEF}"; }
@@ -87,16 +115,25 @@ if [ "$MACHINE" = "Termux" ]; then
     pkg install python git rust binutils cmake ninja openblas libjpeg-turbo libpng freetype -y 
     pkg install python-numpy python-pandas python-pillow -y
     
-    echo -e "\n${C_RED}+=================================================================+${C_DEF}"
-    echo -e "${C_RED}|${C_DEF} ${C_BLD}OPTIONAL WORM KIT DEPLOYMENT (Termux)${C_DEF}                           ${C_RED}|${C_DEF}"
-    echo -e "${C_RED}+=================================================================+${C_DEF}"
-    echo -e "${C_DIM}The Worm Kit includes advanced security tools (Nmap, SQLmap, WPScan).${C_DEF}"
-    echo -e "${C_YLW}Reason for making this optional:${C_DEF}"
-    echo -e "${C_CYN}Compiling native Ruby gems (like Nokogiri for WPScan) on Android can${C_DEF}"
-    echo -e "${C_CYN}take 15-45 minutes and consumes significant CPU/Battery resources.${C_DEF}"
-    echo -e "${C_GRN}If you only want to use the AI Chat features, you can safely skip this.${C_DEF}\n"
+    echo ""
+    center "${C_RED}+=================================================================+${C_DEF}"
+    center "${C_RED}OPTIONAL WORM KIT DEPLOYMENT${C_DEF}"
+    center "${C_RED}+=================================================================+${C_DEF}"
+    center "${C_DIM}The Worm Kit includes advanced security tools (Nmap, SQLmap, WPScan).${C_DEF}"
+    center "${C_YLW}Reason for making this optional:${C_DEF}"
+    center "${C_CYN}Compiling native Ruby gems (like Nokogiri for WPScan) on Android can${C_DEF}"
+    center "${C_CYN}take 15-45 minutes and consumes significant CPU/Battery resources.${C_DEF}"
+    center "${C_GRN}If you only want to use the AI Chat features, you can safely skip this.${C_DEF}"
+    echo ""
+
+    # Dynamically center the input prompt
+    local_term_width=$(tput cols 2>/dev/null || stty size 2>/dev/null | cut -d' ' -f2 || echo 80)
+    prompt_raw="Install Worm Kit Modules? [y/N]: "
+    prompt_pad=$(( (local_term_width - ${#prompt_raw}) / 2 ))
+    if [ "$prompt_pad" -gt 0 ]; then printf "%${prompt_pad}s" ""; fi
 
     read -p "$(echo -e ${C_CYN}Install Worm Kit Modules? [y/N]: ${C_DEF})" INSTALL_KIT
+
     
     if [[ "$INSTALL_KIT" =~ ^[Yy]$ ]]; then
         print_step "COMPILING WORM KIT..."
