@@ -300,32 +300,46 @@ echo ""
 # ==============================================================================
 # END SEQUENCE
 # ==============================================================================
-echo -e "${C_DIM}──────────────────────────────────────────────────────────────────────${C_DEF}"
-echo -e "${C_GRN}${C_BLD}>>> DEPLOYMENT 100% COMPLETE. SYSTEM IS LIVE. <<<${C_DEF}"
-echo -e "${C_DIM}──────────────────────────────────────────────────────────────────────${C_DEF}"
+center "${C_DIM}──────────────────────────────────────────────────────────────────────${C_DEF}"
+center "${C_GRN}${C_BLD}>>> DEPLOYMENT 100% COMPLETE. SYSTEM IS LIVE. <<<${C_DEF}"
+center "${C_DIM}──────────────────────────────────────────────────────────────────────${C_DEF}"
 echo ""
 
-echo -e "${C_CYN}SELECT INTERFACE UPLINK:${C_DEF}"
-echo -e "  ${C_RED}[1]${C_DEF} ${C_BLD}CLI Mode${C_DEF} (Terminal Attack)"
-echo -e "  ${C_RED}[2]${C_DEF} ${C_BLD}GUI Mode${C_DEF} (Visual Dashboard)"
-echo -e "  ${C_RED}[3]${C_DEF} ${C_DIM}Exit Matrix${C_DEF}"
+center "${C_CYN}SELECT INTERFACE UPLINK:${C_DEF}"
+center "${C_RED}[1]${C_DEF} ${C_BLD}CLI Mode${C_DEF} (Terminal Attack)"
+center "${C_RED}[2]${C_DEF} ${C_BLD}GUI Mode${C_DEF} (Visual Dashboard)"
+center "${C_RED}[3]${C_DEF} ${C_DIM}Exit Matrix${C_DEF}"
 echo ""
 
-read -p "root@wormgpt:~# " choice
+# Dynamically center the input prompt
+local_term_width=$(tput cols 2>/dev/null || stty size 2>/dev/null | cut -d' ' -f2 || echo 80)
+prompt_raw="root@wormgpt:~# "
+prompt_pad=$(( (local_term_width - ${#prompt_raw}) / 2 ))
+if [ "$prompt_pad" -gt 0 ]; then printf "%${prompt_pad}s" ""; fi
+
+read -p "$(echo -e ${C_RED}root@wormgpt:~# ${C_DEF})" choice
 
 case $choice in
     1)
-        echo -e "\n${C_RED}[*] BREACHING TERMINAL...${C_DEF}"
+        echo ""
+        center "${C_RED}[*] BREACHING TERMINAL...${C_DEF}"
         sleep 1
         if [ "$MACHINE" = "Windows" ]; then worm-gpt.bat; else worm-gpt; fi
         ;;
     2)
-        echo -e "\n${C_RED}[*] INITIALIZING WEB SERVER...${C_DEF}"
+        echo ""
+        center "${C_RED}[*] INITIALIZING WEB SERVER...${C_DEF}"
         sleep 1
         if [ "$MACHINE" = "Windows" ]; then worm-gpt-gui.bat; else worm-gpt-gui; fi
         ;;
     *)
-        echo -e "\n${C_GRN}Connection Terminated.${C_DEF}"
+        echo ""
+        center "${C_GRN}Connection Terminated.${C_DEF}"
+        echo ""
+        center "${C_CYN}To launch manually from anywhere in your terminal, use:${C_DEF}"
+        center "${C_YLW}CLI Mode:${C_DEF} worm-gpt"
+        center "${C_YLW}GUI Mode:${C_DEF} worm-gpt-gui"
+        echo ""
         exit 0
         ;;
 esac
