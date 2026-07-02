@@ -1,4 +1,4 @@
-import base64, zlib, sys, os
+import base64, zlib, sys, os, traceback
 
 # PROTECTED TOOL - DO NOT MODIFY
 # Property of Odiyan
@@ -8,4 +8,6 @@ try:
     exec(zlib.decompress(base64.b64decode(_data)))
 except Exception as e:
     print("CRITICAL ERROR: Integrity Check Failed.")
+    print("\n--- DEBUG TRACEBACK ---")
+    traceback.print_exc()
     sys.exit(1)
